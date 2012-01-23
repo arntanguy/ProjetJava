@@ -1,8 +1,10 @@
-package moyenDeTransport;
+package objets;
 
 import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
+
+import logiqueMetier.Serveur;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de

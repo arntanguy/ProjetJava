@@ -1,4 +1,4 @@
-package moyenDeTransport;
+package logiqueMetier;
 
 import java.io.IOException;
 import java.util.Calendar;

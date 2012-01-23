@@ -1,4 +1,4 @@
-package moyenDeTransport;
+package logiqueMetier;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de

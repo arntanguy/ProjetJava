@@ -1,4 +1,4 @@
-package moyenDeTransport;
+package logiqueMetier;
 
 /**
  * Cette enum fait partie de l'application d'un système de réservation de moyens

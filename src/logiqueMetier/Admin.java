@@ -1,8 +1,11 @@
-package moyenDeTransport;
+package logiqueMetier;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+
+import objets.Trajet;
+import objets.Vehicule;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de

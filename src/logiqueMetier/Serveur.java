@@ -1,7 +1,10 @@
-package moyenDeTransport;
+package logiqueMetier;
 
 import java.io.*;
 import java.util.*;
+
+import objets.Trajet;
+import objets.Vehicule;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de
