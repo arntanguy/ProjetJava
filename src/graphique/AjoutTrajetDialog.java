@@ -2,21 +2,24 @@ package graphique;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 
 public class AjoutTrajetDialog extends JDialog {
 	private JTextField villeDepartText;
 	private JTextField villeArriveeText;
-	private JTextField dateDepartText;
-	private JTextField dateArriveeText;
-	
+	private JSpinner dateDepartSpinner;
+	private JSpinner dateArriveeSpinner;
+
 	public AjoutTrajetDialog(){
 		super();
 		build();//On initialise notre fenêtre
@@ -41,18 +44,26 @@ public class AjoutTrajetDialog extends JDialog {
 		villeArriveeText = new JTextField();
 		panel.add(villeArriveeText);
 
+		
+
+	
+		// Create a SpinnerDateModel with current date as the initial value.
+		SpinnerDateModel model = new SpinnerDateModel();
+		SpinnerDateModel model1 = new SpinnerDateModel();
+
+
 		panel.add(new JLabel("Date de départ "));
-		dateDepartText = new JTextField();
-		panel.add(dateDepartText);
+		dateDepartSpinner = new JSpinner(model);
+		panel.add(dateDepartSpinner);
 		panel.add(new JLabel("Date d'arrivée "));
-		dateArriveeText = new JTextField();
-		panel.add(dateArriveeText);
+		dateArriveeSpinner = new JSpinner(model1);
+		panel.add(dateArriveeSpinner);
 
-		JButton bouton = new JButton(new ValidateAction("Valider"));
-		panel.add(bouton);
-		JButton bouton2 = new JButton(new CancelAction("Annuler"));
-		panel.add(bouton2);
 
+		JButton validateButton = new JButton(new ValidateAction("Valider"));
+		panel.add(validateButton);
+		JButton cancelButton = new JButton(new CancelAction("Annuler"));
+		panel.add(cancelButton);
 
 		return panel;
 	}
@@ -66,6 +77,8 @@ public class AjoutTrajetDialog extends JDialog {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Validé !"+villeDepartText.getText());
+			GregorianCalendar dateDepart = (GregorianCalendar) dateDepartSpinner.getModel().getValue();
+			System.out.println(dateDepart);
 		}
 	}
 	public class CancelAction extends AbstractAction {

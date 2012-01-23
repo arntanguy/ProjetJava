@@ -31,7 +31,7 @@ public class FenetreClientAdmin extends JFrame {
 	private JPanel buildContentPane() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
-		JLabel label = new JLabel("Client de réservation");
+		JLabel label = new JLabel("Client d'administration");
 		panel.add(label);
 
 		JButton ajoutTrajetButton = new JButton(new AjoutClientAction(

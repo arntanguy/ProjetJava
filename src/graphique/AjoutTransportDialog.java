@@ -22,7 +22,7 @@ public class AjoutTransportDialog extends JDialog {
 	}
 	private void build(){
 		setTitle("Ajout d'un trajet"); 
-		setSize(400,200); 
+		setSize(400,150); 
 		setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
 		setResizable(false); //On interdit la redimensionnement de la fenêtre
 		setContentPane(buildContentPane()); // construit le ContentPane
