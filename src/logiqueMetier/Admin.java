@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
-import objets.Trajet;
-import objets.Vehicule;
+import objets.*;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de

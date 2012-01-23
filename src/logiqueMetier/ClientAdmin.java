@@ -7,8 +7,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import objets.Trajet;
-import objets.Vehicule;
+import objets.*;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de
