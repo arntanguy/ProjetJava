@@ -3,7 +3,6 @@ package graphique;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;

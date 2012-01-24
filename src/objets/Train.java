@@ -1,10 +1,10 @@
 package objets;
 
 /**
- * 
- * @author
- * @version 1.0
- */
+*
+*@author 
+*@version 1.0
+*/
 public class Train extends Vehicule {
     /**
      * Contructeur par défaut. Permet de construire un Vehicule avec un id.
@@ -12,12 +12,12 @@ public class Train extends Vehicule {
      * @param
      * @return
      */
-    public Train(String vehicule, typeVehicule type, int capacite,
+    public Train(String vehicule, TypeVehicule type, int capacite,
             int identifiant) {
-        super(vehicule, typeVehicule.train, capacite, identifiant);
+        super(vehicule, TypeVehicule.train, capacite, identifiant);
     }
-    public Train(String vehicule, typeVehicule type,
+    public Train(String vehicule, TypeVehicule type,
             int identifiant) {
-        super(vehicule, typeVehicule.train, 500, identifiant);
+        super(vehicule, TypeVehicule.train, 500, identifiant);
     }
 }

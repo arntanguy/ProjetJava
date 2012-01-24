@@ -115,25 +115,25 @@ public class ServeurV2 extends Serveur implements Serializable {
             String[] tab2 = tab[i].split("#");
             if (tab2.length == 4) {
                 Vehicule v = null;
-                if(typeVehicule.valueOf(tab2[1])==typeVehicule.avion)
+                if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.avion)
                 {
                     v = new Avion(tab2[0],
-                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                            TypeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
                 }
-                else if(typeVehicule.valueOf(tab2[1])==typeVehicule.bateau)
+                else if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.bateau)
                 {
                     v = new Bateau(tab2[0],
-                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                            TypeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
                 }
-                else if(typeVehicule.valueOf(tab2[1])==typeVehicule.bus)
+                else if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.bus)
                 {
                     v = new Bus(tab2[0],
-                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                            TypeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
                 }
-                else if(typeVehicule.valueOf(tab2[1])==typeVehicule.train)
+                else if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.train)
                 {
                     v = new Train(tab2[0],
-                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                            TypeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
                 }
                 
                 if(v!=null)

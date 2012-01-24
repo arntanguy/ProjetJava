@@ -444,12 +444,11 @@ public class ClientAdmin {
             if (vehicule.trim() == "")
                 throw new Exception("Nom du véhicule vide");
 
-            for (int i = 0; i < typeVehicule.values().length - 1; i++) {
-                System.out.print(typeVehicule.values()[i] + " (" + i + "), ");
+            for (int i = 0; i < TypeVehicule.values().length - 1; i++) {
+                System.out.print(TypeVehicule.values()[i] + " (" + i + "), ");
             }
-            int last = typeVehicule.values().length - 1;
-            System.out.println(typeVehicule.values()[last] + " (" + last + ")");
-
+            int last = TypeVehicule.values().length - 1;
+            System.out.println(TypeVehicule.values()[last] + " (" + last + ")");
             System.out.print("Type choisi (id) : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
@@ -458,7 +457,8 @@ public class ClientAdmin {
             }
 
             // on récupère le véhicule choisi
-            typeVehicule type = typeVehicule.values()[typeId];
+
+            TypeVehicule type = TypeVehicule.values()[typeId];
             if (type == null)
                 throw new Exception("type de véhicule non reconnu");
 
@@ -472,26 +472,26 @@ public class ClientAdmin {
 
             // on créé le véhicule voulu puis on l'ajoute
             Vehicule v = null;
-            if (type == typeVehicule.avion) {
+            if (type == TypeVehicule.avion) {
                 if (capacite != 0)
                     v = new Avion(vehicule, type, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
                     v = new Avion(vehicule, type, a.getVehiculeNewIdentifiant());
-            } else if (type == typeVehicule.bateau) {
+            } else if (type == TypeVehicule.bateau) {
                 if (capacite != 0)
                     v = new Bateau(vehicule, type, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
                     v = new Bateau(vehicule, type,
                             a.getVehiculeNewIdentifiant());
-            } else if (type == typeVehicule.bus) {
+            } else if (type == TypeVehicule.bus) {
                 if (capacite != 0)
                     v = new Bus(vehicule, type, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
                     v = new Bus(vehicule, type, a.getVehiculeNewIdentifiant());
-            } else if (type == typeVehicule.train) {
+            } else if (type == TypeVehicule.train) {
                 if (capacite != 0)
                     v = new Train(vehicule, type, capacite,
                             a.getVehiculeNewIdentifiant());
@@ -713,7 +713,7 @@ public class ClientAdmin {
             String vehicule = "";
             int typeId = 0;
             int capacite = 0;
-            typeVehicule type = null;
+            TypeVehicule type = null;
 
             a.consulterVehicules();
             // On demande à l'utilisateur l'identifiant du véhicule à modifier
@@ -743,12 +743,12 @@ public class ClientAdmin {
                 if (vehicule.trim() == "")
                     throw new Exception("Nom du véhicule vide");
 
-                for (int i = 0; i < typeVehicule.values().length - 1; i++) {
-                    System.out.print(typeVehicule.values()[i] + " (" + i
+                for (int i = 0; i < TypeVehicule.values().length - 1; i++) {
+                    System.out.print(TypeVehicule.values()[i] + " (" + i
                             + "), ");
                 }
-                int last = typeVehicule.values().length - 1;
-                System.out.println(typeVehicule.values()[last] + " (" + last
+                int last = TypeVehicule.values().length - 1;
+                System.out.println(TypeVehicule.values()[last] + " (" + last
                         + ")");
 
                 System.out.print(new StringBuffer()
@@ -759,7 +759,7 @@ public class ClientAdmin {
                 if (tokenizer.hasNext()) {
                     typeId = Integer.valueOf(tokenizer.next()); // récupère le
                                                                 // premier mot
-                    type = typeVehicule.values()[typeId];
+                    type = TypeVehicule.values()[typeId];
                 } else {
                     type = vehiculeAModifier.getType();
                 }
@@ -782,29 +782,30 @@ public class ClientAdmin {
 
                 // on créé le nouveau véhicule, puis on le met à la place de
                 // l'ancien
+
                 Vehicule v = null;
-                if (type == typeVehicule.avion) {
+                if (type == TypeVehicule.avion) {
                     if (capacite != 0)
                         v = new Avion(vehicule, type, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
                         v = new Avion(vehicule, type,
                                 vehiculeAModifier.getIdentifiant());
-                } else if (type == typeVehicule.bateau) {
+                } else if (type == TypeVehicule.bateau) {
                     if (capacite != 0)
                         v = new Bateau(vehicule, type, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
                         v = new Bateau(vehicule, type,
                                 vehiculeAModifier.getIdentifiant());
-                } else if (type == typeVehicule.bus) {
+                } else if (type == TypeVehicule.bus) {
                     if (capacite != 0)
                         v = new Bus(vehicule, type, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
                         v = new Bus(vehicule, type,
                                 vehiculeAModifier.getIdentifiant());
-                } else if (type == typeVehicule.train) {
+                } else if (type == TypeVehicule.train) {
                     if (capacite != 0)
                         v = new Train(vehicule, type, capacite,
                             vehiculeAModifier.getIdentifiant());
