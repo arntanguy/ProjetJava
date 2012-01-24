@@ -114,8 +114,30 @@ public class ServeurV2 extends Serveur implements Serializable {
         for (int i = 0; i < tab.length; i++) {
             String[] tab2 = tab[i].split("#");
             if (tab2.length == 4) {
-                this.addVehicule(new Vehicule(tab2[0],
-                        typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3])));
+                Vehicule v = null;
+                if(typeVehicule.valueOf(tab2[1])==typeVehicule.avion)
+                {
+                    v = new Avion(tab2[0],
+                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                }
+                else if(typeVehicule.valueOf(tab2[1])==typeVehicule.bateau)
+                {
+                    v = new Bateau(tab2[0],
+                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                }
+                else if(typeVehicule.valueOf(tab2[1])==typeVehicule.bus)
+                {
+                    v = new Bus(tab2[0],
+                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                }
+                else if(typeVehicule.valueOf(tab2[1])==typeVehicule.train)
+                {
+                    v = new Train(tab2[0],
+                            typeVehicule.valueOf(tab2[1]),Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
+                }
+                
+                if(v!=null)
+                    this.addVehicule(v);
             }
         }
 
