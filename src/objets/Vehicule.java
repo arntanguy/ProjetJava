@@ -15,6 +15,7 @@ import java.io.*;
 
 public class Vehicule implements Serializable {
     String vehicule;
+    typeVehicule type;
     int capacite;
     int identifiant;
 
@@ -28,8 +29,9 @@ public class Vehicule implements Serializable {
      * @param identifiant
      *            identifiant du véhicule
      */
-    public Vehicule(String vehicule, int capacite, int identifiant) {
+    public Vehicule(String vehicule, typeVehicule type, int capacite, int identifiant) {
         this.vehicule = vehicule;
+        this.type = type;
         this.capacite = capacite;
         this.identifiant = identifiant;
     }
@@ -71,6 +73,10 @@ public class Vehicule implements Serializable {
         this.capacite = capacite;
     }
 
+    public typeVehicule getType() {
+        return type;
+    }
+
     /**
      * @param identifiant
      *            identifiant du véhicule
@@ -82,7 +88,7 @@ public class Vehicule implements Serializable {
     @Override
     public String toString() {
         return new StringBuffer().append(vehicule).append(" (id=")
-                .append(identifiant).append(") qui a une capacité de ")
+                .append(identifiant).append(") de type "+type+" et qui a une capacité de ")
                 .append(capacite).toString();
     }
 
@@ -93,7 +99,7 @@ public class Vehicule implements Serializable {
      * @return la ligne de texte terminée par un '\n'
      */
     public String print() {
-        return new StringBuffer().append(vehicule).append("#").append(capacite)
+        return new StringBuffer().append(vehicule).append("#").append(type).append("#").append(capacite)
                 .append("#").append(identifiant).append("#").append("\n")
                 .toString();
     }
