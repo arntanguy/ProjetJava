@@ -21,8 +21,8 @@ import logiqueMetier.Serveur;
 public class Trajet implements Serializable, Comparable {
     Calendar dateDepart;
     Calendar dateArrivee;
-    String depart;
-    String arrivee;
+    Ville depart;
+    Ville arrivee;
     Vehicule vehicule;
     int placesRestantes;
     int identifiant;
@@ -43,8 +43,8 @@ public class Trajet implements Serializable, Comparable {
      * @param identifiant
      *            l'identifiant
      */
-    public Trajet(Calendar dateDepart, Calendar dateArrivee, String depart,
-            String arrivee, Vehicule vehicule, int identifiant) {
+    public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
+            Ville arrivee, Vehicule vehicule, int identifiant) {
         this.dateDepart = dateDepart;
         this.dateArrivee = dateArrivee;
         this.depart = depart;
@@ -72,8 +72,8 @@ public class Trajet implements Serializable, Comparable {
      * @param placesRestantes
      *            le nombre de places restantes
      */
-    public Trajet(Calendar dateDepart, Calendar dateArrivee, String depart,
-            String arrivee, Vehicule vehicule, int identifiant,
+    public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
+            Ville arrivee, Vehicule vehicule, int identifiant,
             int placesRestantes) {
         this.dateDepart = dateDepart;
         this.dateArrivee = dateArrivee;
@@ -101,14 +101,14 @@ public class Trajet implements Serializable, Comparable {
     /**
      * @return lieu de départ
      */
-    public String getDepart() {
+    public Ville getDepart() {
         return depart;
     }
 
     /**
      * @return lieu d'arrivée
      */
-    public String getArrivee() {
+    public Ville getArrivee() {
         return arrivee;
     }
 
@@ -153,7 +153,7 @@ public class Trajet implements Serializable, Comparable {
      * @param depart
      *            lieu de départ
      */
-    public void setDepart(String depart) {
+    public void setDepart(Ville depart) {
         this.depart = depart;
     }
 
@@ -161,7 +161,7 @@ public class Trajet implements Serializable, Comparable {
      * @param arrivee
      *            lieu d'arrivée
      */
-    public void setArrivee(String arrivee) {
+    public void setArrivee(Ville arrivee) {
         this.arrivee = arrivee;
     }
 
@@ -216,7 +216,7 @@ public class Trajet implements Serializable, Comparable {
         int arriveeMois = dateArrivee.get(Calendar.MONTH) + 1;
 
         return new StringBuffer().append("Voyage (id=").append(identifiant)
-                .append(") de ").append(depart).append(" à ").append(arrivee)
+                .append(") de ").append(depart.getVille()).append(" à ").append(arrivee.getVille())
                 .append(" en ").append(vehicule.getVehicule()).append(" (id=")
                 .append(vehicule.getIdentifiant()).append("): \n\t")
                 .append("Départ le ").append(dateDepart.get(Calendar.DATE))
@@ -244,7 +244,7 @@ public class Trajet implements Serializable, Comparable {
                 .append("#").append(Serveur.calendarToTime(dateDepart))
                 .append("#").append(Serveur.calendarToDate(dateArrivee))
                 .append("#").append(Serveur.calendarToTime(dateArrivee))
-                .append("#").append(depart).append("#").append(arrivee)
+                .append("#").append(depart.getIdentifiant()).append("#").append(arrivee.getIdentifiant())
                 .append("#").append(vehicule.getIdentifiant()).append("#")
                 .append(placesRestantes).append("#").append(identifiant)
                 .append("#").append("\n").toString();
