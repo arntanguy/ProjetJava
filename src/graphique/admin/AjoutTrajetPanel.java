@@ -1,4 +1,4 @@
-package graphique;
+package graphique.admin;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
