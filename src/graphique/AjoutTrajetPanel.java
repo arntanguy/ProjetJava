@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -14,37 +15,27 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
 
-public class AjoutTrajetDialog extends JDialog {
+public class AjoutTrajetPanel extends JPanel {
 	private JTextField villeDepartText;
 	private JTextField villeArriveeText;
 	private JSpinner dateDepartSpinner;
 	private JSpinner dateArriveeSpinner;
 
-	public AjoutTrajetDialog(){
+	public AjoutTrajetPanel(){
 		super();
-		build();//On initialise notre fenêtre
+		build(); 
 	}
 	private void build(){
-		setTitle("Ajout d'un trajet"); 
-		setSize(400,200); 
-		setLocationRelativeTo(null); // Center the window
-		setResizable(false); 
-		setContentPane(buildContentPane()); 
-	}
-
-	private JPanel buildContentPane(){
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0,2));
+		setBorder(BorderFactory.createTitledBorder("Ajouter un trajet"));
+		setLayout(new GridLayout(0,2));
 
 		villeDepartText = new JTextField();
-		panel.add(new JLabel("Ville de départ "));
-		panel.add(villeDepartText);
+		add(new JLabel("Ville de départ "));
+		add(villeDepartText);
 
-		panel.add(new JLabel("Ville d'arrivée"));
+		add(new JLabel("Ville d'arrivée"));
 		villeArriveeText = new JTextField();
-		panel.add(villeArriveeText);
-
-		
+		add(villeArriveeText);
 
 	
 		// Create a SpinnerDateModel with current date as the initial value.
@@ -52,22 +43,19 @@ public class AjoutTrajetDialog extends JDialog {
 		SpinnerDateModel model1 = new SpinnerDateModel();
 
 
-		panel.add(new JLabel("Date de départ "));
+		add(new JLabel("Date de départ "));
 		dateDepartSpinner = new JSpinner(model);
-		panel.add(dateDepartSpinner);
-		panel.add(new JLabel("Date d'arrivée "));
+		add(dateDepartSpinner);
+		add(new JLabel("Date d'arrivée "));
 		dateArriveeSpinner = new JSpinner(model1);
-		panel.add(dateArriveeSpinner);
+		add(dateArriveeSpinner);
 
-
+		add(new JLabel());
 		JButton validateButton = new JButton(new ValidateAction("Valider"));
-		panel.add(validateButton);
-		JButton cancelButton = new JButton(new CancelAction("Annuler"));
-		panel.add(cancelButton);
-
-		return panel;
+		add(validateButton);
 	}
 
+	
 	public class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
@@ -78,16 +66,6 @@ public class AjoutTrajetDialog extends JDialog {
 			System.out.println("Validé !"+villeDepartText.getText());
 			GregorianCalendar dateDepart = (GregorianCalendar) dateDepartSpinner.getModel().getValue();
 			System.out.println(dateDepart);
-		}
-	}
-	public class CancelAction extends AbstractAction {
-		public CancelAction(String texte){
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			dispose(); // Close the dialog
 		}
 	}
 }

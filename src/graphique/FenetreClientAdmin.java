@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,31 +19,29 @@ public class FenetreClientAdmin extends JFrame {
 
 	private void build() {
 		setTitle("Réservations"); 
-		setSize(400, 200); 
+		setSize(800,600); 
 		setLocationRelativeTo(null); 
-		setResizable(false); 
+		setResizable(true); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setContentPane(buildContentPane());
 	}
 
 	private JPanel buildContentPane() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		JLabel label = new JLabel("Client d'administration");
-		panel.add(label);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		JButton ajoutTrajetButton = new JButton(new AjoutClientAction(
-		"Ajouter un trajet"));
-		panel.add(ajoutTrajetButton);
-
-		JButton ajoutTransportButton = new JButton(new AjoutTransportAction(
-		"Ajouter un transport"));
-		panel.add(ajoutTransportButton);
+		AjoutTransportPanel ajoutTransportPanel = new AjoutTransportPanel();
+		panel.add(ajoutTransportPanel);
 		
-		JButton ajoutVilleButton = new JButton(new AjoutVilleAction(
-		"Ajouter une ville"));
-		panel.add(ajoutVilleButton);
-
+		AjoutTrajetPanel ajoutTrajetPanel = new AjoutTrajetPanel();
+		panel.add(ajoutTrajetPanel);
+		
+		AjoutVillePanel ajoutVillePanel = new AjoutVillePanel();
+		panel.add(ajoutVillePanel);
+		
+		JButton quit = new JButton(new QuitAction("Quitter"));
+		panel.add(quit);
+		
 		return panel;
 	}
 
@@ -55,7 +54,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutTrajetDialog fenetre = new AjoutTrajetDialog();
+					AjoutTrajetPanel fenetre = new AjoutTrajetPanel();
 					fenetre.setVisible(true);
 				}
 			});
@@ -71,7 +70,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutTransportDialog fenetre = new AjoutTransportDialog();
+					AjoutTransportPanel fenetre = new AjoutTransportPanel();
 					fenetre.setVisible(true);
 				}
 			});
@@ -86,10 +85,20 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutVilleDialog fenetre = new AjoutVilleDialog();
+					AjoutVillePanel fenetre = new AjoutVillePanel();
 					fenetre.setVisible(true);
 				}
 			});
+		}
+	}
+	public class QuitAction extends AbstractAction {
+		public QuitAction(String texte) {
+			super(texte);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			dispose();
 		}
 	}
 }
