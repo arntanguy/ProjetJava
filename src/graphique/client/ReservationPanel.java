@@ -21,8 +21,8 @@ public class ReservationPanel extends JPanel {
 
 		add(new TrajetPanel());
 		add(new ClientPanel());
-				
 		add(new JButton(new ValidateAction("Rechercher")));
+		add(new ResultatsPanel());			
 	}
 
 	
