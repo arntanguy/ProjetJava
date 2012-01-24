@@ -89,7 +89,9 @@ public class GestionReservationsPanel extends JPanel {
 			System.out.println("Supprimé !");
 			int[] selectedIndexes = reservationsTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				reservationsModel.removeRow(selectedIndexes[i]);
+				int row = selectedIndexes[i];
+				System.out.println(reservationsModel.getValueAt(row, 0));
+				reservationsModel.removeRow(row);
 				// XXX: Call the delete method
 			}	  
 		}
