@@ -421,6 +421,7 @@ public class ClientAdmin {
         } else if (quoi.equals("vehicule")) {
             // on demande les infos sur le véhicule à ajouter
             String vehicule = "";
+            int typeId=0;
             int capacite = 0;
 
             // On demande à l'utilisateur toutes les infos qu'on veut
@@ -433,6 +434,26 @@ public class ClientAdmin {
             if (vehicule.trim() == "")
                 throw new Exception("Nom du véhicule vide");
 
+            for(int i=0;i<typeVehicule.values().length-1;i++)
+            {
+                System.out.print(typeVehicule.values()[i]+" ("+i+"), ");
+            }
+            int last=typeVehicule.values().length-1;
+            System.out.println(typeVehicule.values()[last]+" ("+last+")");
+            
+            System.out.print("Type choisi (id) : ");
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                typeId = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                // premier mot
+            }
+
+            // on récupère le véhicule choisi
+            typeVehicule type = typeVehicule.values()[typeId];
+            if (type== null)
+                throw new Exception("type de véhicule non reconnu");
+            
+            
             System.out.print("Capacité du véhicule : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
@@ -441,7 +462,7 @@ public class ClientAdmin {
             }
 
             // on créé le véhicule voulu puis on l'ajoute
-            Vehicule v = new Vehicule(vehicule, capacite,
+            Vehicule v = new Vehicule(vehicule, type, capacite,
                     a.getVehiculeNewIdentifiant());
 
             a.addVehicule(v);
@@ -664,7 +685,7 @@ public class ClientAdmin {
 
                 // on créé le nouveau véhicule, puis on le met à la place de
                 // l'ancien
-                Vehicule v = new Vehicule(vehicule, capacite,
+                Vehicule v = new Vehicule(vehicule, typeVehicule.avion, capacite,
                         vehiculeAModifier.getIdentifiant());
                 a.modifierVehicule(vehiculeAModifier, v);
                 a.consulterVehicules();
