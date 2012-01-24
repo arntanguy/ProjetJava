@@ -1,5 +1,5 @@
 package objets;
 
-public enum typeVehicule {
+public enum TypeVehicule {
     avion,bus,bateau,train;
 }

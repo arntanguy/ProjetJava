@@ -12,7 +12,10 @@ public class Bus extends Vehicule{
      *@return
      */
     public Bus(){
-	super(50);
+    	super(50);
+    }
+    public Bus(int nbPlaces){
+    	super(nbPlaces);
     }
     /**Méthode qui permet d'afficher un Vehicule
      *@param

@@ -12,7 +12,10 @@ package objets;
 	     *@return
 	     */
 	    public Train(){
-		super(500);
+	    	super(500);
+	    }
+	    public Train(int nbPlaces){
+	    	super(nbPlaces);
 	    }
 	    /**Méthode qui permet d'afficher un Vehicule
 	     *@param

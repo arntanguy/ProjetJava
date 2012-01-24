@@ -442,12 +442,12 @@ public class ClientAdmin {
             if (vehicule.trim() == "")
                 throw new Exception("Nom du véhicule vide");
 
-            for(int i=0;i<typeVehicule.values().length-1;i++)
+            for(int i=0;i<TypeVehicule.values().length-1;i++)
             {
-                System.out.print(typeVehicule.values()[i]+" ("+i+"), ");
+                System.out.print(TypeVehicule.values()[i]+" ("+i+"), ");
             }
-            int last=typeVehicule.values().length-1;
-            System.out.println(typeVehicule.values()[last]+" ("+last+")");
+            int last=TypeVehicule.values().length-1;
+            System.out.println(TypeVehicule.values()[last]+" ("+last+")");
             
             System.out.print("Type choisi (id) : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
@@ -457,7 +457,7 @@ public class ClientAdmin {
             }
 
             // on récupère le véhicule choisi
-            typeVehicule type = typeVehicule.values()[typeId];
+            TypeVehicule type = TypeVehicule.values()[typeId];
             if (type== null)
                 throw new Exception("type de véhicule non reconnu");
             
@@ -728,7 +728,7 @@ public class ClientAdmin {
 
                 // on créé le nouveau véhicule, puis on le met à la place de
                 // l'ancien
-                Vehicule v = new Vehicule(vehicule, typeVehicule.avion, capacite,
+                Vehicule v = new Vehicule(vehicule, TypeVehicule.avion, capacite,
                         vehiculeAModifier.getIdentifiant());
                 a.modifierVehicule(vehiculeAModifier, v);
                 a.consulterVehicules();

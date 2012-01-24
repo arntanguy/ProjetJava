@@ -12,7 +12,10 @@ public class Avion extends Vehicule{
      *@return
      */
     public Avion(){
-	super(300);
+    	super(300);
+    }
+    public Avion(int nbPlaces){
+    	super(nbPlaces);
     }
     /**Méthode qui permet d'afficher un Vehicule
      *@param

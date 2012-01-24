@@ -12,7 +12,10 @@ public class Bateau extends Vehicule{
      *@return
      */
     public Bateau(){
-	super(1000);
+    	super(1000);
+    }
+    public Bateau(int nbPlaces){
+    	super(nbPlaces);
     }
     /**Méthode qui permet d'afficher un Vehicule
      *@param

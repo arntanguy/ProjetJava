@@ -15,7 +15,7 @@ import java.io.*;
 
 public class Vehicule implements Serializable {
     String vehicule;
-    typeVehicule type;
+    TypeVehicule type;
     int capacite;
     int identifiant;
 
@@ -29,7 +29,7 @@ public class Vehicule implements Serializable {
      * @param identifiant
      *            identifiant du véhicule
      */
-    public Vehicule(String vehicule, typeVehicule type, int capacite, int identifiant) {
+    public Vehicule(String vehicule, TypeVehicule type, int capacite, int identifiant) {
         this.vehicule = vehicule;
         this.type = type;
         this.capacite = capacite;
@@ -73,7 +73,7 @@ public class Vehicule implements Serializable {
         this.capacite = capacite;
     }
 
-    public typeVehicule getType() {
+    public TypeVehicule getType() {
         return type;
     }
 
