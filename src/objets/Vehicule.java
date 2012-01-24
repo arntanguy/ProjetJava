@@ -13,7 +13,7 @@ import java.io.*;
  * @version 2011.12.04
  */
 
-public class Vehicule implements Serializable {
+public abstract class Vehicule implements Serializable {
     String vehicule;
     TypeVehicule type;
     int capacite;

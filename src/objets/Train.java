@@ -1,29 +1,23 @@
 package objets;
+
 /**
 *
 *@author 
 *@version 1.0
 */
-	public class Train extends Vehicule{
-		
-	    /**
-	     *Contructeur par défaut. Permet de construire un Vehicule avec un id.
-	     *@param
-	     *@return
-	     */
-	    public Train(){
-	    	super(500);
-	    }
-	    public Train(int nbPlaces){
-	    	super(nbPlaces);
-	    }
-	    /**Méthode qui permet d'afficher un Vehicule
-	     *@param
-	     *@return String : toString
-	     */
-	    public String toString() {
-		return "Vehicule n°" + getIdVehicule() + "\n" + "Capacité : " + getCap();
-	    }
-	}
-
+public class Train extends Vehicule {
+    /**
+     * Contructeur par défaut. Permet de construire un Vehicule avec un id.
+     * 
+     * @param
+     * @return
+     */
+    public Train(String vehicule, TypeVehicule type, int capacite,
+            int identifiant) {
+        super(vehicule, TypeVehicule.train, capacite, identifiant);
+    }
+    public Train(String vehicule, TypeVehicule type,
+            int identifiant) {
+        super(vehicule, TypeVehicule.train, 500, identifiant);
+    }
 }

@@ -1,27 +1,23 @@
 package objets;
+
 /**
-*
-*@author 
-*@version 1.0
-*/
-public class Bateau extends Vehicule{
-	
+ * 
+ * @author
+ * @version 1.0
+ */
+public class Bateau extends Vehicule {
     /**
-     *Contructeur par défaut. Permet de construire un Vehicule avec un id.
-     *@param
-     *@return
+     * Contructeur par défaut. Permet de construire un Vehicule avec un id.
+     * 
+     * @param
+     * @return
      */
-    public Bateau(){
-    	super(1000);
+    public Bateau(String vehicule, TypeVehicule type, int capacite,
+            int identifiant) {
+        super(vehicule, TypeVehicule.bateau, capacite, identifiant);
     }
-    public Bateau(int nbPlaces){
-    	super(nbPlaces);
-    }
-    /**Méthode qui permet d'afficher un Vehicule
-     *@param
-     *@return String : toString
-     */
-    public String toString() {
-	return "Vehicule n°" + getIdVehicule() + "\n" + "Capacité : " + getCap();
+    public Bateau(String vehicule, TypeVehicule type,
+            int identifiant) {
+        super(vehicule, TypeVehicule.bateau, 1000, identifiant);
     }
 }

@@ -2,7 +2,7 @@ package graphique;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -63,7 +63,7 @@ public class AjoutTrajetPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Validé !"+villeDepartText.getText());
-			GregorianCalendar dateDepart = (GregorianCalendar) dateDepartSpinner.getModel().getValue();
+			Date dateDepart = (Date) dateDepartSpinner.getModel().getValue();
 			System.out.println(dateDepart);
 		}
 	}
