@@ -55,7 +55,7 @@ public class AjoutTrajetPanel extends JPanel {
 	}
 
 	
-	public class ValidateAction extends AbstractAction {
+	private class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
 		}

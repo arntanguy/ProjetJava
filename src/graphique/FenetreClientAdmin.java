@@ -47,7 +47,7 @@ public class FenetreClientAdmin extends JFrame {
 		return panel;
 	}
 
-	public class AjoutClientAction extends AbstractAction {
+	private class AjoutClientAction extends AbstractAction {
 		public AjoutClientAction(String texte) {
 			super(texte);
 		}
@@ -63,7 +63,7 @@ public class FenetreClientAdmin extends JFrame {
 		}
 	}
 
-	public class AjoutTransportAction extends AbstractAction {
+	private class AjoutTransportAction extends AbstractAction {
 		public AjoutTransportAction(String texte) {
 			super(texte);
 		}
@@ -78,7 +78,7 @@ public class FenetreClientAdmin extends JFrame {
 			});
 		}
 	}
-	public class AjoutVilleAction extends AbstractAction {
+	private class AjoutVilleAction extends AbstractAction {
 		public AjoutVilleAction(String texte) {
 			super(texte);
 		}
@@ -93,7 +93,7 @@ public class FenetreClientAdmin extends JFrame {
 			});
 		}
 	}
-	public class QuitAction extends AbstractAction {
+	private class QuitAction extends AbstractAction {
 		public QuitAction(String texte) {
 			super(texte);
 		}
