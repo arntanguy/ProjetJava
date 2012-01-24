@@ -13,19 +13,16 @@ import javax.swing.SwingUtilities;
 public class FenetreClientAdmin extends JFrame {
 	public FenetreClientAdmin() {
 		super();
-		build();// On initialise notre fenêtre
+		build();
 	}
 
 	private void build() {
-		setTitle("Réservations"); // On donne un titre à l'application
-		setSize(400, 200); // On donne une taille à notre fenêtre
-		setLocationRelativeTo(null); // On centre la fenêtre sur l'écran
-		setResizable(false); // On interdit la redimensionnement de la fenêtre
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On dit à
-		// l'application de se
-		// fermer lors du clic
-		// sur la croix
-		setContentPane(buildContentPane()); // construit le ContentPane
+		setTitle("Réservations"); 
+		setSize(400, 200); 
+		setLocationRelativeTo(null); 
+		setResizable(false); 
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		setContentPane(buildContentPane());
 	}
 
 	private JPanel buildContentPane() {
@@ -41,6 +38,10 @@ public class FenetreClientAdmin extends JFrame {
 		JButton ajoutTransportButton = new JButton(new AjoutTransportAction(
 		"Ajouter un transport"));
 		panel.add(ajoutTransportButton);
+		
+		JButton ajoutVilleButton = new JButton(new AjoutVilleAction(
+		"Ajouter une ville"));
+		panel.add(ajoutVilleButton);
 
 		return panel;
 	}
@@ -71,6 +72,21 @@ public class FenetreClientAdmin extends JFrame {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					AjoutTransportDialog fenetre = new AjoutTransportDialog();
+					fenetre.setVisible(true);
+				}
+			});
+		}
+	}
+	public class AjoutVilleAction extends AbstractAction {
+		public AjoutVilleAction(String texte) {
+			super(texte);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					AjoutVilleDialog fenetre = new AjoutVilleDialog();
 					fenetre.setVisible(true);
 				}
 			});

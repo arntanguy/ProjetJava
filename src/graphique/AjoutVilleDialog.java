@@ -1,5 +1,8 @@
 package graphique;
 
+import graphique.AjoutTransportDialog.CancelAction;
+import graphique.AjoutTransportDialog.ValidateAction;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -11,12 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
-
-public class AjoutTransportDialog extends JDialog {
+public class AjoutVilleDialog extends JDialog {
 	private JTextField nomText;
-	private JSpinner capaciteSpinner;
 	
-	public AjoutTransportDialog(){
+	public AjoutVilleDialog(){
 		super();
 		build();
 	}
@@ -33,13 +34,8 @@ public class AjoutTransportDialog extends JDialog {
 		panel.setLayout(new GridLayout(0,2));
 
 		nomText = new JTextField();
-		panel.add(new JLabel("Nom du transport "));
+		panel.add(new JLabel("Nom de la ville "));
 		panel.add(nomText);
-		
-		panel.add(new JLabel("Capacité d'acceuil"));
-		capaciteSpinner = new JSpinner();
-		capaciteSpinner.setValue(50);
-		panel.add(capaciteSpinner);
 
 		JButton bouton = new JButton(new ValidateAction("Valider"));
 		panel.add(bouton);

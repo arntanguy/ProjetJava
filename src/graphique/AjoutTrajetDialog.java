@@ -27,9 +27,9 @@ public class AjoutTrajetDialog extends JDialog {
 	private void build(){
 		setTitle("Ajout d'un trajet"); 
 		setSize(400,200); 
-		setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
-		setResizable(false); //On interdit la redimensionnement de la fenêtre
-		setContentPane(buildContentPane()); // construit le ContentPane
+		setLocationRelativeTo(null); // Center the window
+		setResizable(false); 
+		setContentPane(buildContentPane()); 
 	}
 
 	private JPanel buildContentPane(){
@@ -75,7 +75,6 @@ public class AjoutTrajetDialog extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 			System.out.println("Validé !"+villeDepartText.getText());
 			GregorianCalendar dateDepart = (GregorianCalendar) dateDepartSpinner.getModel().getValue();
 			System.out.println(dateDepart);
@@ -88,8 +87,7 @@ public class AjoutTrajetDialog extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			System.out.println("Annulé !");
+			dispose(); // Close the dialog
 		}
 	}
 }
