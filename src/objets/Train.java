@@ -12,12 +12,10 @@ public class Train extends Vehicule {
      * @param
      * @return
      */
-    public Train(String vehicule, int capacite,
-            int identifiant) {
+    public Train(String vehicule, int capacite, int identifiant) {
         super(vehicule, TypeVehicule.train, capacite, identifiant);
     }
-    public Train(String vehicule,
-            int identifiant) {
+    public Train(String vehicule, int identifiant) {
         super(vehicule, TypeVehicule.train, 500, identifiant);
     }
 }

@@ -12,12 +12,10 @@ public class Bateau extends Vehicule {
      * @param
      * @return
      */
-    public Bateau(String vehicule, int capacite,
-            int identifiant) {
+    public Bateau(String vehicule, int capacite, int identifiant) {
         super(vehicule, TypeVehicule.bateau, capacite, identifiant);
     }
-    public Bateau(String vehicule, 
-            int identifiant) {
+    public Bateau(String vehicule, int identifiant) {
         super(vehicule, TypeVehicule.bateau, 1000, identifiant);
     }
 }
