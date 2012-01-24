@@ -438,8 +438,8 @@ public abstract class Serveur implements Serializable {
      *            l'intervalle d'acceptation voulue (en heures)
      * @return la liste de trajets correspondant aux critères
      */
-    public List<Trajet> rechercherTrajet(String depart, String arrivee,
-            String vehicule, int placesVoulues, Calendar dateDepart,
+    public List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
+            Vehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue) {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
 
@@ -453,8 +453,7 @@ public abstract class Serveur implements Serializable {
 
             if (mesTrajets.get(i).getDepart().equals(depart)
                     && mesTrajets.get(i).getArrivee().equals(arrivee)
-                    && (vehicule == "" || mesTrajets.get(i).getVehicule()
-                            .getVehicule().equals(vehicule))
+                    && (vehicule == null || mesTrajets.get(i).getVehicule().equals(vehicule))
                     && mesTrajets.get(i).restePlaces(placesVoulues)
                     && dateDepart.before(departRetard)
                     && dateDepart.after(departAvance)) {
