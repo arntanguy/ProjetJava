@@ -12,12 +12,11 @@ public class Avion extends Vehicule {
      * @param
      * @return
      */
-    public Avion(String vehicule, TypeVehicule type, int capacite,
+    public Avion(String vehicule, int capacite,
             int identifiant) {
         super(vehicule, TypeVehicule.avion, capacite, identifiant);
     }
-    public Avion(String vehicule, TypeVehicule type,
-            int identifiant) {
+    public Avion(String vehicule, int identifiant) {
         super(vehicule, TypeVehicule.avion, 300, identifiant);
     }
 }
