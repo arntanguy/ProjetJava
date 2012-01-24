@@ -6,8 +6,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -35,7 +33,7 @@ public class AjoutVillePanel extends JPanel {
 	}
 
 
-	public class ValidateAction extends AbstractAction {
+	private class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
 		}

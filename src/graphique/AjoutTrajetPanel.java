@@ -2,12 +2,12 @@ package graphique;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -56,7 +56,7 @@ public class AjoutTrajetPanel extends JPanel {
 	}
 
 	
-	public class ValidateAction extends AbstractAction {
+	private class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
 		}
@@ -64,7 +64,7 @@ public class AjoutTrajetPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Validé !"+villeDepartText.getText());
-			GregorianCalendar dateDepart = (GregorianCalendar) dateDepartSpinner.getModel().getValue();
+			Date dateDepart = (Date) dateDepartSpinner.getModel().getValue();
 			System.out.println(dateDepart);
 		}
 	}

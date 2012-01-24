@@ -1,13 +1,12 @@
 package graphique;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -18,7 +17,7 @@ public class FenetreClientAdmin extends JFrame {
 	}
 
 	private void build() {
-		setTitle("Réservations"); 
+		setTitle("Administration"); 
 		setSize(800,600); 
 		setLocationRelativeTo(null); 
 		setResizable(true); 
@@ -39,13 +38,16 @@ public class FenetreClientAdmin extends JFrame {
 		AjoutVillePanel ajoutVillePanel = new AjoutVillePanel();
 		panel.add(ajoutVillePanel);
 		
+		GestionReservationsPanel reservationsPanel = new GestionReservationsPanel();
+		
+		panel.add(reservationsPanel, BorderLayout.CENTER);
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
 		
 		return panel;
 	}
 
-	public class AjoutClientAction extends AbstractAction {
+	private class AjoutClientAction extends AbstractAction {
 		public AjoutClientAction(String texte) {
 			super(texte);
 		}
@@ -61,7 +63,7 @@ public class FenetreClientAdmin extends JFrame {
 		}
 	}
 
-	public class AjoutTransportAction extends AbstractAction {
+	private class AjoutTransportAction extends AbstractAction {
 		public AjoutTransportAction(String texte) {
 			super(texte);
 		}
@@ -76,7 +78,7 @@ public class FenetreClientAdmin extends JFrame {
 			});
 		}
 	}
-	public class AjoutVilleAction extends AbstractAction {
+	private class AjoutVilleAction extends AbstractAction {
 		public AjoutVilleAction(String texte) {
 			super(texte);
 		}
@@ -91,7 +93,7 @@ public class FenetreClientAdmin extends JFrame {
 			});
 		}
 	}
-	public class QuitAction extends AbstractAction {
+	private class QuitAction extends AbstractAction {
 		public QuitAction(String texte) {
 			super(texte);
 		}
