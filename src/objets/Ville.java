@@ -3,7 +3,7 @@ package objets;
 public enum Ville {
     paris("Paris"),marseille("Marseille"),nice("Nice"),bordeaux("Bordeaux"),tokyo("Tokyo"),newYork("New York");
     
- // Le String de commande.
+    // Le String de commande.
     private String ville;
 
     /**
