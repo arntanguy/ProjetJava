@@ -1,5 +1,7 @@
 package graphique;
 
+import graphique.client.FenetreClient;
+
 import javax.swing.SwingUtilities;
 
 public class MainWindow {

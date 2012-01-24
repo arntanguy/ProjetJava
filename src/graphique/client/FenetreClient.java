@@ -1,4 +1,5 @@
-package graphique;
+package graphique.client;
+
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class FenetreClient extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		
-		panel.add(new ClientPanel());
+		panel.add(new ReservationPanel());
 		
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);

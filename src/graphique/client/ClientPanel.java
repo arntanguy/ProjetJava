@@ -1,4 +1,4 @@
-package graphique;
+package graphique.client;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -50,10 +50,6 @@ public class ClientPanel extends JPanel {
 		add(new JLabel("Abonnement"));
 		carteAbonnement = new JComboBox(test);
 		add(carteAbonnement);
-		
-		add(new JLabel());
-		JButton bouton = new JButton(new ValidateAction("Valider"));
-		add(bouton);
 	}
 
 
