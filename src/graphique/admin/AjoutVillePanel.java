@@ -10,13 +10,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import logiqueMetier.Admin;
+
 
 
 public class AjoutVillePanel extends JPanel {
 	private JTextField nomText;
 	
-	public AjoutVillePanel(){
+	private Admin admin;
+	
+	public AjoutVillePanel(Admin a) {
 		super();
+		admin = a;
 		build();
 	}
 	private void build(){

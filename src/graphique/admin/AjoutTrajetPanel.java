@@ -13,15 +13,20 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
+import logiqueMetier.Admin;
+
 
 public class AjoutTrajetPanel extends JPanel {
 	private JTextField villeDepartText;
 	private JTextField villeArriveeText;
 	private JSpinner dateDepartSpinner;
 	private JSpinner dateArriveeSpinner;
+	
+	private Admin admin;
 
-	public AjoutTrajetPanel(){
+	public AjoutTrajetPanel(Admin a){
 		super();
+		admin = a;
 		build(); 
 	}
 	private void build(){

@@ -14,13 +14,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import logiqueMetier.Admin;
+
 public class GestionReservationsPanel extends JPanel {
 	private DefaultTableModel reservationsModel;
 	private JTable reservationsTable;
 	private JScrollPane scrollPane;
 
-	public GestionReservationsPanel() {
+	private Admin admin;
+	
+	public GestionReservationsPanel(Admin a) {
 		super();
+		admin = a;
 		build();
 	}
 

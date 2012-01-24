@@ -14,13 +14,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import logiqueMetier.Admin;
+
 public class ResultatsPanel extends JPanel {
 	private DefaultTableModel trajetsModel;
 	private JTable trajetsTable;
 	private JScrollPane scrollPane;
 
-	public ResultatsPanel() {
+	private Admin admin;
+	
+	public ResultatsPanel(Admin a) {
 		super();
+		admin = a;
 		build();
 	}
 
