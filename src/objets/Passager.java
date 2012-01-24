@@ -6,7 +6,8 @@ public class Passager {
     private String nom;
     private String prenom;
     private Calendar dateNaissance;
-    private String profil;
+    private Profil profil;
+    private boolean fidelite;
     
     /**
      * @param nom
@@ -15,11 +16,12 @@ public class Passager {
      * @param profil
      */
     public Passager(String nom, String prenom, Calendar dateNaissance,
-            String profil) {
+            Profil profil, boolean fidelite) {
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.profil = profil;
+        this.fidelite = fidelite;
     }
     public String getNom() {
         return nom;
@@ -30,7 +32,10 @@ public class Passager {
     public Calendar getDateNaissance() {
         return dateNaissance;
     }
-    public String getProfil() {
+    public Profil getProfil() {
         return profil;
+    }
+    public boolean getFidelite() {
+        return fidelite;
     }
 }

@@ -15,9 +15,33 @@ public class Train extends Vehicule {
     public Train(String vehicule, TypeVehicule type, int capacite,
             int identifiant) {
         super(vehicule, TypeVehicule.train, capacite, identifiant);
+        classes.add("Première classe");
+        classes.add("Seconde classe");
+        repas.add("petit déjeuner");
+        repas.add("déjeuner");
+        repas.add("dîner");
+        repas.add("végétarien");
+        repas.add("viande");
+        repas.add("poisson");
     }
     public Train(String vehicule, TypeVehicule type,
             int identifiant) {
-        super(vehicule, TypeVehicule.train, 500, identifiant);
+        this(vehicule, TypeVehicule.train, 500, identifiant);
     }
+    
+    public boolean avecCouchette()
+    {
+        return true;
+    }
+    
+    public boolean avecRepas()
+    {
+        return true;
+    }
+    
+    public boolean aDifferentesClasses()
+    {
+        return true;
+    }
+    
 }

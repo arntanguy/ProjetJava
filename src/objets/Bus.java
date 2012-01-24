@@ -16,6 +16,6 @@ public class Bus extends Vehicule {
         super(vehicule, TypeVehicule.bus, capacite, identifiant);
     }
     public Bus(String vehicule, TypeVehicule type, int identifiant) {
-        super(vehicule, TypeVehicule.bus, 50, identifiant);
+        this(vehicule, TypeVehicule.bus, 50, identifiant);
     }
 }
