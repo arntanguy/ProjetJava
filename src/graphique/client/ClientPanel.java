@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import logiqueMetier.Admin;
+
 
 
 public class ClientPanel extends JPanel {
@@ -21,9 +23,11 @@ public class ClientPanel extends JPanel {
 	private JComboBox categoriePassager;
 	private JComboBox carteAbonnement;
 	
-
-	public ClientPanel(){
+	private Admin admin;
+	
+	public ClientPanel(Admin a){
 		super();
+		admin = a;
 		build();
 	}
 	private void build(){
@@ -43,11 +47,11 @@ public class ClientPanel extends JPanel {
 		add(nbPassagersSpinner);
 		
 		add(new JLabel("Passager"));
-		String[] test = { "Aucune", "12-25" };
+		String[] test = { "", "12-25" };
 		categoriePassager = new JComboBox(test);
 		add(categoriePassager);
 		
-		add(new JLabel("Abonnement"));
+		add(new JLabel(""));
 		carteAbonnement = new JComboBox(test);
 		add(carteAbonnement);
 	}

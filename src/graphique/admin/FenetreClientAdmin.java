@@ -11,9 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import logiqueMetier.Admin;
+import logiqueMetier.ServeurV2;
+
 public class FenetreClientAdmin extends JFrame {
+	Admin admin;
+	
 	public FenetreClientAdmin() {
 		super();
+		admin = new Admin(new ServeurV2());
 		build();
 	}
 
@@ -30,10 +36,10 @@ public class FenetreClientAdmin extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		panel.add(new AjoutTransportPanel());		
-		panel.add(new AjoutTrajetPanel());
-		panel.add(new AjoutVillePanel());
-		panel.add(new GestionReservationsPanel(), BorderLayout.CENTER);
+		panel.add(new AjoutTransportPanel(admin));		
+		panel.add(new AjoutTrajetPanel(admin));
+		panel.add(new AjoutVillePanel(admin));
+		panel.add(new GestionReservationsPanel(admin), BorderLayout.CENTER);
 		
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
@@ -50,7 +56,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutTrajetPanel fenetre = new AjoutTrajetPanel();
+					AjoutTrajetPanel fenetre = new AjoutTrajetPanel(admin);
 					fenetre.setVisible(true);
 				}
 			});
@@ -66,7 +72,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutTransportPanel fenetre = new AjoutTransportPanel();
+					AjoutTransportPanel fenetre = new AjoutTransportPanel(admin);
 					fenetre.setVisible(true);
 				}
 			});
@@ -81,7 +87,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutVillePanel fenetre = new AjoutVillePanel();
+					AjoutVillePanel fenetre = new AjoutVillePanel(admin);
 					fenetre.setVisible(true);
 				}
 			});

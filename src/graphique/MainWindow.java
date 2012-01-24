@@ -1,5 +1,6 @@
 package graphique;
 
+import graphique.admin.FenetreClientAdmin;
 import graphique.client.FenetreClient;
 
 import javax.swing.SwingUtilities;

@@ -11,13 +11,18 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import logiqueMetier.Admin;
+
 
 public class AjoutTransportPanel extends JPanel {
 	private JTextField nomText;
 	private JSpinner capaciteSpinner;
 	
-	public AjoutTransportPanel(){
+	private Admin admin;
+	
+	public AjoutTransportPanel(Admin a){
 		super();
+		admin = a;
 		build();
 	}
 	private void build(){

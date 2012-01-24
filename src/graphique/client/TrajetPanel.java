@@ -9,6 +9,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
+import logiqueMetier.Admin;
+
 
 public class TrajetPanel extends JPanel {
 	private JTextField villeDepartText;
@@ -16,8 +18,11 @@ public class TrajetPanel extends JPanel {
 	private JSpinner dateDepartSpinner;
 	private JSpinner dateArriveeSpinner;
 
-	public TrajetPanel(){
+	private Admin admin;
+	
+	public TrajetPanel(Admin a){
 		super();
+		admin = a;
 		build(); 
 	}
 	private void build(){
