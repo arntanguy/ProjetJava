@@ -29,18 +29,11 @@ public class FenetreClientAdmin extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		AjoutTransportPanel ajoutTransportPanel = new AjoutTransportPanel();
-		panel.add(ajoutTransportPanel);
+		panel.add(new AjoutTransportPanel());		
+		panel.add(new AjoutTrajetPanel());
+		panel.add(new AjoutVillePanel());
+		panel.add(new GestionReservationsPanel(), BorderLayout.CENTER);
 		
-		AjoutTrajetPanel ajoutTrajetPanel = new AjoutTrajetPanel();
-		panel.add(ajoutTrajetPanel);
-		
-		AjoutVillePanel ajoutVillePanel = new AjoutVillePanel();
-		panel.add(ajoutVillePanel);
-		
-		GestionReservationsPanel reservationsPanel = new GestionReservationsPanel();
-		
-		panel.add(reservationsPanel, BorderLayout.CENTER);
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
 		
