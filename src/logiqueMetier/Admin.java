@@ -46,6 +46,10 @@ public class Admin {
     public int getTrajetNewIdentifiant() {
         return serveur.getTrajetNewIdentifiant();
     }
+    
+    public int getVilleNewIdentifiant(){
+        return serveur.getVilleNewIdentifiant();
+    }
 
     /**
      * Récupère un véhicule grâce à son identifiant
@@ -69,6 +73,10 @@ public class Admin {
         return serveur.getTrajet(id);
     }
 
+    public Ville getVille(int id) {
+        return serveur.getVille(id);
+    }
+    
     /**
      * Ajouter un véhicule à la liste des véhicules
      * 
@@ -79,7 +87,13 @@ public class Admin {
     protected void addVehicule(Vehicule v) throws Exception {
         serveur.addVehicule(v);
     }
+    
+    public void addVille(Ville v) throws Exception {
+        serveur.addVille(v);
+    }
 
+    
+    
     /**
      * Ajouter un trajet à la liste des trajets
      * 
@@ -111,6 +125,10 @@ public class Admin {
         serveur.removeTrajet(v);
     }
 
+    protected void removeVille(Ville v) {
+        serveur.removeVille(v);
+    }
+    
     /**
      * Consulter la liste des véhicules
      */
@@ -123,6 +141,10 @@ public class Admin {
      */
     protected void consulterTrajet() {
         serveur.consulterTrajet();
+    }
+    
+    protected void consulterVille() {
+        serveur.consulterVille();
     }
 
     /**
@@ -151,6 +173,11 @@ public class Admin {
     protected void modifierTrajet(Trajet trajet, Trajet trajet2)
             throws Exception {
         serveur.modifierTrajet(trajet, trajet2);
+    }
+    
+    protected void modifierVille(Ville ville, Ville ville2)
+            throws Exception {
+        serveur.modifierVille(ville, ville2);
     }
 
     /**

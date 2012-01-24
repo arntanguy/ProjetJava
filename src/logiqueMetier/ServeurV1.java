@@ -38,6 +38,7 @@ public class ServeurV1 extends Serveur implements Serializable {
         try {
             oos4.writeObject(mesTrajets);
             oos4.writeObject(mesVehicules);
+            oos4.writeObject(mesVilles);
             oos4.flush();
             oos4.close();
             return true;
@@ -64,6 +65,7 @@ public class ServeurV1 extends Serveur implements Serializable {
 
             this.mesTrajets = (ArrayList<Trajet>) oos4.readObject();
             this.mesVehicules = (ArrayList<Vehicule>) oos4.readObject();
+            this.mesVilles = (ArrayList<Ville>) oos4.readObject();
             oos4.close();
             return true;
         } catch (Exception e) {

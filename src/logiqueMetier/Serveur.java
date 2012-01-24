@@ -23,13 +23,15 @@ public abstract class Serveur implements Serializable {
     // liste des trajets et des véhicules
     protected ArrayList<Trajet> mesTrajets;
     protected ArrayList<Vehicule> mesVehicules;
-
+    protected ArrayList<Ville> mesVilles;
+    
     /**
      * Créer une instance de serveur
      */
     public Serveur() {
         mesTrajets = new ArrayList<Trajet>();
         mesVehicules = new ArrayList<Vehicule>();
+        mesVilles = new ArrayList<Ville>();
     }
 
     /**
@@ -110,6 +112,20 @@ public abstract class Serveur implements Serializable {
         return i;
     }
 
+    public int getVilleNewIdentifiant() {
+        int i = 0;
+
+        if (mesVilles.size() != 0) {
+            for (Ville v : mesVilles) {
+                if (v.getIdentifiant() > i)
+                    i = v.getIdentifiant();
+            }
+            i++;
+        }
+
+        return i;
+    }
+    
     /**
      * Récupère un nouvel identifiant pour un trajet qui va être créé
      * 
@@ -141,6 +157,14 @@ public abstract class Serveur implements Serializable {
         }
         return null;
     }
+    
+    public Ville getVille(int id) {
+        for (Ville v : mesVilles) {
+            if (v.getIdentifiant() == id)
+                return v;
+        }
+        return null;
+    }
 
     /**
      * Récupère un trajet grâce à son identifiant
@@ -164,6 +188,13 @@ public abstract class Serveur implements Serializable {
         System.out.println("Liste des Vehicules : ");
         for (int i = 0; i < this.mesVehicules.size(); i++) {
             System.out.println(mesVehicules.get(i).toString());
+        }
+    }
+    
+    public void consulterVille() {
+        System.out.println("Liste des Villes : ");
+        for (int i = 0; i < this.mesVilles.size(); i++) {
+            System.out.println(mesVilles.get(i).toString());
         }
     }
 
@@ -235,6 +266,14 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Ce vehicule appartient deja à la liste des véhicules.");
     }
+    
+    public void addVille(Ville v) throws Exception {
+        if (!mesVilles .contains(v)) {
+            mesVilles.add(v);
+        } else
+            throw new Exception(
+                    "Cette ville appartient deja à la liste des villes.");
+    }
 
     /**
      * Ajouter un trajet à la liste des trajets
@@ -274,6 +313,16 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Ce véhicule ne fait pas partie de la base de données.");
     }
+    
+    public void modifierVille(Ville ville, Ville ville2)
+            throws Exception {
+        if (mesVilles.contains(ville)) {
+            mesVilles.set(mesVilles.indexOf(ville), ville2);
+        } else
+            throw new Exception(
+                    "Cette ville ne fait pas partie de la base de données.");
+    }
+
 
     /**
      * Modifier un trajet se trouvant dans la liste des trajets
@@ -317,7 +366,8 @@ public abstract class Serveur implements Serializable {
             mesVehicules.remove(v);
         }
     }
-
+    
+    
     /**
      * Supprimer un trajet de la liste des trajets
      * 
@@ -327,6 +377,11 @@ public abstract class Serveur implements Serializable {
     public void removeTrajet(Trajet t) {
         if (mesTrajets.contains(t))
             mesTrajets.remove(t);
+    }
+    
+    public void removeVille(Ville v) {
+        if (mesVilles.contains(v))
+            mesVilles.remove(v);
     }
 
     /**

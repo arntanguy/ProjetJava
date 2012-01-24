@@ -43,8 +43,10 @@ public class ServeurV2 extends Serveur implements Serializable {
                 "dataV2vehicule"));
         PrintWriter writeTrajet = new PrintWriter(
                 new FileWriter("dataV2trajet"));
-
-        if (writeVehicule.checkError() || writeTrajet.checkError())
+        PrintWriter writeVille = new PrintWriter(
+                new FileWriter("dataV2ville"));
+        
+        if (writeVehicule.checkError() || writeTrajet.checkError() || writeVille.checkError())
             return false;
 
         // On créé des String où à chaque ligne est écrit uniquement les
@@ -52,19 +54,25 @@ public class ServeurV2 extends Serveur implements Serializable {
         // Chaque information est séparée par le séparateur '#'.
         StringBuffer sVehicule = new StringBuffer("");
         StringBuffer sTrajet = new StringBuffer("");
-
+        StringBuffer sVille = new StringBuffer("");
+        
         for (int i = 0; i < mesTrajets.size(); i++) {
             sTrajet.append(mesTrajets.get(i).print());
         }
         for (int j = 0; j < mesVehicules.size(); j++) {
             sVehicule.append(mesVehicules.get(j).print());
         }
-
+        for (int j = 0; j < mesVilles.size(); j++) {
+            sVille.append(mesVilles.get(j).print());
+        }
+        
         // on met ces String dans les fichiers
         writeVehicule.print(sVehicule.toString());
         writeTrajet.print(sTrajet.toString());
+        writeVille.print(sVille.toString());
         writeVehicule.close();
         writeTrajet.close();
+        writeVille.close();
         return true;
     }
 
@@ -81,17 +89,20 @@ public class ServeurV2 extends Serveur implements Serializable {
     public boolean charger() throws Exception {
         BufferedReader bufferVehicule = null;
         BufferedReader bufferTrajet = null;
+        BufferedReader bufferVille = null;
         try {
             bufferVehicule = new BufferedReader(
                     new FileReader("dataV2vehicule"));
             bufferTrajet = new BufferedReader(new FileReader("dataV2trajet"));
+            bufferVille= new BufferedReader(new FileReader("dataV2ville"));
         } catch (Exception e) {
             return false;
         }
         StringBuffer accumulateur = new StringBuffer("");
         mesTrajets = new ArrayList<Trajet>();
         mesVehicules = new ArrayList<Vehicule>();
-
+        mesVilles = new ArrayList<Ville>();
+        
         // On lit chaque ligne du fichier des véhicules
         while (bufferVehicule.ready())
             accumulateur.append(bufferVehicule.readLine()).append("\n");
@@ -122,8 +133,24 @@ public class ServeurV2 extends Serveur implements Serializable {
             if (tab4.length == 9) {
                 Vehicule v = this.getVehicule(Integer.valueOf(tab4[6]));
                 this.addTrajet(new Trajet(textToCalendar(tab4[0], tab4[1]),
-                        textToCalendar(tab4[2], tab4[3]), tab4[4], tab4[5], v,
+                        textToCalendar(tab4[2], tab4[3]), this.getVille(Integer.valueOf(tab4[4])), this.getVille(Integer.valueOf(tab4[5])), v,
                         Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7])));
+            }
+        }
+        
+        accumulateur.setLength(0);
+        // On lit chaque ligne du fichier des trajets
+        while (bufferVille.ready())
+            accumulateur.append(bufferVille.readLine()).append("\n");
+        String tab5[] = accumulateur.toString().split("\n");
+
+        // Pour chaque ligne, on splite les données séparés par '#'
+        // On peut alors reconstituer le trajet, et l'ajouter à la liste des
+        // trajets
+        for (int i = 0; i < tab5.length; i++) {
+            String[] tab6 = tab5[i].split("#");
+            if (tab6.length == 4) {
+                this.addVille(new Ville(tab6[0], Integer.valueOf(tab6[1])));
             }
         }
 

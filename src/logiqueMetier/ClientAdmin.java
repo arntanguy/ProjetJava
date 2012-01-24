@@ -137,7 +137,7 @@ public class ClientAdmin {
      */
     private void consulter(Command command) {
         if (!command.hasSecondWord()) {
-            System.out.println("Consulter quoi ? trajets ou vehicules ?");
+            System.out.println("Consulter quoi ? trajets ou vehicules ou ville ?");
             return;
         }
 
@@ -147,9 +147,11 @@ public class ClientAdmin {
             a.consulterTrajet();
         } else if (quoi.equals("vehicules")) {
             a.consulterVehicules();
+        } else if (quoi.equals("villes")) {
+            a.consulterVille();
         } else {
             System.out
-                    .println("Vous ne pouvez consulter que des trajets ou des vehicules");
+                    .println("Vous ne pouvez consulter que des trajets ou des vehicules ou des villes");
         }
     }
 
@@ -333,8 +335,8 @@ public class ClientAdmin {
             String dateArrivee = "";
             String horaireDepart = "";
             String horaireArrivee = "";
-            String depart = "";
-            String arrivee = "";
+            int idDepart = 0;
+            int idArrivee = 0;
             int idVehicule = 0;
 
             // On demande à l'utilisateur toutes les infos qu'on veut
@@ -371,21 +373,27 @@ public class ClientAdmin {
             if (!Pattern.matches("[0-9]{1,2}:[0-9]{1,2}", horaireArrivee))
                 throw new Exception("Heure d'arrivée mal écrite");
 
-            System.out.print("Lieu de départ : ");
+            a.consulterVille();
+            System.out.print("Lieu de départ (id) : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
-                depart = tokenizer.next(); // récupère le premier mot
+                idDepart = Integer.valueOf(tokenizer.next()); // récupère le premier mot
             }
-            if (depart.trim() == "")
-                throw new Exception("Lieu de départ vide");
-
+                
+            Ville depart=a.getVille(idDepart);
+            if (depart == null)
+                throw new Exception("ville non reconnu");
+            
+            
+            a.consulterVille();
             System.out.print("Lieu d'arrivée : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
-                arrivee = tokenizer.next(); // récupère le premier mot
+                idArrivee = Integer.valueOf(tokenizer.next()); // récupère le premier mot
             }
-            if (arrivee.trim() == "")
-                throw new Exception("Lieu d'arrivée vide");
+            Ville arrivee=a.getVille(idArrivee);
+            if (arrivee == null)
+                throw new Exception("ville non reconnu");
 
             a.consulterVehicules();
             System.out.print("Véhicule (id) : ");
@@ -467,7 +475,31 @@ public class ClientAdmin {
 
             a.addVehicule(v);
             a.consulterVehicules();
-        } else {
+        } 
+        else if (quoi.equals("ville")) {
+            // on demande les infos sur le véhicule à ajouter
+            String ville = "";
+
+            // On demande à l'utilisateur toutes les infos qu'on veut
+            // puis on vérifie si ce qui a été entré est correct
+            System.out.print("Nom de la ville : ");
+            Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                ville = tokenizer.next(); // récupère le premier mot
+            }
+            if (ville.trim() == "")
+                throw new Exception("Nom de la ville vide");
+
+
+            // on créé le véhicule voulu puis on l'ajoute
+            Ville v = new Ville(ville,
+                    a.getVilleNewIdentifiant());
+
+            a.addVille(v);
+            a.consulterVille();
+        }
+        
+        else {
             System.out
                     .println("Vous ne pouvez ajouter qu'un trajet ou un vehicule");
         }
@@ -494,8 +526,8 @@ public class ClientAdmin {
             String dateArrivee = "";
             String horaireDepart = "";
             String horaireArrivee = "";
-            String depart = "";
-            String arrivee = "";
+            int idDepart = 0;
+            int idArrivee = 0;
             int idVehicule = 0;
 
             a.consulterTrajet();
@@ -575,28 +607,39 @@ public class ClientAdmin {
                 if (!Pattern.matches("[0-9]{1,2}:[0-9]{1,2}", horaireArrivee))
                     throw new Exception("Heure d'arrivée mal écrite");
 
-                System.out.print(new StringBuffer().append("Lieu de départ [")
-                        .append(trajetAModifier.getDepart()).append("] : "));
+                
+                a.consulterVille();
+                System.out.print(new StringBuffer().append("Lieu de départ (id) [")
+                        .append(trajetAModifier.getDepart().getIdentifiant()).append("] : "));
                 tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                 if (tokenizer.hasNext()) {
-                    depart = tokenizer.next(); // récupère le premier mot
+                    idDepart = Integer.valueOf(tokenizer.next()); // récupère le premier mot
                 } else {
-                    depart = trajetAModifier.getDepart();
+                    idDepart = trajetAModifier.getDepart().getIdentifiant();
                 }
-                if (depart.trim() == "")
-                    throw new Exception("Lieu de départ vide");
 
-                System.out.print(new StringBuffer().append("Lieu d'arrivée [")
-                        .append(trajetAModifier.getArrivee()).append("] : "));
+                // on créé le véhicule voulu
+                Ville depart = a.getVille(idDepart);
+                if (depart == null)
+                    throw new Exception("ville non reconnue");
+                
+                
+                a.consulterVille();
+                System.out.print(new StringBuffer().append("Lieu d'arrivée (id) [")
+                        .append(trajetAModifier.getArrivee().getIdentifiant()).append("] : "));
                 tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                 if (tokenizer.hasNext()) {
-                    arrivee = tokenizer.next(); // récupère le premier mot
+                    idArrivee = Integer.valueOf(tokenizer.next()); // récupère le premier mot
                 } else {
-                    arrivee = trajetAModifier.getArrivee();
+                    idArrivee = trajetAModifier.getArrivee().getIdentifiant();
                 }
-                if (arrivee.trim() == "")
-                    throw new Exception("Lieu d'arrivée vide");
 
+                // on créé le véhicule voulu
+                Ville arrivee= a.getVille(idArrivee);
+                if (arrivee== null)
+                    throw new Exception("ville non reconnue");
+                
+                
                 a.consulterVehicules();
                 System.out.print(new StringBuffer().append("Véhicule (id) [")
                         .append(trajetAModifier.getVehicule().getIdentifiant())
@@ -689,9 +732,54 @@ public class ClientAdmin {
                         vehiculeAModifier.getIdentifiant());
                 a.modifierVehicule(vehiculeAModifier, v);
                 a.consulterVehicules();
-            } else {
+            }
+            else {
                 throw new Exception(
                         "Aucun véhicule ne correspond à cet identifiant");
+            }
+        }
+            else if (quoi.equals("ville")) {
+                // on demande les infos sur le véhicule à ajouter
+                Ville villeAModifier = null;
+                String ville = "";
+
+                a.consulterVille();
+                // On demande à l'utilisateur l'identifiant du véhicule à modifier
+                System.out.print("Ville à modifier (id) : ");
+                Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    villeAModifier = a.getVille(Integer.valueOf(tokenizer
+                            .next())); // get first word
+                }
+                if (villeAModifier != null) {
+                    System.out
+                            .println("N'entrez rien si vous voulez la même valeur que précédemment.");
+
+                    // On demande à l'utilisateur toutes les infos qu'on veut
+                    // puis on vérifie si ce qui a été entré est correct
+                    // Si rien n'est entré, on ne change pas les valeurs
+                    System.out
+                            .print(new StringBuffer().append("Nom de la ville [")
+                                    .append(villeAModifier.getVille())
+                                    .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        ville = tokenizer.next(); // récupère le premier mot
+                    } else {
+                        ville = villeAModifier.getVille();
+                    }
+                    if (ville.trim() == "")
+                        throw new Exception("Nom de la ville vide");
+
+                    // on créé le nouveau véhicule, puis on le met à la place de
+                    // l'ancien
+                    Ville v = new Ville(ville, villeAModifier.getIdentifiant());
+                    a.modifierVille(villeAModifier, v);
+                    a.consulterVille();
+                } 
+            else {
+                throw new Exception(
+                        "Aucune ville ne correspond à cet identifiant");
             }
         } else {
             System.out
@@ -745,7 +833,24 @@ public class ClientAdmin {
             if (vehiculeASupprimer != null) {
                 a.removeVehicule(vehiculeASupprimer);
             }
-        } else {
+        } else if (quoi.equals("ville")) {
+            Ville villeASupprimer = null;
+
+            a.consulterVille();
+            // On demande à l'utilisateur l'identifiant du véhicule à supprimer
+            System.out.print("Ville à supprimer (id) : ");
+            Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                villeASupprimer = a.getVille(Integer.valueOf(tokenizer
+                        .next())); // récupère le premier mot
+            }
+            // on le supprime s'il existe
+            if (villeASupprimer != null) {
+                a.removeVille(villeASupprimer);
+            }
+        }
+        
+        else {
             System.out
                     .println("Vous ne pouvez supprimer qu'un trajet ou un vehicule");
         }
