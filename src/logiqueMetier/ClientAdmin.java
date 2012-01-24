@@ -232,7 +232,7 @@ public class ClientAdmin {
                 
                 if(textTokenizer!="")
                 {
-                    idVehicule = Integer.valueOf(tokenizer.next()); // récupère le
+                    idVehicule = Integer.valueOf(textTokenizer); // récupère le
                                                                 // premier mot
                  // on récupère le véhicule choisi
                     vehicule = a.getVehicule(idVehicule);
