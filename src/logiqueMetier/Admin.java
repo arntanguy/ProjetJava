@@ -232,8 +232,8 @@ public class Admin {
      *            l'intervalle d'acceptation voulue (en heures)
      * @return la liste de trajets correspondant aux critères
      */
-    protected List<Trajet> rechercherTrajet(String depart, String arrivee,
-            String vehicule, int placesVoulues, Calendar dateDepart,
+    protected List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
+            Vehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue) {
         return serveur.rechercherTrajet(depart, arrivee, vehicule,
                 placesVoulues, dateDepart, intervalleVoulue);

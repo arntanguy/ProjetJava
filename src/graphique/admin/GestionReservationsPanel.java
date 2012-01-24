@@ -1,4 +1,4 @@
-package graphique;
+package graphique.admin;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -14,13 +14,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import logiqueMetier.Admin;
+
 public class GestionReservationsPanel extends JPanel {
 	private DefaultTableModel reservationsModel;
 	private JTable reservationsTable;
 	private JScrollPane scrollPane;
 
-	public GestionReservationsPanel() {
+	private Admin admin;
+	
+	public GestionReservationsPanel(Admin a) {
 		super();
+		admin = a;
 		build();
 	}
 
@@ -89,7 +94,9 @@ public class GestionReservationsPanel extends JPanel {
 			System.out.println("Supprimé !");
 			int[] selectedIndexes = reservationsTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				reservationsModel.removeRow(selectedIndexes[i]);
+				int row = selectedIndexes[i];
+				System.out.println(reservationsModel.getValueAt(row, 0));
+				reservationsModel.removeRow(row);
 				// XXX: Call the delete method
 			}	  
 		}
