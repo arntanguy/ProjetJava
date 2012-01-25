@@ -16,14 +16,14 @@ import javax.swing.table.DefaultTableModel;
 
 import logiqueMetier.Serveur;
 
-public class TableTrajetsPanel extends JPanel {
+public class TableTransportsPanel extends JPanel {
 	private DefaultTableModel reservationsModel;
 	private JTable reservationsTable;
 	private JScrollPane scrollPane;
 
 	private Serveur serveur;
 	
-	public TableTrajetsPanel(Serveur s) {
+	public TableTransportsPanel(Serveur s) {
 		super();
 		serveur = s;
 		build();
@@ -33,24 +33,26 @@ public class TableTrajetsPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		buildReservationsTable();
+		buildTrajetsTable();
 		buildButtons();
 	}
 
-	private void buildReservationsTable() {
-		String[] columnNames = { "Id", "Départ", "Arrivée", "Date départ",
-		"Date arrivée", "Places restantes" };
+	private void buildTrajetsTable() {
+		   /* protected String vehicule;
+		    protected TypeVehicule type;
+		    protected int capacite;
+		    protected int identifiant;
+		    protected List<ClassesRepas> classes;
+		    protected List<ClassesRepas> repas; */
+		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 		
 		reservationsModel = new DefaultTableModel(null, columnNames);
 		reservationsTable = new JTable(null, columnNames);
 		reservationsTable.setModel(reservationsModel);
-		reservationsTable.setFillsViewportHeight(true); // Fill all the
-		// container
+		reservationsTable.setFillsViewportHeight(true); // Fill all the container
 		reservationsTable.getSelectionModel().addListSelectionListener(
 				new ReservationListener(reservationsTable));
-		/*reservationsTable.getColumnModel().getSelectionModel()
-				.addListSelectionListener(
-						new ReservationListener(reservationsTable));*/
+	
 
 		scrollPane = new JScrollPane(reservationsTable);
 		add(scrollPane);
