@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import logiqueMetier.Serveur;
 import objets.TypeVehicule;
@@ -50,7 +51,7 @@ public class TableTransportsPanel extends JPanel {
 		    protected int identifiant;
 		    protected List<ClassesRepas> classes;
 		    protected List<ClassesRepas> repas; */
-		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
+		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 		
 		transportModel = new DefaultTableModel(null, columnNames);
 		transportTable = new JTable(null, columnNames);
@@ -62,11 +63,10 @@ public class TableTransportsPanel extends JPanel {
 		ArrayList<Vehicule> vehicules = serveur.getVehicules();
 		Vector<Object> l = null;
 		JComboBox combo = buildTypeCombo();
-		addComboToTable(combo, 2);
+		addComboToTable(combo, 1);
 
 		for(Vehicule v : vehicules) {
 			l = new Vector<Object>();
-			l.add(v.getIdentifiant());
 			l.add(v.getVehicule());
 			
 			combo.setSelectedItem(v.getType());
@@ -84,12 +84,25 @@ public class TableTransportsPanel extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
+		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
 		panel.add(new JButton(new SaveAction("Enregistrer")), BorderLayout.CENTER);
 		add(panel);
 	}
 
 
+	public class AddAction extends AbstractAction {
+		public AddAction(String texte) {
+			super(texte);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("Ajout !");
+			DefaultTableModel model = (DefaultTableModel) transportTable.getModel();
+			model.addRow(new Object[]{"","",""});
+		}
+	}
 	public class SaveAction extends AbstractAction {
 		public SaveAction(String texte) {
 			super(texte);
