@@ -2,6 +2,8 @@ package graphique.admin;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -15,10 +17,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import logiqueMetier.Serveur;
+import objets.Vehicule;
 
 public class TableTransportsPanel extends JPanel {
-	private DefaultTableModel reservationsModel;
-	private JTable reservationsTable;
+	private DefaultTableModel transportModel;
+	private JTable transportTable;
 	private JScrollPane scrollPane;
 
 	private Serveur serveur;
@@ -46,15 +49,26 @@ public class TableTransportsPanel extends JPanel {
 		    protected List<ClassesRepas> repas; */
 		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 		
-		reservationsModel = new DefaultTableModel(null, columnNames);
-		reservationsTable = new JTable(null, columnNames);
-		reservationsTable.setModel(reservationsModel);
-		reservationsTable.setFillsViewportHeight(true); // Fill all the container
-		reservationsTable.getSelectionModel().addListSelectionListener(
-				new ReservationListener(reservationsTable));
-	
+		transportModel = new DefaultTableModel(null, columnNames);
+		transportTable = new JTable(null, columnNames);
+		transportTable.setModel(transportModel);
+		transportTable.setFillsViewportHeight(true); // Fill all the container
+		transportTable.getSelectionModel().addListSelectionListener(
+				new ReservationListener(transportTable)); 
+		
+		ArrayList<Vehicule> vehicules = serveur.getVehicules();
+		Vector<Object> l = null;
+		for(Vehicule v : vehicules) {
+			l = new Vector<Object>();
+			l.add(v.getIdentifiant());
+			l.add(v.getVehicule());
+			l.add(v.getType());
+			l.add(v.getCapacite());
+			transportModel.addRow(l);
+		}
+		
 
-		scrollPane = new JScrollPane(reservationsTable);
+		scrollPane = new JScrollPane(transportTable);
 		add(scrollPane);
 	}
 
@@ -86,11 +100,11 @@ public class TableTransportsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Supprimé !");
-			int[] selectedIndexes = reservationsTable.getSelectedRows();
+			int[] selectedIndexes = transportTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(reservationsModel.getValueAt(row, 0));
-				reservationsModel.removeRow(row);
+				System.out.println(transportModel.getValueAt(row, 0));
+				transportModel.removeRow(row);
 				// XXX: Call the delete method
 			}	  
 		}

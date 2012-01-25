@@ -835,4 +835,12 @@ public abstract class Serveur implements Serializable {
         }
         return trajets;
     }
+
+	public ArrayList<Trajet> getTrajets() {
+		return mesTrajets;
+	}
+
+	public ArrayList<Vehicule> getVehicules() {
+		return mesVehicules;
+	}
 }
