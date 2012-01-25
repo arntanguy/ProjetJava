@@ -13,7 +13,7 @@ public class Avion extends Vehicule {
 	 * @return
 	 */
 	public Avion(String vehicule, int capacite, int identifiant) {
-		super(vehicule, TypeVehicule.avion, capacite, identifiant);
+		super(vehicule, TypeVehicule.AVION, capacite, identifiant);
 		classes.add(new ClassesRepas("Classe affaire",20));
 		classes.add(new ClassesRepas("Classe première",10));
 		classes.add(new ClassesRepas("Classe standard",5));

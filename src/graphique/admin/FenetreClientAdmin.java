@@ -10,14 +10,15 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import logiqueMetier.Admin;
 import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 public class FenetreClientAdmin extends JFrame {
 	private Serveur serveur;
+	JTabbedPane tabbedPane;
 	
 	public FenetreClientAdmin() {
 		super();
@@ -37,9 +38,17 @@ public class FenetreClientAdmin extends JFrame {
 		setLocationRelativeTo(null); 
 		setResizable(true); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		setContentPane(buildContentPane());
+		setContentPane(buildTabbedPane());
 	}
 
+	private JTabbedPane buildTabbedPane() {
+		tabbedPane = new JTabbedPane();
+		
+		tabbedPane.add("Test", buildContentPane());
+		
+		return tabbedPane;
+	}
+	
 	private JPanel buildContentPane() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -51,7 +60,7 @@ public class FenetreClientAdmin extends JFrame {
 
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
-
+		
 		return panel;
 	}
 

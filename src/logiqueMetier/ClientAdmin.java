@@ -632,7 +632,7 @@ public class ClientAdmin {
 
             // on créé le véhicule voulu puis on l'ajoute
             Vehicule v = null;
-            if (type == TypeVehicule.avion) {
+            if (type == TypeVehicule.AVION) {
                 if (capacite != 0)
                     v = new Avion(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
@@ -944,7 +944,7 @@ public class ClientAdmin {
                 // l'ancien
 
                 Vehicule v = null;
-                if (type == TypeVehicule.avion) {
+                if (type == TypeVehicule.AVION) {
                     if (capacite != 0)
                         v = new Avion(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());

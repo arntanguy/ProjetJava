@@ -115,7 +115,7 @@ public class ServeurV2 extends Serveur implements Serializable {
             String[] tab2 = tab[i].split("#");
             if (tab2.length == 4) {
                 Vehicule v = null;
-                if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.avion)
+                if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.AVION)
                 {
                     v = new Avion(tab2[0],
                             Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));

@@ -270,7 +270,7 @@ public abstract class Serveur implements Serializable {
     public Vehicule creerVehicule(String nom, TypeVehicule type, int capacite) throws Exception {
     	Vehicule v = null;
     	switch(type) {
-    	case avion:
+    	case AVION:
     		v = new Avion(nom, capacite, getVehiculeNewIdentifiant());
     		break;
     	case bateau:
