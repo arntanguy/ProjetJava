@@ -1,6 +1,7 @@
 package logiqueMetier;
 
 import java.io.IOException;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
@@ -491,29 +492,29 @@ public class ClientAdmin {
             Vehicule v = null;
             if (type == TypeVehicule.avion) {
                 if (capacite != 0)
-                    v = new Avion(vehicule, type, capacite,
+                    v = new Avion(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
-                    v = new Avion(vehicule, type, a.getVehiculeNewIdentifiant());
+                    v = new Avion(vehicule, a.getVehiculeNewIdentifiant());
             } else if (type == TypeVehicule.bateau) {
                 if (capacite != 0)
-                    v = new Bateau(vehicule, type, capacite,
+                    v = new Bateau(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
-                    v = new Bateau(vehicule, type,
+                    v = new Bateau(vehicule,
                             a.getVehiculeNewIdentifiant());
             } else if (type == TypeVehicule.bus) {
                 if (capacite != 0)
-                    v = new Bus(vehicule, type, capacite,
+                    v = new Bus(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
-                    v = new Bus(vehicule, type, a.getVehiculeNewIdentifiant());
+                    v = new Bus(vehicule, a.getVehiculeNewIdentifiant());
             } else if (type == TypeVehicule.train) {
                 if (capacite != 0)
-                    v = new Train(vehicule, type, capacite,
+                    v = new Train(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
-                    v = new Train(vehicule, type, a.getVehiculeNewIdentifiant());
+                    v = new Train(vehicule, a.getVehiculeNewIdentifiant());
             }
 
             if (v != null)
@@ -803,31 +804,30 @@ public class ClientAdmin {
                 Vehicule v = null;
                 if (type == TypeVehicule.avion) {
                     if (capacite != 0)
-                        v = new Avion(vehicule, type, capacite,
+                        v = new Avion(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Avion(vehicule, type,
-                                vehiculeAModifier.getIdentifiant());
+                        v = new Avion(vehicule, vehiculeAModifier.getIdentifiant());
                 } else if (type == TypeVehicule.bateau) {
                     if (capacite != 0)
-                        v = new Bateau(vehicule, type, capacite,
+                        v = new Bateau(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Bateau(vehicule, type,
+                        v = new Bateau(vehicule,
                                 vehiculeAModifier.getIdentifiant());
                 } else if (type == TypeVehicule.bus) {
                     if (capacite != 0)
-                        v = new Bus(vehicule, type, capacite,
+                        v = new Bus(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Bus(vehicule, type,
-                                vehiculeAModifier.getIdentifiant());
+                        v = new Bus(vehicule, 
+                        		vehiculeAModifier.getIdentifiant());
                 } else if (type == TypeVehicule.train) {
                     if (capacite != 0)
-                        v = new Train(vehicule, type, capacite,
+                        v = new Train(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Train(vehicule, type,
+                        v = new Train(vehicule, 
                                 vehiculeAModifier.getIdentifiant());
                 }
 

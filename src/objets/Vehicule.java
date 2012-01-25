@@ -1,6 +1,8 @@
 package objets;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de
@@ -14,11 +16,13 @@ import java.io.*;
  */
 
 public abstract class Vehicule implements Serializable {
-    String vehicule;
-    TypeVehicule type;
-    int capacite;
-    int identifiant;
-
+    protected String vehicule;
+    protected TypeVehicule type;
+    protected int capacite;
+    protected int identifiant;
+    protected List<String> classes;
+    protected List<String> repas;
+    
     /**
      * Créé une instance de véhicule
      * 
@@ -34,6 +38,8 @@ public abstract class Vehicule implements Serializable {
         this.type = type;
         this.capacite = capacite;
         this.identifiant = identifiant;
+        classes = new ArrayList<String>();
+        repas = new ArrayList<String>();
     }
 
     /**
@@ -83,6 +89,21 @@ public abstract class Vehicule implements Serializable {
      */
     public void setIdentifiant(int identifiant) {
         this.identifiant = identifiant;
+    }
+    
+    public boolean avecCouchette()
+    {
+        return false;
+    }
+    
+    public boolean avecRepas()
+    {
+        return false;
+    }
+    
+    public boolean aDifferentesClasses()
+    {
+        return false;
     }
 
     @Override
