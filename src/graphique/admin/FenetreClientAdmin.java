@@ -24,7 +24,6 @@ public class FenetreClientAdmin extends JFrame {
 		try {
 			serveur.charger();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		build();
@@ -60,14 +59,14 @@ public class FenetreClientAdmin extends JFrame {
 	private JPanel buildTransportsPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new AjoutTransportPanel(serveur));		
+		panel.add(new GestionTransportsPanel(serveur));		
 		return panel;
 	}
 	
 	private JPanel buildTrajetsPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new AjoutTrajetPanel(serveur));
+		panel.add(new GestionTrajetsPanel(serveur));
 		return panel;
 	}
 	
