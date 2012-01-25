@@ -1,11 +1,10 @@
-package graphique;
+package graphique.client;
 
-import graphique.admin.FenetreClientAdmin;
 import graphique.client.FenetreClient;
 
 import javax.swing.SwingUtilities;
 
-public class MainWindow {
+public class MainWindowClient {
 	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
