@@ -1,7 +1,6 @@
 package logiqueMetier;
 
 import java.io.IOException;
-import java.util.Calendar;
 
 /**
  * Cette classe fait partie de l'application d'un système de réservation de
