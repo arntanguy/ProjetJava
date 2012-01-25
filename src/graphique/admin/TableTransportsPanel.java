@@ -103,9 +103,9 @@ public class TableTransportsPanel extends JPanel {
 			int[] selectedIndexes = transportTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(transportModel.getValueAt(row, 0));
+				int id = (Integer) transportModel.getValueAt(row, 0);
 				transportModel.removeRow(row);
-				// XXX: Call the delete method
+				serveur.removeVehicule(id);
 			}	  
 		}
 	}
