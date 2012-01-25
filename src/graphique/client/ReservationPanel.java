@@ -13,6 +13,9 @@ import logiqueMetier.Admin;
 
 public class ReservationPanel extends JPanel {
 	private Admin admin;
+	private TrajetPanel trajetP;
+	private ClientPanel clientP;
+	private ResultatsPanel resultatsP;
 	
 	public ReservationPanel(Admin a){
 		super();
@@ -23,16 +26,20 @@ public class ReservationPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("Réservation d'un trajet"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		add(new TrajetPanel(admin));
-		add(new ClientPanel(admin));
+		trajetP = new TrajetPanel(admin);
+		clientP = new ClientPanel(admin);
+		resultatsP = new ResultatsPanel(admin);
+		add(trajetP);
+		add(clientP);
 		add(new JButton(new ValidateAction("Rechercher")));
-		add(new ResultatsPanel(admin));			
+		add(resultatsP);			
 	}
 
 	
 	private class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
+			System.out.println(trajetP.getDateDepart());
 		}
 
 		@Override

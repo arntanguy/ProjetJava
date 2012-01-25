@@ -55,16 +55,14 @@ public class ClientPanel extends JPanel {
 		carteAbonnement = new JComboBox(test);
 		add(carteAbonnement);
 	}
-
-
-	private class ValidateAction extends AbstractAction {
-		public ValidateAction(String texte){
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Validé !");
-		}
+	
+	public String getNom() {
+		return nomText.getText();
+	}
+	public String getPrenom() {
+		return prenomText.getText();
+	}
+	public int getNbPassagers() {
+		return (Integer)nbPassagersSpinner.getValue();
 	}
 }

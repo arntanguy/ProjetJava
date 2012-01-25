@@ -10,8 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import objets.Ville;
-
 import logiqueMetier.Admin;
 
 

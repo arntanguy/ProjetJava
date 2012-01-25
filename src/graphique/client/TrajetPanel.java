@@ -1,6 +1,9 @@
 package graphique.client;
 
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.util.Date;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -10,13 +13,14 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
 import objets.Ville;
+import tools.DateTools;
 
 import logiqueMetier.Admin;
 
 
 public class TrajetPanel extends JPanel {
-	private JComboBox villeDepartText;
-	private JComboBox villeArriveeText;
+	private JComboBox villeDepartCombo;
+	private JComboBox villeArriveeCombo;
 	private JSpinner dateDepartSpinner;
 
 	private Admin admin;
@@ -29,17 +33,24 @@ public class TrajetPanel extends JPanel {
 	private void build(){
 		setBorder(BorderFactory.createTitledBorder("Où et quand souhaitez-vous partir ?"));
 		setLayout(new GridLayout(0,2));
-
-		villeDepartText = new JComboBox();
+/** To remove later **/
+		try {
+			admin.createVille("Paris");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+/** end remove **/
+		villeDepartCombo = new JComboBox();
 		for(Ville v:admin.getVilles()) {
-			villeDepartText.add(new JLabel(v.toString()));
+			villeDepartCombo.addItem(v);
 		}
 		add(new JLabel("Ville de départ "));
-		add(villeDepartText);
+		add(villeDepartCombo);
 
 		add(new JLabel("Ville d'arrivée"));
-		villeArriveeText = new JComboBox();
-		add(villeArriveeText);
+		villeArriveeCombo = new JComboBox();
+		add(villeArriveeCombo);
 
 	
 		// Create a SpinnerDateModel with current date as the initial value.
@@ -48,5 +59,15 @@ public class TrajetPanel extends JPanel {
 		add(new JLabel("Date de départ "));
 		dateDepartSpinner = new JSpinner(model);
 		add(dateDepartSpinner);
+	}
+
+	public Ville getVilleDepart() {
+		return (Ville)villeDepartCombo.getSelectedItem();
+	}
+	public Ville getVilleArrivee() {
+		return (Ville)villeArriveeCombo.getSelectedItem();
+	}
+	public Calendar getDateDepart() {
+		return DateTools.dateToCalendar((Date)dateDepartSpinner.getModel().getValue());
 	}
 }
