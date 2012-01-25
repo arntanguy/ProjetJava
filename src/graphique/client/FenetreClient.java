@@ -1,8 +1,8 @@
 package graphique.client;
 
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -19,6 +19,11 @@ public class FenetreClient extends JFrame {
 	public FenetreClient() {
 		super();
 		serveur = new ServeurV2();
+		try {
+			serveur.charger();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		build();
 	}
 
@@ -48,6 +53,11 @@ public class FenetreClient extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			try {
+				serveur.sauvegarder();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			dispose();
 		}
 	}

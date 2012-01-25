@@ -266,6 +266,27 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Ce vehicule appartient deja à la liste des véhicules.");
     }
+    
+    public Vehicule creerVehicule(String nom, TypeVehicule type, int capacite) throws Exception {
+    	Vehicule v = null;
+    	switch(type) {
+    	case avion:
+    		v = new Avion(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	case bateau:
+    		v = new Bateau(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	case bus:
+    		v = new Bus(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	case train:
+    		v = new Train(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	}
+    	System.out.println(v);
+    	addVehicule(v);
+		return v;
+    }
 
     public void addVille(Ville v) throws Exception {
         if (!mesVilles.contains(v)) {
