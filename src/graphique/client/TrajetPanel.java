@@ -16,7 +16,6 @@ public class TrajetPanel extends JPanel {
 	private JTextField villeDepartText;
 	private JTextField villeArriveeText;
 	private JSpinner dateDepartSpinner;
-	private JSpinner dateArriveeSpinner;
 
 	private Admin admin;
 	
@@ -40,14 +39,9 @@ public class TrajetPanel extends JPanel {
 	
 		// Create a SpinnerDateModel with current date as the initial value.
 		SpinnerDateModel model = new SpinnerDateModel();
-		SpinnerDateModel model1 = new SpinnerDateModel();
-
 
 		add(new JLabel("Date de départ "));
 		dateDepartSpinner = new JSpinner(model);
 		add(dateDepartSpinner);
-		add(new JLabel("Date d'arrivée "));
-		dateArriveeSpinner = new JSpinner(model1);
-		add(dateArriveeSpinner);
 	}
 }
