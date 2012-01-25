@@ -275,6 +275,16 @@ public abstract class Serveur implements Serializable {
                     "Cette ville appartient deja à la liste des villes.");
     }
     
+    public Ville createVille(String ville) throws Exception {
+        Ville v = new Ville(ville, getVilleNewIdentifiant());
+        try {
+        	addVille(v);
+        } catch(Exception e) {
+        	return null;
+        }
+        return v;
+    }
+    
     /**
      * Renvoit la liste des villes disponibles
      * @return Liste de villes

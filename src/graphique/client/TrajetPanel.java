@@ -15,19 +15,18 @@ import javax.swing.SpinnerDateModel;
 import objets.Ville;
 import tools.DateTools;
 
-import logiqueMetier.Admin;
-
+import logiqueMetier.Serveur;
 
 public class TrajetPanel extends JPanel {
 	private JComboBox villeDepartCombo;
 	private JComboBox villeArriveeCombo;
 	private JSpinner dateDepartSpinner;
 
-	private Admin admin;
+	private Serveur Serveur;
 	
-	public TrajetPanel(Admin a){
+	public TrajetPanel(Serveur a){
 		super();
-		admin = a;
+		Serveur = a;
 		build(); 
 	}
 	private void build(){
@@ -35,14 +34,14 @@ public class TrajetPanel extends JPanel {
 		setLayout(new GridLayout(0,2));
 /** To remove later **/
 		try {
-			admin.createVille("Paris");
+			Serveur.createVille("Paris");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 /** end remove **/
 		villeDepartCombo = new JComboBox();
-		for(Ville v:admin.getVilles()) {
+		for(Ville v:Serveur.getVilles()) {
 			villeDepartCombo.addItem(v);
 		}
 		add(new JLabel("Ville de départ "));

@@ -10,15 +10,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 public class FenetreClient extends JFrame {
-	private Admin admin;
+	private Serveur serveur;
 	
 	public FenetreClient() {
 		super();
-		admin = new Admin(new ServeurV2());
+		serveur = new ServeurV2();
 		build();
 	}
 
@@ -34,7 +34,7 @@ public class FenetreClient extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		
-		panel.add(new ReservationPanel(admin));
+		panel.add(new ReservationPanel(serveur));
 		
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
