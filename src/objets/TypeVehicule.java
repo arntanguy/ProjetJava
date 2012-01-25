@@ -1,22 +1,21 @@
 package objets;
 
 public enum TypeVehicule {
-    avion(500), bus(2), bateau(200), train(10);
-
+    avion("avion",500),bus("bus",2),bateau("bateau",200),train("train",10);
+    
+    private String nom;
     private int prixStandard;
-
-    /**
-     * Initialise avec le mot de commande correspondant.
-     * 
-     * @param commandString
-     *            Le String de commande.
-     */
-    TypeVehicule(int prixStandard) {
+    
+    TypeVehicule(String nom,int prixStandard) {
+        this.nom = nom;
         this.prixStandard = prixStandard;
     }
-
+    
     public int getPrix() {
         return prixStandard;
     }
-
+    
+    public String toString() {
+        return nom;
+    }
 }

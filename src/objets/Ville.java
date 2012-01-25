@@ -64,6 +64,14 @@ public class Ville implements Serializable {
 
     @Override
     public String toString() {
+        return new StringBuffer().append(ville).toString();
+    }
+    
+    /** 
+     * Affichage pour le client console
+     * @return chaine descriptive de l'objet Ville
+     */
+    public String toStringC() {
         return new StringBuffer().append(ville).append(" (id=")
                 .append(identifiant).append(")").toString();
     }

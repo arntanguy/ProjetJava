@@ -1,53 +1,72 @@
 package graphique.client;
 
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.util.Date;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
-import logiqueMetier.Admin;
+import objets.Ville;
+import tools.DateTools;
 
+import logiqueMetier.Serveur;
 
 public class TrajetPanel extends JPanel {
-	private JTextField villeDepartText;
-	private JTextField villeArriveeText;
+	private JComboBox villeDepartCombo;
+	private JComboBox villeArriveeCombo;
 	private JSpinner dateDepartSpinner;
-	private JSpinner dateArriveeSpinner;
 
-	private Admin admin;
+	private Serveur Serveur;
 	
-	public TrajetPanel(Admin a){
+	public TrajetPanel(Serveur a){
 		super();
-		admin = a;
+		Serveur = a;
 		build(); 
 	}
 	private void build(){
 		setBorder(BorderFactory.createTitledBorder("Où et quand souhaitez-vous partir ?"));
 		setLayout(new GridLayout(0,2));
-
-		villeDepartText = new JTextField();
+/** To remove later **/
+		try {
+			Serveur.createVille("Paris");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+/** end remove **/
+		villeDepartCombo = new JComboBox();
+		for(Ville v:Serveur.getVilles()) {
+			villeDepartCombo.addItem(v);
+		}
 		add(new JLabel("Ville de départ "));
-		add(villeDepartText);
+		add(villeDepartCombo);
 
 		add(new JLabel("Ville d'arrivée"));
-		villeArriveeText = new JTextField();
-		add(villeArriveeText);
+		villeArriveeCombo = new JComboBox();
+		add(villeArriveeCombo);
 
 	
 		// Create a SpinnerDateModel with current date as the initial value.
 		SpinnerDateModel model = new SpinnerDateModel();
-		SpinnerDateModel model1 = new SpinnerDateModel();
-
 
 		add(new JLabel("Date de départ "));
 		dateDepartSpinner = new JSpinner(model);
 		add(dateDepartSpinner);
-		add(new JLabel("Date d'arrivée "));
-		dateArriveeSpinner = new JSpinner(model1);
-		add(dateArriveeSpinner);
+	}
+
+	public Ville getVilleDepart() {
+		return (Ville)villeDepartCombo.getSelectedItem();
+	}
+	public Ville getVilleArrivee() {
+		return (Ville)villeArriveeCombo.getSelectedItem();
+	}
+	public Calendar getDateDepart() {
+		return DateTools.dateToCalendar((Date)dateDepartSpinner.getModel().getValue());
 	}
 }

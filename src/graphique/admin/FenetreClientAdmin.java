@@ -3,6 +3,7 @@ package graphique.admin;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -12,14 +13,21 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 public class FenetreClientAdmin extends JFrame {
-	Admin admin;
+	private Serveur serveur;
 	
 	public FenetreClientAdmin() {
 		super();
-		admin = new Admin(new ServeurV2());
+		serveur = new ServeurV2();
+		try {
+			serveur.charger();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		build();
 	}
 
@@ -36,14 +44,14 @@ public class FenetreClientAdmin extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		panel.add(new AjoutTransportPanel(admin));		
-		panel.add(new AjoutTrajetPanel(admin));
-		panel.add(new AjoutVillePanel(admin));
-		panel.add(new GestionReservationsPanel(admin), BorderLayout.CENTER);
-		
+		panel.add(new AjoutTransportPanel(serveur));		
+		panel.add(new AjoutTrajetPanel(serveur));
+		panel.add(new AjoutVillePanel(serveur));
+		panel.add(new GestionReservationsPanel(serveur), BorderLayout.CENTER);
+
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
-		
+
 		return panel;
 	}
 
@@ -56,7 +64,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutTrajetPanel fenetre = new AjoutTrajetPanel(admin);
+					AjoutTrajetPanel fenetre = new AjoutTrajetPanel(serveur);
 					fenetre.setVisible(true);
 				}
 			});
@@ -72,7 +80,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutTransportPanel fenetre = new AjoutTransportPanel(admin);
+					AjoutTransportPanel fenetre = new AjoutTransportPanel(serveur);
 					fenetre.setVisible(true);
 				}
 			});
@@ -87,7 +95,7 @@ public class FenetreClientAdmin extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					AjoutVillePanel fenetre = new AjoutVillePanel(admin);
+					AjoutVillePanel fenetre = new AjoutVillePanel(serveur);
 					fenetre.setVisible(true);
 				}
 			});
@@ -100,6 +108,11 @@ public class FenetreClientAdmin extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			try {
+				serveur.sauvegarder();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			dispose();
 		}
 	}

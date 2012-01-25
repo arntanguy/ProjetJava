@@ -13,7 +13,13 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
+import objets.Trajet;
+import objets.TypeVehicule;
+import objets.Vehicule;
+import tools.DateTools;
+
 import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 
 
 public class AjoutTrajetPanel extends JPanel {
@@ -22,11 +28,11 @@ public class AjoutTrajetPanel extends JPanel {
 	private JSpinner dateDepartSpinner;
 	private JSpinner dateArriveeSpinner;
 	
-	private Admin admin;
+	private Serveur serveur;
 
-	public AjoutTrajetPanel(Admin a){
+	public AjoutTrajetPanel(Serveur s){
 		super();
-		admin = a;
+		serveur = s;
 		build(); 
 	}
 	private void build(){
@@ -68,6 +74,11 @@ public class AjoutTrajetPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Validé !"+villeDepartText.getText());
+			
+		/*	Trajet t = new Trajet(DateTools.dateToCalendar((Date)dateDepartSpinner.getModel().getValue())
+					, DateTools.dateToCalendar((Date)dateArriveeSpinner.getModel().getValue()),
+					villeDepartText.getText(), villeArriveeText.getText(), vehicule , identifiant) */
+			//serveur.addTrajet(t);
 			Date dateDepart = (Date) dateDepartSpinner.getModel().getValue();
 			System.out.println(dateDepart);
 		}
