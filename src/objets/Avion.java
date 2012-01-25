@@ -14,15 +14,15 @@ public class Avion extends Vehicule {
 	 */
 	public Avion(String vehicule, int capacite, int identifiant) {
 		super(vehicule, TypeVehicule.avion, capacite, identifiant);
-		classes.add("Classe affaire");
-		classes.add("Classe première");
-		classes.add("Classe standard");
-		repas.add("petit déjeuner");
-		repas.add("déjeuner");
-		repas.add("dîner");
-		repas.add("végétarien");
-		repas.add("viande");
-		repas.add("poisson");
+		classes.add(new ClassesRepas("Classe affaire",20));
+		classes.add(new ClassesRepas("Classe première",10));
+		classes.add(new ClassesRepas("Classe standard",5));
+		repas.add(new ClassesRepas("petit déjeuner",5));
+		repas.add(new ClassesRepas("déjeuner",10));
+		repas.add(new ClassesRepas("dîner",10));
+		repas.add(new ClassesRepas("végétarien",5));
+		repas.add(new ClassesRepas("viande",5));
+		repas.add(new ClassesRepas("poisson",5));
 	}
 
 	public Avion(String vehicule, int identifiant) {
@@ -30,14 +30,6 @@ public class Avion extends Vehicule {
 	}
 
 	public boolean avecCouchette() {
-		return true;
-	}
-
-	public boolean avecRepas() {
-		return true;
-	}
-
-	public boolean aDifferentesClasses() {
 		return true;
 	}
 }

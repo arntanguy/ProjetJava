@@ -2,6 +2,8 @@ package objets;
 
 import java.util.Calendar;
 
+import logiqueMetier.Serveur;
+
 public class Passager {
     private String nom;
     private String prenom;
@@ -37,5 +39,11 @@ public class Passager {
     }
     public boolean getFidelite() {
         return fidelite;
+    }
+    
+    public String toString()
+    {
+        String f=(getFidelite()) ? "Fidèle" :"";
+        return getNom()+" "+getPrenom()+" "+Serveur.calendarToDate(getDateNaissance())+" "+getProfil().toString()+" "+f+"<br />";
     }
 }

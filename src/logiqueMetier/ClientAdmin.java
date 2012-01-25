@@ -3,7 +3,9 @@ package logiqueMetier;
 import java.io.IOException;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -290,9 +292,22 @@ public class ClientAdmin {
 
         if (quoi.equals("trajets")) {
             // on demande les infos sur le trajet à réserver
+            Reservation reservation=null;
             Trajet trajetAReserver = null;
             int placesVoulues = 1;
-
+            Passager passager=null;
+            String nom="";
+            String prenom="";
+            String dateNaissance="";
+            int profilId=0;
+            Profil profil=null;
+            
+            boolean fidelite=false;
+            boolean modifiable=false;
+            boolean prendCouchette=false;
+            Map<String,Boolean> prendRepas=new HashMap<String,Boolean>();
+            Map<String,Boolean> prendClasses=new HashMap<String,Boolean>();
+            
             a.consulterTrajet();
 
             // On demande à l'utilisateur toutes les infos qu'on veut
@@ -316,13 +331,140 @@ public class ClientAdmin {
             }
             if (placesVoulues == 0)
                 placesVoulues = 1;
-
+            
             // On regarde si le trajet existe
             if (trajetAReserver != null) {
+                
                 // On réserve le trajet que s'il reste des places
-                if (a.reserver(trajetAReserver, placesVoulues))
+                if (trajetAReserver.restePlaces(placesVoulues))
+                {
+                    //choix du passager
+                    System.out.print("Nom du passager : ");
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        nom = tokenizer.next(); // récupère le premier mot
+                    }
+                    if (nom.trim() == "")
+                        throw new Exception("Nom du passager vide");
+                    
+                    
+                    System.out.print("Prénom du passager : ");
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        prenom = tokenizer.next(); // récupère le premier mot
+                    }
+                    if (prenom.trim() == "")
+                        throw new Exception("Prénom du passager vide");
+                    
+                    System.out.print("Date de naissance (jj/mm/aaaa) : ");
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        dateNaissance = tokenizer.next(); // récupère le premier mot
+                    }
+                    if (!Pattern.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}", dateNaissance))
+                        throw new Exception("Date de naissance mal écrite");
+                    
+                    
+                    
+                    for (int i = 0; i < Profil.values().length - 1; i++) {
+                        System.out.print(Profil.values()[i] + " (" + i + "), ");
+                    }
+                    int last = Profil.values().length - 1;
+                    System.out.println(Profil.values()[last] + " (" + last + ")");
+                    System.out.print("Profil choisi (id) : ");
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        profilId = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                    // premier mot
+                    }
+
+                    // on récupère le profil choisi
+                    profil = Profil.values()[profilId];
+                    if (profil == null)
+                        throw new Exception("profil non reconnu");
+                    
+                    
+                    System.out.print("Fidélité ? (0=non, 1=oui)");
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        int res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        if(res==0)
+                            fidelite=false;
+                        else
+                            fidelite=true;
+                    }
+                    
+                    System.out.print("Ticket Modifiable ? (0=non, 1=oui)");
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        int res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        if(res==0)
+                            modifiable=false;
+                        else
+                            modifiable=true;
+                    }
+                    
+                    
+                    if(trajetAReserver.getVehicule().avecCouchette())
+                    {
+                        System.out.print("Prend Couchette ? (0=non, 1=oui)");
+                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                        if (tokenizer.hasNext()) {
+                            int res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                            if(res==0)
+                                prendCouchette=false;
+                            else
+                                prendCouchette=true;
+                        }
+                    }
+                    
+                    
+                    for(ClassesRepas classe : trajetAReserver.getVehicule().getClasses())
+                    {
+                        System.out.print(classe.getNom()+" ? (0=non, 1=oui)");
+                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                        if (tokenizer.hasNext()) {
+                            int res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                            if(res==0)
+                            {
+                                prendClasses.put(classe.getNom(), false);
+                            }
+                            else
+                            {
+                                prendClasses.put(classe.getNom(), true);
+                            }
+                        }
+                    }
+                    
+                    for(ClassesRepas repas : trajetAReserver.getVehicule().getRepas())
+                    {
+                        System.out.print(repas.getNom()+" ? (0=non, 1=oui)");
+                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                        if (tokenizer.hasNext()) {
+                            int res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                            if(res==0)
+                            {
+                                prendRepas.put(repas.getNom(), false);
+                            }
+                            else
+                            {
+                                prendRepas.put(repas.getNom(), true);
+                            }
+                        }
+                    }
+                    
+                    
+                    passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
+                    
+                    
+                    reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas,prendClasses);
+                    
+                    
+                    a.reserver(trajetAReserver, placesVoulues);
+                    reservation.genereTicket();
                     System.out
                             .println("Merci d'avoir réserver ce trajet ! Bon voyage.");
+                }
                 else
                     System.out
                             .println("Il ne reste plus de place à bord de ce véhicule !");
