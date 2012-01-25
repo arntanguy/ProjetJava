@@ -6,23 +6,27 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
-import logiqueMetier.Admin;
+import objets.TypeVehicule;
+
+import logiqueMetier.Serveur;
 
 
 public class AjoutTransportPanel extends JPanel {
 	private JTextField nomText;
 	private JSpinner capaciteSpinner;
+	private JComboBox typeTransportsCombo;
 	
-	private Admin admin;
+	private Serveur serveur;
 	
-	public AjoutTransportPanel(Admin a){
+	public AjoutTransportPanel(Serveur s) {
 		super();
-		admin = a;
+		serveur = s;
 		build();
 	}
 	private void build(){
@@ -33,6 +37,13 @@ public class AjoutTransportPanel extends JPanel {
 		add(new JLabel("Nom du transport "));
 		add(nomText);
 		
+		add(new JLabel("Type de transport"));
+		typeTransportsCombo = new JComboBox();
+		for(TypeVehicule v : TypeVehicule.values()) {
+			typeTransportsCombo.addItem(v);
+		}
+		add(typeTransportsCombo);
+		
 		add(new JLabel("Capacité d'acceuil"));
 		capaciteSpinner = new JSpinner();
 		capaciteSpinner.setValue(50);
@@ -42,7 +53,6 @@ public class AjoutTransportPanel extends JPanel {
 		
 		JButton bouton = new JButton(new ValidateAction("Valider"));
 		add(bouton);
-		
 	}
 
 	public class ValidateAction extends AbstractAction {
@@ -52,7 +62,12 @@ public class AjoutTransportPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Validé !");
+			try {
+				serveur.creerVehicule(nomText.getText(), (TypeVehicule)typeTransportsCombo.getSelectedItem(), 
+						(Integer)capaciteSpinner.getValue());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

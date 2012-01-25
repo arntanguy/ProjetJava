@@ -20,8 +20,8 @@ public abstract class Vehicule implements Serializable {
     protected TypeVehicule type;
     protected int capacite;
     protected int identifiant;
-    protected List<String> classes;
-    protected List<String> repas;
+    protected List<ClassesRepas> classes;
+    protected List<ClassesRepas> repas;
     
     /**
      * Créé une instance de véhicule
@@ -38,8 +38,8 @@ public abstract class Vehicule implements Serializable {
         this.type = type;
         this.capacite = capacite;
         this.identifiant = identifiant;
-        classes = new ArrayList<String>();
-        repas = new ArrayList<String>();
+        classes = new ArrayList<ClassesRepas>();
+        repas = new ArrayList<ClassesRepas>();
     }
 
     /**
@@ -96,16 +96,16 @@ public abstract class Vehicule implements Serializable {
         return false;
     }
     
-    public boolean avecRepas()
+    public List<ClassesRepas> getRepas()
     {
-        return false;
+        return repas;
     }
     
-    public boolean aDifferentesClasses()
+    public List<ClassesRepas> getClasses()
     {
-        return false;
+        return classes;
     }
-
+    
     @Override
     public String toString() {
         return new StringBuffer().append(vehicule).append(" (id=")

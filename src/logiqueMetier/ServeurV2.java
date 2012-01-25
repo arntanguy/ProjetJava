@@ -168,11 +168,12 @@ public class ServeurV2 extends Serveur implements Serializable {
 
         // Pour chaque ligne, on splite les données séparés par '#'
         // On peut alors reconstituer le trajet, et l'ajouter à la liste des
-        // trajets
+        // trajets        
         for (int i = 0; i < tab5.length; i++) {
             String[] tab6 = tab5[i].split("#");
             if (tab6.length == 4) {
                 this.addVille(new Ville(tab6[0], Integer.valueOf(tab6[1])));
+                System.out.println("Ville "+tab6[0]);
             }
         }
 

@@ -9,30 +9,38 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 
 
 public class ReservationPanel extends JPanel {
-	private Admin admin;
+	private Serveur serveur;
+	private TrajetPanel trajetP;
+	private ClientPanel clientP;
+	private ResultatsPanel resultatsP;
 	
-	public ReservationPanel(Admin a){
+	public ReservationPanel(Serveur s){
 		super();
-		admin = a;
+		serveur = s;
 		build(); 
 	}
 	private void build(){
 		setBorder(BorderFactory.createTitledBorder("Réservation d'un trajet"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		add(new TrajetPanel(admin));
-		add(new ClientPanel(admin));
+		trajetP = new TrajetPanel(serveur);
+		clientP = new ClientPanel(serveur);
+		resultatsP = new ResultatsPanel(serveur);
+		add(trajetP);
+		add(clientP);
 		add(new JButton(new ValidateAction("Rechercher")));
-		add(new ResultatsPanel(admin));			
+		add(resultatsP);			
 	}
 
 	
 	private class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
+			System.out.println(trajetP.getDateDepart());
 		}
 
 		@Override

@@ -1,11 +1,8 @@
 package graphique.client;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,6 +10,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 
 
 
@@ -23,11 +21,10 @@ public class ClientPanel extends JPanel {
 	private JComboBox categoriePassager;
 	private JComboBox carteAbonnement;
 	
-	private Admin admin;
+	private Serveur serveur;
 	
-	public ClientPanel(Admin a){
+	public ClientPanel(Serveur s){
 		super();
-		admin = a;
 		build();
 	}
 	private void build(){
@@ -55,16 +52,14 @@ public class ClientPanel extends JPanel {
 		carteAbonnement = new JComboBox(test);
 		add(carteAbonnement);
 	}
-
-
-	private class ValidateAction extends AbstractAction {
-		public ValidateAction(String texte){
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Validé !");
-		}
+	
+	public String getNom() {
+		return nomText.getText();
+	}
+	public String getPrenom() {
+		return prenomText.getText();
+	}
+	public int getNbPassagers() {
+		return (Integer)nbPassagersSpinner.getValue();
 	}
 }

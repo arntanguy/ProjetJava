@@ -14,14 +14,14 @@ public class Train extends Vehicule {
 	 */
 	public Train(String vehicule, int capacite, int identifiant) {
 		super(vehicule, TypeVehicule.train, capacite, identifiant);
-		classes.add("Première classe");
-		classes.add("Seconde classe");
-		repas.add("petit déjeuner");
-		repas.add("déjeuner");
-		repas.add("dîner");
-		repas.add("végétarien");
-		repas.add("viande");
-		repas.add("poisson");
+		classes.add(new ClassesRepas("Première classe",10));
+		classes.add(new ClassesRepas("Seconde classe",5));
+		repas.add(new ClassesRepas("petit déjeuner",5));
+		repas.add(new ClassesRepas("déjeuner",10));
+		repas.add(new ClassesRepas("dîner",10));
+		repas.add(new ClassesRepas("végétarien",5));
+		repas.add(new ClassesRepas("viande",5));
+		repas.add(new ClassesRepas("poisson",5));
 	}
 
 	public Train(String vehicule, int identifiant) {
@@ -31,13 +31,4 @@ public class Train extends Vehicule {
 	public boolean avecCouchette() {
 		return true;
 	}
-
-	public boolean avecRepas() {
-		return true;
-	}
-
-	public boolean aDifferentesClasses() {
-		return true;
-	}
-
 }

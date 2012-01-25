@@ -21,10 +21,11 @@ import objets.*;
 
 public abstract class Serveur implements Serializable {
     // liste des trajets et des véhicules
-    protected ArrayList<Trajet> mesTrajets;
+    protected ArrayList<Trajet>   mesTrajets;
     protected ArrayList<Vehicule> mesVehicules;
-    protected ArrayList<Ville> mesVilles;
-    
+    protected ArrayList<Ville>    mesVilles;
+
+   
     /**
      * Créer une instance de serveur
      */
@@ -52,14 +53,14 @@ public abstract class Serveur implements Serializable {
             Calendar dateComplete = Calendar.getInstance();
             dateComplete
                     .set(Calendar.DATE, Integer.valueOf(date.split("/")[0]));
-            dateComplete.set(Calendar.MONTH,
-                    Integer.valueOf(date.split("/")[1]) - 1);
+            dateComplete.set(Calendar.MONTH, Integer
+                    .valueOf(date.split("/")[1]) - 1);
             dateComplete
                     .set(Calendar.YEAR, Integer.valueOf(date.split("/")[2]));
-            dateComplete.set(Calendar.HOUR_OF_DAY,
-                    Integer.valueOf(horaire.split(":")[0]));
-            dateComplete.set(Calendar.MINUTE,
-                    Integer.valueOf(horaire.split(":")[1]));
+            dateComplete.set(Calendar.HOUR_OF_DAY, Integer.valueOf(horaire
+                    .split(":")[0]));
+            dateComplete.set(Calendar.MINUTE, Integer.valueOf(horaire
+                    .split(":")[1]));
             return dateComplete;
         } else
             return null;
@@ -87,10 +88,9 @@ public abstract class Serveur implements Serializable {
      * @return l'heure sous la forme hh:mm
      */
     static public String calendarToTime(Calendar c) {
-        return new StringBuffer()
-                .append(String.valueOf(c.get(Calendar.HOUR_OF_DAY)))
-                .append(":").append(String.valueOf(c.get(Calendar.MINUTE)))
-                .toString();
+        return new StringBuffer().append(
+                String.valueOf(c.get(Calendar.HOUR_OF_DAY))).append(":")
+                .append(String.valueOf(c.get(Calendar.MINUTE))).toString();
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class Serveur implements Serializable {
 
         return i;
     }
-    
+
     /**
      * Récupère un nouvel identifiant pour un trajet qui va être créé
      * 
@@ -157,7 +157,7 @@ public abstract class Serveur implements Serializable {
         }
         return null;
     }
-    
+
     public Ville getVille(int id) {
         for (Ville v : mesVilles) {
             if (v.getIdentifiant() == id)
@@ -190,7 +190,7 @@ public abstract class Serveur implements Serializable {
             System.out.println(mesVehicules.get(i).toString());
         }
     }
-    
+
     public void consulterVille() {
         System.out.println("Liste des Villes : ");
         for (int i = 0; i < this.mesVilles.size(); i++) {
@@ -267,13 +267,52 @@ public abstract class Serveur implements Serializable {
                     "Ce vehicule appartient deja à la liste des véhicules.");
     }
     
+    public Vehicule creerVehicule(String nom, TypeVehicule type, int capacite) throws Exception {
+    	Vehicule v = null;
+    	switch(type) {
+    	case avion:
+    		v = new Avion(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	case bateau:
+    		v = new Bateau(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	case bus:
+    		v = new Bus(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	case train:
+    		v = new Train(nom, capacite, getVehiculeNewIdentifiant());
+    		break;
+    	}
+    	System.out.println(v);
+    	addVehicule(v);
+		return v;
+    }
+
     public void addVille(Ville v) throws Exception {
-        if (!mesVilles .contains(v)) {
+        if (!mesVilles.contains(v)) {
             mesVilles.add(v);
         } else
             throw new Exception(
                     "Cette ville appartient deja à la liste des villes.");
     }
+    
+    public Ville createVille(String ville) throws Exception {
+        Ville v = new Ville(ville, getVilleNewIdentifiant());
+        try {
+        	addVille(v);
+        } catch(Exception e) {
+        	return null;
+        }
+        return v;
+    }
+    
+    /**
+     * Renvoit la liste des villes disponibles
+     * @return Liste de villes
+     */
+    public ArrayList<Ville> getVilles() {
+		return mesVilles;
+	}
 
     /**
      * Ajouter un trajet à la liste des trajets
@@ -313,16 +352,14 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Ce véhicule ne fait pas partie de la base de données.");
     }
-    
-    public void modifierVille(Ville ville, Ville ville2)
-            throws Exception {
+
+    public void modifierVille(Ville ville, Ville ville2) throws Exception {
         if (mesVilles.contains(ville)) {
             mesVilles.set(mesVilles.indexOf(ville), ville2);
         } else
             throw new Exception(
                     "Cette ville ne fait pas partie de la base de données.");
     }
-
 
     /**
      * Modifier un trajet se trouvant dans la liste des trajets
@@ -366,8 +403,7 @@ public abstract class Serveur implements Serializable {
             mesVehicules.remove(v);
         }
     }
-    
-    
+
     /**
      * Supprimer un trajet de la liste des trajets
      * 
@@ -378,7 +414,7 @@ public abstract class Serveur implements Serializable {
         if (mesTrajets.contains(t))
             mesTrajets.remove(t);
     }
-    
+
     public void removeVille(Ville v) {
         if (mesVilles.contains(v))
             mesVilles.remove(v);
@@ -453,7 +489,8 @@ public abstract class Serveur implements Serializable {
 
             if (mesTrajets.get(i).getDepart().equals(depart)
                     && mesTrajets.get(i).getArrivee().equals(arrivee)
-                    && (vehicule == null || mesTrajets.get(i).getVehicule().equals(vehicule))
+                    && (vehicule == null || mesTrajets.get(i).getVehicule()
+                            .equals(vehicule))
                     && mesTrajets.get(i).restePlaces(placesVoulues)
                     && dateDepart.before(departRetard)
                     && dateDepart.after(departAvance)) {
@@ -465,5 +502,337 @@ public abstract class Serveur implements Serializable {
         // apparaissent sous forme chronologique
         Collections.sort(trajetsConvenables);
         return trajetsConvenables;
+    }
+
+    /**
+     * Section des m�thodes de recherche de trajet
+     * 
+     */
+    /**
+     * Recherche trajet en fonction de la ville
+     * 
+     * @param ville
+     * @return
+     */
+    public List<Trajet> rechercheTrajet(String ville) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(ville)
+                    || mesTrajets.get(i).getArrivee().equals(ville)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville de d�part
+     * 
+     * @param villeD
+     * @return
+     */
+    public List<Trajet> rechercheTrajetDepart(String villeD) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(villeD)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville d'arriv�e
+     * 
+     * @param villeA
+     * @return
+     */
+    public List<Trajet> rechercheTrajetArrivee(String villeA) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getArrivee().equals(villeA)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la date
+     * 
+     * @param date
+     * @return
+     */
+    public List<Trajet> rechercheTrajetDate(String date) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (calendarToDate(mesTrajets.get(i).getDateDepart()).equals(date)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction du moyen de transport
+     * 
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajetTransport(String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville et de la date
+     * 
+     * @param ville
+     * @param date
+     * @return
+     */
+    public List<Trajet> rechercheTrajet(String ville, String date) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if ((mesTrajets.get(i).getArrivee().equals(ville) || mesTrajets
+                    .get(i).getDepart().equals(ville))
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville et du moyen de transport
+     * 
+     * @param ville
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajetVM(String ville, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if ((mesTrajets.get(i).getArrivee().equals(ville) || mesTrajets
+                    .get(i).getDepart().equals(ville))
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville de d�part et de la date
+     * 
+     * @param villeD
+     * @param date
+     * @return
+     */
+    public List<Trajet> rechercheTrajetD(String villeD, String date) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(villeD)
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville de d�part et du moyen de
+     * transport
+     * 
+     * @param villeD
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajetDepart(String villeD, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(villeD)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville d'arriv�e et de la date
+     * 
+     * @param villeA
+     * @param date
+     * @return
+     */
+    public List<Trajet> rechercheTrajetA(String villeA, String date) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getArrivee().equals(villeA)
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville d'arriv�e et du moyen de
+     * transport
+     * 
+     * @param villeA
+     * @return
+     */
+    public List<Trajet> rechercheTrajetArrivee(String villeA, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getArrivee().equals(villeA)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la date et du moyen de transport
+     * 
+     * @param date
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajetDM(String date, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (calendarToDate(mesTrajets.get(i).getDateDepart()).equals(date)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville, de la date et du moyen de
+     * transport
+     * 
+     * @param ville
+     * @param date
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajet(String ville, Date date, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if ((mesTrajets.get(i).getArrivee().equals(ville) || mesTrajets
+                    .get(i).getDepart().equals(ville))
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville de d�part de la date et du moyen
+     * de transport
+     * 
+     * @param villeD
+     * @param date
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajetD(String villeD, String date, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(villeD)
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville d'arriv�e, de la date et du
+     * moyen de transport
+     * 
+     * @param villeA
+     * @param date
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajetA(String villeA, String date, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getArrivee().equals(villeA)
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville de d�part, d'arriv�e et de la
+     * date
+     * 
+     * @param villeD
+     * @param villeA
+     * @param date
+     * @return
+     */
+    public List<Trajet> rechercheTrajet(String villeD, String villeA,
+            String date) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(villeD)
+                    && mesTrajets.get(i).getArrivee().equals(villeA)
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
+    }
+
+    /**
+     * Recherche trajet en fonction de la ville de d�part, d'arriv�e, de la date
+     * et du moyen de transport
+     * 
+     * @param villeD
+     * @param villeA
+     * @param date
+     * @param mdt
+     * @return
+     */
+    public List<Trajet> rechercheTrajet(String villeD, String villeA,
+            String date, String mdt) {
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            if (mesTrajets.get(i).getDepart().equals(villeD)
+                    && mesTrajets.get(i).getArrivee().equals(villeA)
+                    && calendarToDate(mesTrajets.get(i).getDateDepart())
+                            .equals(date)
+                    && mesTrajets.get(i).getVehicule().getType().equals(mdt)) {
+                trajets.add(mesTrajets.get(i));
+            }
+        }
+        return trajets;
     }
 }

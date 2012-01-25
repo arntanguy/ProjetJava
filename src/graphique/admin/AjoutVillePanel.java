@@ -10,20 +10,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import objets.Ville;
-
-import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 
 
 
 public class AjoutVillePanel extends JPanel {
 	private JTextField nomText;
 	
-	private Admin admin;
+	private Serveur serveur;
 	
-	public AjoutVillePanel(Admin a) {
+	public AjoutVillePanel(Serveur s) {
 		super();
-		admin = a;
+		serveur = s;
 		build();
 	}
 	private void build(){
@@ -48,9 +46,9 @@ public class AjoutVillePanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Validé !");
-			Ville v = new Ville(nomText.getText(), admin.getVilleNewIdentifiant());
 			try {
-				admin.addVille(v);
+				serveur.createVille(nomText.getText());
+				serveur.sauvegarder();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

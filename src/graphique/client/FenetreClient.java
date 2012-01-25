@@ -1,8 +1,8 @@
 package graphique.client;
 
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -10,15 +10,20 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import logiqueMetier.Admin;
+import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 public class FenetreClient extends JFrame {
-	private Admin admin;
+	private Serveur serveur;
 	
 	public FenetreClient() {
 		super();
-		admin = new Admin(new ServeurV2());
+		serveur = new ServeurV2();
+		try {
+			serveur.charger();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		build();
 	}
 
@@ -34,7 +39,7 @@ public class FenetreClient extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		
-		panel.add(new ReservationPanel(admin));
+		panel.add(new ReservationPanel(serveur));
 		
 		JButton quit = new JButton(new QuitAction("Quitter"));
 		panel.add(quit);
@@ -48,6 +53,11 @@ public class FenetreClient extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			try {
+				serveur.sauvegarder();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			dispose();
 		}
 	}
