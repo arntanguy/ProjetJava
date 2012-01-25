@@ -1,6 +1,7 @@
 package logiqueMetier;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -76,6 +77,10 @@ public class Admin {
     public Ville getVille(int id) {
         return serveur.getVille(id);
     }
+  
+    public ArrayList<Ville> getVilles() {
+		return serveur.getVilles();
+	}
     
     /**
      * Ajouter un véhicule à la liste des véhicules
@@ -92,6 +97,11 @@ public class Admin {
         serveur.addVille(v);
     }
 
+    public Ville createVille(String ville) throws Exception {
+    	Ville v = new Ville(ville, getVilleNewIdentifiant());
+    	serveur.addVille(v);
+		return v;
+    }
     
     
     /**
