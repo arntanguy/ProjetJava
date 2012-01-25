@@ -273,13 +273,13 @@ public abstract class Serveur implements Serializable {
     	case AVION:
     		v = new Avion(nom, capacite, getVehiculeNewIdentifiant());
     		break;
-    	case bateau:
+    	case BATEAU:
     		v = new Bateau(nom, capacite, getVehiculeNewIdentifiant());
     		break;
-    	case bus:
+    	case BUS:
     		v = new Bus(nom, capacite, getVehiculeNewIdentifiant());
     		break;
-    	case train:
+    	case TRAIN:
     		v = new Train(nom, capacite, getVehiculeNewIdentifiant());
     		break;
     	}

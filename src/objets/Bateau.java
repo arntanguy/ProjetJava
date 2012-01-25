@@ -13,7 +13,7 @@ public class Bateau extends Vehicule {
 	 * @return
 	 */
 	public Bateau(String vehicule, int capacite, int identifiant) {
-		super(vehicule, TypeVehicule.bateau, capacite, identifiant);
+		super(vehicule, TypeVehicule.BATEAU, capacite, identifiant);
 		classes.add(new ClassesRepas("Première classe",10));
 		classes.add(new ClassesRepas("Standard",5));
 		repas.add(new ClassesRepas("petit déjeuner",5));

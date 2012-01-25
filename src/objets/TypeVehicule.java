@@ -1,7 +1,7 @@
 package objets;
 
 public enum TypeVehicule {
-    avion("avion",500),bus("bus",2),bateau("bateau",200),train("train",10);
+    AVION("avion",500),BUS("bus",2),BATEAU("bateau",200),TRAIN("train",10);
     
     private String nom;
     private int prixStandard;

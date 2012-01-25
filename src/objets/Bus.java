@@ -13,7 +13,7 @@ public class Bus extends Vehicule {
 	 * @return
 	 */
 	public Bus(String vehicule, int capacite, int identifiant) {
-		super(vehicule, TypeVehicule.bus, capacite, identifiant);
+		super(vehicule, TypeVehicule.BUS, capacite, identifiant);
 	}
 
 	public Bus(String vehicule, int identifiant) {

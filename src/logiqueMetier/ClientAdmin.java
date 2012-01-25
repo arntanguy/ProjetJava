@@ -638,20 +638,20 @@ public class ClientAdmin {
                             a.getVehiculeNewIdentifiant());
                 else
                     v = new Avion(vehicule, a.getVehiculeNewIdentifiant());
-            } else if (type == TypeVehicule.bateau) {
+            } else if (type == TypeVehicule.BATEAU) {
                 if (capacite != 0)
                     v = new Bateau(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
                     v = new Bateau(vehicule,
                             a.getVehiculeNewIdentifiant());
-            } else if (type == TypeVehicule.bus) {
+            } else if (type == TypeVehicule.BUS) {
                 if (capacite != 0)
                     v = new Bus(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
                     v = new Bus(vehicule, a.getVehiculeNewIdentifiant());
-            } else if (type == TypeVehicule.train) {
+            } else if (type == TypeVehicule.TRAIN) {
                 if (capacite != 0)
                     v = new Train(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
@@ -950,21 +950,21 @@ public class ClientAdmin {
                             vehiculeAModifier.getIdentifiant());
                     else
                         v = new Avion(vehicule, vehiculeAModifier.getIdentifiant());
-                } else if (type == TypeVehicule.bateau) {
+                } else if (type == TypeVehicule.BATEAU) {
                     if (capacite != 0)
                         v = new Bateau(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
                         v = new Bateau(vehicule,
                                 vehiculeAModifier.getIdentifiant());
-                } else if (type == TypeVehicule.bus) {
+                } else if (type == TypeVehicule.BUS) {
                     if (capacite != 0)
                         v = new Bus(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());
                     else
                         v = new Bus(vehicule, 
                         		vehiculeAModifier.getIdentifiant());
-                } else if (type == TypeVehicule.train) {
+                } else if (type == TypeVehicule.TRAIN) {
                     if (capacite != 0)
                         v = new Train(vehicule, capacite,
                             vehiculeAModifier.getIdentifiant());

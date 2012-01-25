@@ -13,7 +13,7 @@ public class Train extends Vehicule {
 	 * @return
 	 */
 	public Train(String vehicule, int capacite, int identifiant) {
-		super(vehicule, TypeVehicule.train, capacite, identifiant);
+		super(vehicule, TypeVehicule.TRAIN, capacite, identifiant);
 		classes.add(new ClassesRepas("Première classe",10));
 		classes.add(new ClassesRepas("Seconde classe",5));
 		repas.add(new ClassesRepas("petit déjeuner",5));
