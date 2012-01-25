@@ -1,7 +1,8 @@
 package objets;
 
 public enum Profil {
-    enfant("Enfant",1),enfantNonAccompagne("Enfant non accompagné",1),jeune("Jeune",2),etudiant("Étudiant",3),adulte("Adulte",5),senior("Sénior",4),couple("Couple",7),famille("Famille",10);
+    ENFANT("Enfant",1),ENFANTNONACCOMPAGNE("Enfant non accompagné",1),JEUNE("Jeune",2),
+    ETUDIANT("Étudiant",3),ADULTE("Adulte",5),SENIOR("Sénior",4),COUPLE("Couple",7),FAMILLE("Famille",10);
     
  // Le String de commande.
     private String commandString;
