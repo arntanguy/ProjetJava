@@ -48,9 +48,8 @@ public class AjoutVillePanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Validé !");
-			Ville v = new Ville(nomText.getText(), admin.getVilleNewIdentifiant());
 			try {
-				admin.addVille(v);
+				admin.createVille(nomText.getText());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

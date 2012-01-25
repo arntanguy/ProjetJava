@@ -25,6 +25,7 @@ public abstract class Serveur implements Serializable {
     protected ArrayList<Vehicule> mesVehicules;
     protected ArrayList<Ville>    mesVilles;
 
+   
     /**
      * Créer une instance de serveur
      */
@@ -273,6 +274,14 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Cette ville appartient deja à la liste des villes.");
     }
+    
+    /**
+     * Renvoit la liste des villes disponibles
+     * @return Liste de villes
+     */
+    public ArrayList<Ville> getVilles() {
+		return mesVilles;
+	}
 
     /**
      * Ajouter un trajet à la liste des trajets
