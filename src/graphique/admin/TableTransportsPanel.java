@@ -8,15 +8,19 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
+import objets.TypeVehicule;
 import objets.Vehicule;
 
 public class TableTransportsPanel extends JPanel {
@@ -35,7 +39,6 @@ public class TableTransportsPanel extends JPanel {
 	private void build() {
 		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
 		buildTrajetsTable();
 		buildButtons();
 	}
@@ -58,15 +61,20 @@ public class TableTransportsPanel extends JPanel {
 		
 		ArrayList<Vehicule> vehicules = serveur.getVehicules();
 		Vector<Object> l = null;
+		JComboBox combo = buildTypeCombo();
+		addComboToTable(combo, 2);
+
 		for(Vehicule v : vehicules) {
 			l = new Vector<Object>();
 			l.add(v.getIdentifiant());
 			l.add(v.getVehicule());
+			
+			combo.setSelectedItem(v.getType());
+
 			l.add(v.getType());
 			l.add(v.getCapacite());
 			transportModel.addRow(l);
 		}
-		
 
 		scrollPane = new JScrollPane(transportTable);
 		add(scrollPane);
@@ -126,8 +134,20 @@ public class TableTransportsPanel extends JPanel {
 				int first = e.getFirstIndex();
 				int last = e.getLastIndex();
 				System.out.println("Selection changed");
+				System.out.println(table.getModel().getValueAt(table.getSelectedRow(), 2));
 			} 
 		}
+	}
+	private JComboBox buildTypeCombo() {
+		JComboBox combo = new JComboBox();
+		for(TypeVehicule v : TypeVehicule.values()) {
+			combo.addItem(v);
+		}
+		return combo;
+	}
+	private void addComboToTable(JComboBox combo, int column) {
+	    TableColumn gradeColumn = transportTable.getColumnModel().getColumn(column);
+	    gradeColumn.setCellEditor(new DefaultCellEditor(combo));
 	}
 
 }

@@ -12,8 +12,6 @@ import logiqueMetier.Serveur;
 
 public class GestionTransportsPanel extends JPanel {
 	private TableTransportsPanel tableTransportsPanel;
-	private AjoutTransportPanel ajoutTransportsPanel;
-
 	private Serveur serveur;
 	
 	public GestionTransportsPanel(Serveur s) {
@@ -25,15 +23,13 @@ public class GestionTransportsPanel extends JPanel {
 	private void build() {
 		setBorder(BorderFactory.createTitledBorder("Gestion des réservations"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-		ajoutTransportsPanel = new AjoutTransportPanel(serveur);
-		add(ajoutTransportsPanel);
 		
 		tableTransportsPanel = new TableTransportsPanel(serveur);
 		add(tableTransportsPanel);
 		
 		buildButtons();
 	}
+	
 	private void buildButtons() {
 		add(new JButton(new ValidateAction("Valider")));
 	}
@@ -48,5 +44,4 @@ public class GestionTransportsPanel extends JPanel {
 			System.out.println("Validé");
 		}
 	}
-
 }
