@@ -67,7 +67,7 @@ public class FenetreClientAdmin extends JFrame {
 	private JPanel buildTrajetsPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new AjoutTrajetPanel(serveur));
+		panel.add(new GestionTrajetsPanel(serveur));
 		return panel;
 	}
 	
