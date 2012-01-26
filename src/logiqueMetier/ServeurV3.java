@@ -26,10 +26,22 @@ import org.jdom.Attribute;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import objets.*;
+/**
+ * Cette classe permet de sauvegarder toute les données que se soit pour les villes, les vehicules, 
+ * les trajets ou les reservations dans un fichier de type xml. 
+ * Elle permet de aussi de restituer toutes ces données dans les des listes ce qui permet de modifier les données 
+ * puis de les re-écrire dans le fichiers xml correspondant.
+ * 
+ * @author Tanguy Arnaud / Ceschel Marvin / Kruck Nathan / Fauvel-Jaeger Olivier
+ * @Version 3
+ */
 public class ServeurV3 extends Serveur {
     public ServeurV3() {
         super();
     }
+    /**
+     * On charge les fichier xml dans la mémoire afin de pouvoir y accéder lorsque l'on veut sauvegarder une donnée. 
+     */
     org.jdom.Document documentVilles = getDoc("MesVilles.xml");
     Element racineVilles = getElem(documentVilles);
     org.jdom.Document documentVehicules = getDoc("MesVehicules.xml");
@@ -71,6 +83,9 @@ public class ServeurV3 extends Serveur {
     }
     /**
      *Méthode qui créer les fichiers HTML
+     *@param String fichier xml
+     *@param String fichier xsl
+     *@param String fichier html
      */
     public static void creerHTML(String xml, String xsl, String html) throws Exception{
     	// Création de la source DOM
@@ -93,6 +108,11 @@ public class ServeurV3 extends Serveur {
     	// Transformation
     	transformer.transform(source, resultat);
     }
+    /**
+     * Cette méthode permet d'enregistrer les villes dans le fichier xml "MesVilles"
+     * La méthode parcourt la liste mesVilles créee dans la classe serveur cette liste contient directement les données 
+     * rentrer par l'utilisateur.
+     */
     public void enregistreVilles(){
     	Ville ville;
     	racineVilles.removeContent();
@@ -110,6 +130,11 @@ public class ServeurV3 extends Serveur {
     	}
     	enregistreXml("MesVilles.xml", documentVilles);
     }
+    /**
+     * Cette méthode permet d'enregistrer les vehicules dans le fichier xml "MesVéhicules"
+     * La méthode parcourt la liste mesVilles créee dans la classe serveur cette liste contient directement les données 
+     * rentrer par l'utilisateur.
+     */
     public void enregistreVehicules(){
     	Vehicule vehicule;
     	racineVehicules.removeContent();
@@ -135,6 +160,11 @@ public class ServeurV3 extends Serveur {
     		}
     	enregistreXml("MesVehicules.xml", documentVehicules);	
     }
+    /**
+     * Cette méthode permet d'enregistrer les trajets dans le fichier xml "MesTrajets"
+     * La méthode parcourt la liste mesVilles créee dans la classe serveur cette liste contient directement les données 
+     * rentrer par l'utilisateur.
+     */
     public void enregistreTrajets(){
     	Trajet trajet;
     	racineTrajets.removeContent();
@@ -191,6 +221,11 @@ public class ServeurV3 extends Serveur {
     		}
     	enregistreXml("MesTrajets.xml", documentTrajets);	
     }
+    /**
+     * Cette méthode permet d'enregistrer les reservations dans le fichier xml "MesReservations"
+     * La méthode parcourt la liste mesVilles créee dans la classe serveur cette liste contient directement les données 
+     * rentrer par l'utilisateur.
+     */
     public void enregistreReservations(){
     	Reservation reservation;
     	racineReservations.removeContent();
@@ -263,6 +298,11 @@ public class ServeurV3 extends Serveur {
     		}
     	enregistreXml("MesReservations.xml", documentReservations);	
     }
+    /**
+     * Cette méthode parcourt le fichier xml element après élément afin de récuperer toutes les informations nécessaires
+     * pour re-créer une liste contenant toutes les villes enregistrée par l'utilisateur.
+     * @throws Exception
+     */
     public void chargerVilles() throws Exception{
     	List liste = racineVilles.getChildren("ville");
     	//On crée un Iterator sur notre liste
@@ -275,6 +315,11 @@ public class ServeurV3 extends Serveur {
     		addVille(new Ville(nom, Integer.valueOf(id)));
         }
     }
+    /**
+     * Cette méthode parcourt le fichier xml element après élément afin de récuperer toutes les informations nécessaires
+     * pour re-créer une liste contenant tous les vehicules enregistrée par l'utilisateur.
+     * @throws Exception
+     */
     public void chargerVehicules() throws Exception{
     	List liste = racineVehicules.getChildren("vehicule");
     	//On crée un Iterator sur notre liste
@@ -300,6 +345,12 @@ public class ServeurV3 extends Serveur {
 	    		}
     	    }
     }
+    /**
+     * Cette méthode parcourt le fichier xml element après élément afin de récuperer toutes les informations nécessaires
+     * pour re-créer une liste contenant tous les trajets
+     *  enregistrée par l'utilisateur.
+     * @throws Exception
+     */
     public void chargerTrajets() throws Exception{
     	List liste = racineTrajets.getChildren("trajet");
     	//On crée un Iterator sur notre liste
@@ -329,6 +380,11 @@ public class ServeurV3 extends Serveur {
 	    	
     	    }
     }
+    /**
+     * Cette méthode parcourt le fichier xml element après élément afin de récuperer toutes les informations nécessaires
+     * pour re-créer une liste contenant toutes les reservations effectuée par l'utilisateur.
+     * @throws Exception
+     */
     public void chargerReservations() throws Exception{
     	List liste = racineReservations.getChildren("reservation");
     	//On crée un Iterator sur notre liste
@@ -368,6 +424,11 @@ public class ServeurV3 extends Serveur {
 			super.addReservation(new Reservation(passager, trajet, Boolean.valueOf(modifiable), Boolean.valueOf(prendCouchette), prendRepas, prendClasses, Integer.valueOf(id), Integer.valueOf(placesVoulues));
     	    }
     }
+    /**
+     * Méthode général qui permet d'enregistrer les fichiers xml dans le bon ficher correspondant
+     * @param fichier
+     * @param doc
+     */
     void enregistreXml(String fichier, org.jdom.Document doc) {
 		try {
 	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
