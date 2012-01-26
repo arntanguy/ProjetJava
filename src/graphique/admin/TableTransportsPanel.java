@@ -18,9 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 import logiqueMetier.Serveur;
 import logiqueMetier.TransportsTableModel;
@@ -64,6 +62,7 @@ public class TableTransportsPanel extends JPanel {
 		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
 		transportModel = new TransportsTableModel(vehicules);
+		transportModel.setColumnNames(columnNames);
 		transportTable = new JTable(null, columnNames);
 		transportTable.setModel(transportModel);
 		transportTable.setFillsViewportHeight(true); // Fill all the container

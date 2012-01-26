@@ -3,13 +3,13 @@ package logiqueMetier;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import objets.Vehicule;
 
 public class TransportsTableModel extends AbstractTableModel {
 
 	ArrayList<Vehicule> vehicules;
+	String[] columnNames;
 	
 	public TransportsTableModel(ArrayList<Vehicule> vehicules) {
 		this.vehicules = vehicules;
@@ -26,7 +26,14 @@ public class TransportsTableModel extends AbstractTableModel {
 		return vehicules.size();
 	}
 
+	@Override
+	public String getColumnName(int columnIndex) {
+		return columnNames[columnIndex];
+	}
 	
+	public void setColumnNames(String[] columnNames) {
+		this.columnNames = columnNames; 
+	} 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Vehicule v = vehicules.get(rowIndex);
