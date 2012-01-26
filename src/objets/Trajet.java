@@ -216,8 +216,9 @@ public class Trajet implements Serializable, Comparable {
         int arriveeMois = dateArrivee.get(Calendar.MONTH) + 1;
 
         return new StringBuffer().append("Voyage (id=").append(identifiant)
-                .append(") de ").append(depart.getVille()).append(" à ").append(arrivee.getVille())
-                .append(" en ").append(vehicule.getVehicule()).append(" (id=")
+                .append(") de ").append(depart.getVille()).append(" à ")
+                .append(arrivee.getVille()).append(" en ")
+                .append(vehicule.getVehicule()).append(" (id=")
                 .append(vehicule.getIdentifiant()).append("): \n\t")
                 .append("Départ le ").append(dateDepart.get(Calendar.DATE))
                 .append("/").append(departMois).append("/")
@@ -244,20 +245,23 @@ public class Trajet implements Serializable, Comparable {
                 .append("#").append(Serveur.calendarToTime(dateDepart))
                 .append("#").append(Serveur.calendarToDate(dateArrivee))
                 .append("#").append(Serveur.calendarToTime(dateArrivee))
-                .append("#").append(depart.getIdentifiant()).append("#").append(arrivee.getIdentifiant())
-                .append("#").append(vehicule.getIdentifiant()).append("#")
+                .append("#").append(depart.getIdentifiant()).append("#")
+                .append(arrivee.getIdentifiant()).append("#")
+                .append(vehicule.getIdentifiant()).append("#")
                 .append(placesRestantes).append("#").append(identifiant)
                 .append("#").append("\n").toString();
     }
-    
+
     public String print2() {
         return new StringBuffer().append(Serveur.calendarToDate(dateDepart))
                 .append("#").append(Serveur.calendarToTime(dateDepart))
                 .append("#").append(Serveur.calendarToDate(dateArrivee))
                 .append("#").append(Serveur.calendarToTime(dateArrivee))
-                .append("#").append(depart.getIdentifiant()).append("#").append(arrivee.getIdentifiant())
-                .append("#").append(vehicule.getIdentifiant()).append("#")
-                .append(placesRestantes).append("#").append(identifiant).toString();
+                .append("#").append(depart.getIdentifiant()).append("#")
+                .append(arrivee.getIdentifiant()).append("#")
+                .append(vehicule.getIdentifiant()).append("#")
+                .append(placesRestantes).append("#").append(identifiant)
+                .toString();
     }
 
     // compare deux trajets suivant leur date de départ

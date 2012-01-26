@@ -3,13 +3,14 @@ package objets;
 import java.io.Serializable;
 
 public enum Profil implements Serializable {
-    ENFANT("Enfant",1),ENFANTNONACCOMPAGNE("Enfant non accompagné",1),JEUNE("Jeune",2),
-    ETUDIANT("Étudiant",3),ADULTE("Adulte",5),SENIOR("Sénior",4),COUPLE("Couple",7),FAMILLE("Famille",10);
-    
- // Le String de commande.
+    ENFANT("Enfant", 1), ENFANTNONACCOMPAGNE("Enfant non accompagné", 1), JEUNE(
+            "Jeune", 2), ETUDIANT("Étudiant", 3), ADULTE("Adulte", 5), SENIOR(
+            "Sénior", 4), COUPLE("Couple", 7), FAMILLE("Famille", 10);
+
+    // Le String de commande.
     private String commandString;
     private int prixStandard;
-    
+
     /**
      * Initialise avec le mot de commande correspondant.
      * 
@@ -18,11 +19,10 @@ public enum Profil implements Serializable {
      */
     Profil(String commandString, int prixStandard) {
         this.commandString = commandString;
-        this.prixStandard= prixStandard;
+        this.prixStandard = prixStandard;
     }
-    
-    public int getPrix()
-    {
+
+    public int getPrix() {
         return prixStandard;
     }
 

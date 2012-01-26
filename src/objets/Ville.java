@@ -53,7 +53,7 @@ public class Ville implements Serializable {
     public void setVille(String ville) {
         this.ville = ville;
     }
-    
+
     /**
      * @param identifiant
      *            identifiant du véhicule
@@ -66,9 +66,10 @@ public class Ville implements Serializable {
     public String toString() {
         return new StringBuffer().append(ville).toString();
     }
-    
-    /** 
+
+    /**
      * Affichage pour le client console
+     * 
      * @return chaine descriptive de l'objet Ville
      */
     public String toStringC() {
@@ -83,7 +84,7 @@ public class Ville implements Serializable {
      * @return la ligne de texte terminée par un '\n'
      */
     public String print() {
-        return new StringBuffer().append(ville).append("#").append(identifiant).append("#").append("\n")
-                .toString();
+        return new StringBuffer().append(ville).append("#").append(identifiant)
+                .append("#").append("\n").toString();
     }
 }

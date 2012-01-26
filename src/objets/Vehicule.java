@@ -22,7 +22,7 @@ public abstract class Vehicule implements Serializable {
     protected int identifiant;
     protected List<ClassesRepas> classes;
     protected List<ClassesRepas> repas;
-    
+
     /**
      * Créé une instance de véhicule
      * 
@@ -33,7 +33,8 @@ public abstract class Vehicule implements Serializable {
      * @param identifiant
      *            identifiant du véhicule
      */
-    public Vehicule(String vehicule, TypeVehicule type, int capacite, int identifiant) {
+    public Vehicule(String vehicule, TypeVehicule type, int capacite,
+            int identifiant) {
         this.vehicule = vehicule;
         this.type = type;
         this.capacite = capacite;
@@ -90,27 +91,28 @@ public abstract class Vehicule implements Serializable {
     public void setIdentifiant(int identifiant) {
         this.identifiant = identifiant;
     }
-    
-    public boolean avecCouchette()
-    {
+
+    public boolean avecCouchette() {
         return false;
     }
-    
-    public List<ClassesRepas> getRepas()
-    {
+
+    public List<ClassesRepas> getRepas() {
         return repas;
     }
-    
-    public List<ClassesRepas> getClasses()
-    {
+
+    public List<ClassesRepas> getClasses() {
         return classes;
     }
-    
+
     @Override
     public String toString() {
-        return new StringBuffer().append(vehicule).append(" (id=")
-                .append(identifiant).append(") de type "+type.getNom()+" et qui a une capacité de ")
-                .append(capacite).toString();
+        return new StringBuffer()
+                .append(vehicule)
+                .append(" (id=")
+                .append(identifiant)
+                .append(") de type " + type.getNom()
+                        + " et qui a une capacité de ").append(capacite)
+                .toString();
     }
 
     /**
@@ -120,8 +122,8 @@ public abstract class Vehicule implements Serializable {
      * @return la ligne de texte terminée par un '\n'
      */
     public String print() {
-        return new StringBuffer().append(vehicule).append("#").append(type).append("#").append(capacite)
-                .append("#").append(identifiant).append("#").append("\n")
-                .toString();
+        return new StringBuffer().append(vehicule).append("#").append(type)
+                .append("#").append(capacite).append("#").append(identifiant)
+                .append("#").append("\n").toString();
     }
 }

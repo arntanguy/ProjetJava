@@ -44,137 +44,148 @@ public class Reservation implements Serializable {
     }
 
     public void genereTicket() {
-            // Create file
-            FileWriter fstream = null;
-            try {
-                fstream = new FileWriter("ticketReservation"+passager.getNom()+"$"+passager.getPrenom()+".html");
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            BufferedWriter out = new BufferedWriter(fstream);
-            String mod=(modifiable) ? "Ticket Modifiable" : "";
-            String couchette=(prendCouchette) ? "Avec couchette" : "";
-            String classes="";
-            if(prendClasses!=null)
-            {
-                for(String key :prendClasses.keySet())
-                {
-                    if(prendClasses.get(key) !=null && prendClasses.get(key)==true)
-                    {
-                        classes+=key+"<br />";
-                    }
+        // Create file
+        FileWriter fstream = null;
+        try {
+            fstream = new FileWriter("ticketReservation" + passager.getNom()
+                    + "$" + passager.getPrenom() + ".html");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        BufferedWriter out = new BufferedWriter(fstream);
+        String mod = (modifiable) ? "Ticket Modifiable" : "";
+        String couchette = (prendCouchette) ? "Avec couchette" : "";
+        String classes = "";
+        if (prendClasses != null) {
+            for (String key : prendClasses.keySet()) {
+                if (prendClasses.get(key) != null
+                        && prendClasses.get(key) == true) {
+                    classes += key + "<br />";
                 }
             }
-            
-            String repas="";
-            if(prendRepas!=null)
-            {
-                for(String key :prendRepas.keySet())
-                {
-                    if(prendRepas.get(key) !=null && prendRepas.get(key)==true)
-                    {
-                        repas+=key+"<br />";
-                    }
+        }
+
+        String repas = "";
+        if (prendRepas != null) {
+            for (String key : prendRepas.keySet()) {
+                if (prendRepas.get(key) != null && prendRepas.get(key) == true) {
+                    repas += key + "<br />";
                 }
             }
-            
-            try {
-                out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">" +
-                		"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\" >" +
-                		"<head><title>Ticket de réservation</title>" +
-                		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
-                		"<link rel=\"schema.DC\" href=\"http://purl.org/dc/elements/1.1/\" />" +
-                		"<meta name=\"DC.title\"       content=\"Votre ticket de réservation\" />" +
-                		"<meta name=\"DC.description\" content=\"Votre ticket de réservation\" />" +
-                		"<meta name=\"DC.language\"    content=\"fr\" />" +
-                		"<meta name=\"DC.keywords\"    content=\"ticket; réservation\" />" +
-                		"</head><body><h1>Votre réservation (n° de réservation = "+identifiant+")</h1>" +
-                		"Passager : "+passager+" "+
-                		"Trajet : "+trajet+" "+
-                		mod+"<br />"+couchette+"<br />"+
-                		"Repas : "+repas+"<br />"+
-                		"Classes : "+classes+"<br />"+
-                		"Synthèse des prix : "+
-                		getPrix()+
-                        "</body></html>");
-            
+        }
+
+        try {
+            out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
+                    + "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\" >"
+                    + "<head><title>Ticket de réservation</title>"
+                    + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />"
+                    + "<link rel=\"schema.DC\" href=\"http://purl.org/dc/elements/1.1/\" />"
+                    + "<meta name=\"DC.title\"       content=\"Votre ticket de réservation\" />"
+                    + "<meta name=\"DC.description\" content=\"Votre ticket de réservation\" />"
+                    + "<meta name=\"DC.language\"    content=\"fr\" />"
+                    + "<meta name=\"DC.keywords\"    content=\"ticket; réservation\" />"
+                    + "</head><body><h1>Votre réservation (n° de réservation = "
+                    + identifiant
+                    + ")</h1>"
+                    + "Passager : "
+                    + passager
+                    + " "
+                    + "Trajet : "
+                    + trajet
+                    + " "
+                    + mod
+                    + "<br />"
+                    + couchette
+                    + "<br />"
+                    + "Repas : "
+                    + repas
+                    + "<br />"
+                    + "Classes : "
+                    + classes
+                    + "<br />"
+                    + "Synthèse des prix : "
+                    + getPrix()
+                    + "</body></html>");
+
             // Close the output stream
             out.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                System.err.println("IO exception");
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            System.err.println("IO exception");
+            e.printStackTrace();
+        }
     }
-    
-    public String getPrix()
-    {
-        int prix=0;
-        int reductionFidelite=0;
-        int prixModifiable=5;
-        int prixCouchette=5;
-        int repasTotal=0;
-        int classesTotal=0;
-        
-        prix+=passager.getProfil().getPrix(); //prix en fonction du type de passager
-        if(passager.getFidelite()==true) //on baisse si il est fidèle
+
+    public String getPrix() {
+        int prix = 0;
+        int reductionFidelite = 0;
+        int prixModifiable = 5;
+        int prixCouchette = 5;
+        int repasTotal = 0;
+        int classesTotal = 0;
+
+        prix += passager.getProfil().getPrix(); // prix en fonction du type de
+                                                // passager
+        if (passager.getFidelite() == true) // on baisse si il est fidèle
         {
-            reductionFidelite=10;
-            prix-=reductionFidelite;
+            reductionFidelite = 10;
+            prix -= reductionFidelite;
         }
-        prix+=trajet.getVehicule().getType().getPrix(); //prix en fonction du type de transport
-        for(ClassesRepas cr:trajet.getVehicule().getRepas())
-        {
-            repasTotal+=cr.getPrix();
-            prix+=cr.getPrix();
+        prix += trajet.getVehicule().getType().getPrix(); // prix en fonction du
+                                                          // type de transport
+        for (ClassesRepas cr : trajet.getVehicule().getRepas()) {
+            repasTotal += cr.getPrix();
+            prix += cr.getPrix();
         }
-        for(ClassesRepas cr:trajet.getVehicule().getClasses())
-        {
-            classesTotal+=cr.getPrix();
-            prix+=cr.getPrix();
+        for (ClassesRepas cr : trajet.getVehicule().getClasses()) {
+            classesTotal += cr.getPrix();
+            prix += cr.getPrix();
         }
-        if(modifiable)
-        {
-            prix+=prixModifiable;
+        if (modifiable) {
+            prix += prixModifiable;
         }
-        if(prendCouchette)
-        {
-            prix+=prixCouchette;
+        if (prendCouchette) {
+            prix += prixCouchette;
         }
-        
-        String texte="prix passager="+passager.getProfil().getPrix()+" euros<br/>";
-        texte+="réduction fidèlité="+reductionFidelite+" euros<br/>";
-        texte+="prix type de transport="+trajet.getVehicule().getType().getPrix()+" euros<br/>";
-        texte+="prix repas="+repasTotal+" euros<br/>";
-        texte+="prix classe="+classesTotal+" euros<br/>";
-        texte+="supplément changement du billet="+prixModifiable+" euros<br/>";
-        texte+="prix couchette="+prixCouchette+" euros<br/>";
-        texte+="prix total="+prix+" euros<br/>";
+
+        String texte = "prix passager=" + passager.getProfil().getPrix()
+                + " euros<br/>";
+        texte += "réduction fidèlité=" + reductionFidelite + " euros<br/>";
+        texte += "prix type de transport="
+                + trajet.getVehicule().getType().getPrix() + " euros<br/>";
+        texte += "prix repas=" + repasTotal + " euros<br/>";
+        texte += "prix classe=" + classesTotal + " euros<br/>";
+        texte += "supplément changement du billet=" + prixModifiable
+                + " euros<br/>";
+        texte += "prix couchette=" + prixCouchette + " euros<br/>";
+        texte += "prix total=" + prix + " euros<br/>";
         return texte;
     }
-    
+
     public String print() {
         String textClasses = "";
-        for(String key :prendClasses.keySet())
-        {
-            textClasses+=key+"="+prendClasses.get(key)+"#";
+        for (String key : prendClasses.keySet()) {
+            textClasses += key + "=" + prendClasses.get(key) + "#";
         }
-        
-        String textRepas= "";
-        for(String key :prendRepas.keySet())
-        {
-                textRepas+=key+"="+prendRepas.get(key)+"#";
+
+        String textRepas = "";
+        for (String key : prendRepas.keySet()) {
+            textRepas += key + "=" + prendRepas.get(key) + "#";
         }
-        
-        return new StringBuffer().append(passager.print()).append("#").append(trajet.print2()).append("#").append(modifiable).append("#").append(prendCouchette).append("#").append(identifiant).append("#").append(textClasses).append(textRepas).append("\n").toString();
+
+        return new StringBuffer().append(passager.print()).append("#")
+                .append(trajet.print2()).append("#").append(modifiable)
+                .append("#").append(prendCouchette).append("#")
+                .append(identifiant).append("#").append(textClasses)
+                .append(textRepas).append("\n").toString();
     }
-    
-    public String toString()
-    {
-        String texte="";
-        String mod=(modifiable) ? "modifiable" : "non modifiable";
-        texte+="Réservation (n°"+identifiant+") du trajet n°"+trajet.getIdentifiant()+" ("+mod+") par "+passager;
+
+    public String toString() {
+        String texte = "";
+        String mod = (modifiable) ? "modifiable" : "non modifiable";
+        texte += "Réservation (n°" + identifiant + ") du trajet n°"
+                + trajet.getIdentifiant() + " (" + mod + ") par " + passager;
         return texte;
     }
 }
