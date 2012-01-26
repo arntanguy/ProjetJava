@@ -16,6 +16,7 @@ public class TrajetsTableModel extends DefaultTableModel {
 
 	public TrajetsTableModel(ArrayList<Trajet> trajets) {
 		this.trajets = trajets;
+		System.out.println(trajets);
 	}
 
 	@Override
@@ -61,19 +62,29 @@ public class TrajetsTableModel extends DefaultTableModel {
 	}
 
 	public void setValueAt(Object o, int rowIndex, int columnIndex) {
-		Trajet v = trajets.get(rowIndex);
+		Trajet t = trajets.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			v.setDepart((Ville)o);
+			Ville v = (Ville) o;
+			if (v != null) {
+				t.setDepart(v);
+			} else {
+				t.setDepart(new Ville());
+			}
 			break;
 		case 1:
-			v.setArrivee((Ville)o);
+			Ville v1 = (Ville) o;
+			if (v1 != null) {
+				t.setArrivee(v1);
+			} else {
+				t.setArrivee(new Ville());
+			}
 			break;
 		case 2: 
-			v.setDateDepart(DateTools.dateToCalendar((Date)o));
+			t.setDateDepart(DateTools.dateToCalendar((Date)o));
 			break;
 		case 3: 
-			v.setDateArrivee(DateTools.dateToCalendar((Date)o));
+			t.setDateArrivee(DateTools.dateToCalendar((Date)o));
 			break;
 		}
 		fireTableDataChanged();
@@ -97,7 +108,4 @@ public class TrajetsTableModel extends DefaultTableModel {
 	{
 		return true;
 	}
-
-
-
 }

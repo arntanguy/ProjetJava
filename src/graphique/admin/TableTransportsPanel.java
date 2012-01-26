@@ -48,12 +48,6 @@ public class TableTransportsPanel extends JPanel {
 	}
 
 	private void buildTrajetsTable() {
-		/* protected String vehicule;
-		    protected TypeVehicule type;
-		    protected int capacite;
-		    protected int identifiant;
-		    protected List<ClassesRepas> classes;
-		    protected List<ClassesRepas> repas; */
 		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
 		transportModel = new TransportsTableModel(vehicules);
