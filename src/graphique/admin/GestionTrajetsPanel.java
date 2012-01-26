@@ -19,7 +19,7 @@ public class GestionTrajetsPanel extends JPanel {
 	}
 
 	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des réservations"));
+		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		ajoutTrajetsPanel = new AjoutTrajetPanel(serveur);
