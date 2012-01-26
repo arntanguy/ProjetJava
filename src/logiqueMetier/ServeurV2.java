@@ -41,14 +41,14 @@ public class ServeurV2 extends Serveur implements Serializable {
     public boolean sauvegarder() throws IOException {
         PrintWriter writeVehicule = new PrintWriter(new FileWriter(
                 "dataV2vehicule"));
-        PrintWriter writeVille = new PrintWriter(
-                new FileWriter("dataV2ville"));
+        PrintWriter writeVille = new PrintWriter(new FileWriter("dataV2ville"));
         PrintWriter writeTrajet = new PrintWriter(
                 new FileWriter("dataV2trajet"));
-        PrintWriter writeReservation = new PrintWriter(
-                new FileWriter("dataV2reservation"));
-        
-        if (writeVehicule.checkError() || writeVille.checkError() || writeTrajet.checkError() || writeReservation.checkError())
+        PrintWriter writeReservation = new PrintWriter(new FileWriter(
+                "dataV2reservation"));
+
+        if (writeVehicule.checkError() || writeVille.checkError()
+                || writeTrajet.checkError() || writeReservation.checkError())
             return false;
 
         // On créé des String où à chaque ligne est écrit uniquement les
@@ -58,8 +58,7 @@ public class ServeurV2 extends Serveur implements Serializable {
         StringBuffer sVille = new StringBuffer("");
         StringBuffer sTrajet = new StringBuffer("");
         StringBuffer sReservation = new StringBuffer("");
-        
-        
+
         for (int j = 0; j < mesVilles.size(); j++) {
             sVille.append(mesVilles.get(j).print());
         }
@@ -69,12 +68,12 @@ public class ServeurV2 extends Serveur implements Serializable {
         for (int i = 0; i < mesTrajets.size(); i++) {
             sTrajet.append(mesTrajets.get(i).print());
         }
-        
-        //System.out.println(mesReservations.size());
+
+        // System.out.println(mesReservations.size());
         for (int k = 0; k < mesReservations.size(); k++) {
             sReservation.append(mesReservations.get(k).print());
         }
-        
+
         // on met ces String dans les fichiers
         writeVehicule.print(sVehicule.toString());
         writeVille.print(sVille.toString());
@@ -102,23 +101,21 @@ public class ServeurV2 extends Serveur implements Serializable {
         BufferedReader bufferTrajet = null;
         BufferedReader bufferVille = null;
         BufferedReader bufferReservation = null;
-        
+
         try {
             bufferVehicule = new BufferedReader(
                     new FileReader("dataV2vehicule"));
             bufferTrajet = new BufferedReader(new FileReader("dataV2trajet"));
-            bufferVille= new BufferedReader(new FileReader("dataV2ville"));
-            bufferReservation= new BufferedReader(new FileReader("dataV2reservation"));
+            bufferVille = new BufferedReader(new FileReader("dataV2ville"));
+            bufferReservation = new BufferedReader(new FileReader(
+                    "dataV2reservation"));
         } catch (Exception e) {
             return false;
         }
         StringBuffer accumulateur = new StringBuffer("");
-        
-        
-
 
         mesVehicules = new ArrayList<Vehicule>();
-        
+
         // On lit chaque ligne du fichier des véhicules
         while (bufferVehicule.ready())
             accumulateur.append(bufferVehicule.readLine()).append("\n");
@@ -131,32 +128,25 @@ public class ServeurV2 extends Serveur implements Serializable {
             String[] tab2 = tab[i].split("#");
             if (tab2.length == 5) {
                 Vehicule v = null;
-                if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.AVION)
-                {
+                if (TypeVehicule.valueOf(tab2[1]) == TypeVehicule.AVION) {
                     v = new Avion(Integer.valueOf(tab2[4]), tab2[0],
                             Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
-                }
-                else if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.BATEAU)
-                {
+                } else if (TypeVehicule.valueOf(tab2[1]) == TypeVehicule.BATEAU) {
                     v = new Bateau(Integer.valueOf(tab2[4]), tab2[0],
                             Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
-                }
-                else if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.BUS)
-                {
+                } else if (TypeVehicule.valueOf(tab2[1]) == TypeVehicule.BUS) {
                     v = new Bus(Integer.valueOf(tab2[4]), tab2[0],
                             Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
-                }
-                else if(TypeVehicule.valueOf(tab2[1])==TypeVehicule.TRAIN)
-                {
+                } else if (TypeVehicule.valueOf(tab2[1]) == TypeVehicule.TRAIN) {
                     v = new Train(Integer.valueOf(tab2[4]), tab2[0],
                             Integer.valueOf(tab2[2]), Integer.valueOf(tab2[3]));
                 }
-                
-                if(v!=null)
+
+                if (v != null)
                     this.addVehicule(v);
             }
         }
-        
+
         accumulateur.setLength(0);
         // On lit chaque ligne du fichier des trajets
         mesVilles = new ArrayList<Ville>();
@@ -166,14 +156,14 @@ public class ServeurV2 extends Serveur implements Serializable {
 
         // Pour chaque ligne, on splite les données séparés par '#'
         // On peut alors reconstituer le trajet, et l'ajouter à la liste des
-        // trajets        
+        // trajets
         for (int i = 0; i < tab5.length; i++) {
             String[] tab6 = tab5[i].split("#");
             if (tab6.length == 2) {
                 this.addVille(new Ville(tab6[0], Integer.valueOf(tab6[1])));
             }
         }
-        
+
         accumulateur.setLength(0);
         // On lit chaque ligne du fichier des trajets
         mesTrajets = new ArrayList<Trajet>();
@@ -186,11 +176,13 @@ public class ServeurV2 extends Serveur implements Serializable {
         // trajets
         for (int j = 0; j < tab3.length; j++) {
             String[] tab4 = tab3[j].split("#");
-            if (tab4.length == 9) {
+            if (tab4.length == 10) {
                 Vehicule v = this.getVehicule(Integer.valueOf(tab4[6]));
                 this.addTrajet(new Trajet(textToCalendar(tab4[0], tab4[1]),
-                        textToCalendar(tab4[2], tab4[3]), this.getVille(Integer.valueOf(tab4[4])), this.getVille(Integer.valueOf(tab4[5])), v,
-                        Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7])));
+                        textToCalendar(tab4[2], tab4[3]), this.getVille(Integer
+                                .valueOf(tab4[4])), this.getVille(Integer
+                                .valueOf(tab4[5])), Integer.valueOf(tab4[9]),
+                        v, Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7])));
             }
         }
 
@@ -202,49 +194,53 @@ public class ServeurV2 extends Serveur implements Serializable {
         String tab7[] = accumulateur.toString().split("\n");
 
         // Pour chaque ligne, on splite les données séparés par '#'
-        // On peut alors reconstituer la réservation, et l'ajouter à la liste des
+        // On peut alors reconstituer la réservation, et l'ajouter à la liste
+        // des
         // réservations
         for (int i = 0; i < tab7.length; i++) {
             String[] tab8 = tab7[i].split("#");
-            if (tab8.length >=18) {
-                Profil profil=null;
-                for(Profil value : Profil.values())
-                {
-                    if(tab8[3].equals(String.valueOf(value)))
-                    {
-                        profil=value;
+            if (tab8.length >= 19) {
+                Profil profil = null;
+                for (Profil value : Profil.values()) {
+                    if (tab8[3].equals(String.valueOf(value))) {
+                        profil = value;
                     }
                 }
 
-                Passager passager=new Passager(tab8[0],tab8[1],Serveur.textToCalendar(tab8[2],"00:00"),profil,Boolean.valueOf(tab8[4]));
-                
+                Passager passager = new Passager(tab8[0], tab8[1],
+                        Serveur.textToCalendar(tab8[2], "00:00"), profil,
+                        Boolean.valueOf(tab8[4]));
+
                 Vehicule v = this.getVehicule(Integer.valueOf(tab8[11]));
-                Trajet trajet=new Trajet(textToCalendar(tab8[5], tab8[6]),
-                        textToCalendar(tab8[7], tab8[8]), this.getVille(Integer.valueOf(tab8[9])), this.getVille(Integer.valueOf(tab8[10])), v,
+                Trajet trajet = new Trajet(textToCalendar(tab8[5], tab8[6]),
+                        textToCalendar(tab8[7], tab8[8]), this.getVille(Integer
+                                .valueOf(tab8[9])), this.getVille(Integer
+                                .valueOf(tab8[10])),Integer
+                                .valueOf(tab8[14]) , v,
                         Integer.valueOf(tab8[13]), Integer.valueOf(tab8[12]));
-                
-                Map<String, Boolean> prendRepas=new HashMap<String, Boolean>();
-                Map<String, Boolean> prendClasses=new HashMap<String, Boolean>();
-                
-                
-                for(int k=18; k<18+v.getClasses().size();k++)
-                {
+
+                Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
+                Map<String, Boolean> prendClasses = new HashMap<String, Boolean>();
+
+                for (int k = 19; k < 19 + v.getClasses().size(); k++) {
                     String[] tab9 = tab8[k].split("=");
                     prendClasses.put(tab9[0], Boolean.valueOf(tab9[1]));
                 }
-                for(int k=18+v.getClasses().size(); k<18+v.getClasses().size()+v.getRepas().size();k++)
-                {
+                for (int k = 19 + v.getClasses().size(); k < 19
+                        + v.getClasses().size() + v.getRepas().size(); k++) {
                     String[] tab10 = tab8[k].split("=");
                     prendRepas.put(tab10[0], Boolean.valueOf(tab10[1]));
                 }
-                
-                Reservation reservation=new Reservation(passager,trajet,Boolean.valueOf(tab8[14]),Boolean.valueOf(tab8[15]),prendRepas,prendClasses,Integer.valueOf(tab8[16]),Integer.valueOf(tab8[17]));
-                
+
+                Reservation reservation = new Reservation(passager, trajet,
+                        Boolean.valueOf(tab8[15]), Boolean.valueOf(tab8[16]),
+                        prendRepas, prendClasses, Integer.valueOf(tab8[17]),
+                        Integer.valueOf(tab8[18]));
+
                 this.addReservation(reservation);
             }
         }
-        
-        
+
         return true;
     }
 
