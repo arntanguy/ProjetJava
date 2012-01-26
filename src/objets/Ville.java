@@ -31,6 +31,10 @@ public class Ville implements Serializable {
         this.ville = ville;
         this.identifiant = identifiant;
     }
+    
+    public Ville() {
+    	this("", -1);
+    }
 
     /**
      * @return nom du véhicule

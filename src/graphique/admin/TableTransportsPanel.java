@@ -75,7 +75,6 @@ public class TableTransportsPanel extends JPanel {
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new SaveAction("Enregistrer")), BorderLayout.CENTER);
 		add(panel);
 	}
 
@@ -93,16 +92,6 @@ public class TableTransportsPanel extends JPanel {
 		}
 	}
 	
-	public class SaveAction extends AbstractAction {
-		public SaveAction(String texte) {
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Enregistré !");
-		}
-	}
 	public class DeleteAction extends AbstractAction {
 		public DeleteAction(String texte) {
 			super(texte);

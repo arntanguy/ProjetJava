@@ -49,6 +49,10 @@ public class Vehicule implements Serializable {
     	this(0, "", TypeVehicule.INCONNU, 0, identifiant);
     }
     
+    public Vehicule() {
+    	this(0, "", TypeVehicule.INCONNU, 0, -1);
+    }
+    
     /**
      * @return nom du véhicule
      */

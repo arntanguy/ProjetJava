@@ -2,7 +2,6 @@ package objets;
 
 import java.io.*;
 import java.util.Calendar;
-import java.util.Date;
 
 import logiqueMetier.Serveur;
 
@@ -54,6 +53,10 @@ public class Trajet implements Serializable, Comparable {
         this.identifiant = identifiant;
     }
 
+    public Trajet(int identifiant) {
+    	this(Calendar.getInstance(), Calendar.getInstance(), new Ville(), new Ville(), new Vehicule(), identifiant);
+    }
+    
     /**
      * Crée une instance de trajet
      * 

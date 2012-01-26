@@ -3,6 +3,7 @@ package graphique.widgets;
 import java.awt.Component;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Date;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JSpinner;
@@ -26,6 +27,7 @@ public class TableSpinnerEditor extends AbstractCellEditor implements TableCellE
 	
 	public TableSpinnerEditor(SpinnerModel model) {
 		spinner = new JSpinner();
+		spinner.setModel(model);
 		spinner.setFocusable(true);
 
 		//List all of the components and make them focusable
@@ -45,7 +47,7 @@ public class TableSpinnerEditor extends AbstractCellEditor implements TableCellE
 	
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
-		spinner.setValue(value);
+		spinner.setValue(new Date());
 		currentTable = table;
 		selectedRow = row;
 		selectedColumn = column;

@@ -1,18 +1,21 @@
 package graphique.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
 
 import objets.Trajet;
+import objets.Ville;
+import tools.DateTools;
 
 public class TrajetsTableModel extends DefaultTableModel {
 
-	ArrayList<Trajet> vehicules;
+	ArrayList<Trajet> trajets;
 	String[] columnNames;
 
-	public TrajetsTableModel(ArrayList<Trajet> vehicules) {
-		this.vehicules = vehicules;
+	public TrajetsTableModel(ArrayList<Trajet> trajets) {
+		this.trajets = trajets;
 	}
 
 	@Override
@@ -24,7 +27,7 @@ public class TrajetsTableModel extends DefaultTableModel {
 
 	@Override
 	public int getRowCount() {
-		return (vehicules != null) ? vehicules.size() : 0;
+		return (trajets != null) ? trajets.size() : 0;
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class TrajetsTableModel extends DefaultTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 	/*	Trajet v = null;
 		try {
-			v = vehicules.get(rowIndex);
+			v = trajets.get(rowIndex);
 		} catch(Exception e) {
 			System.out.println("TransportsTable : Impossible de lire la ligne "+rowIndex);
 		}
@@ -58,32 +61,35 @@ public class TrajetsTableModel extends DefaultTableModel {
 	}
 
 	public void setValueAt(Object o, int rowIndex, int columnIndex) {
-/*		Trajet v = vehicules.get(rowIndex);
+		Trajet v = trajets.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			v.setTrajet((String)o);
+			v.setDepart((Ville)o);
 			break;
 		case 1:
-			v.setType((TypeTrajet)o);
+			v.setArrivee((Ville)o);
 			break;
 		case 2: 
-			v.setCapacite(Integer.parseInt( (String)o ));
+			v.setDateDepart(DateTools.dateToCalendar((Date)o));
+			break;
+		case 3: 
+			v.setDateArrivee(DateTools.dateToCalendar((Date)o));
 			break;
 		}
-		fireTableDataChanged();*/
-	}
-
-	public Trajet getTrajet(int rowIndex) {
-		return vehicules.get(rowIndex);
-	}
-
-	public void addRow(Trajet v) {
-		vehicules.add(v);
 		fireTableDataChanged();
 	}
 
+	public Trajet getTrajet(int rowIndex) {
+		return trajets.get(rowIndex);
+	}
+
+	public void addRow(Trajet v) {
+		trajets.add(v);
+		fireTableDataChanged();
+	} 
+
 	public void removeRow(int row) {
-		vehicules.remove(row);
+		trajets.remove(row);
 		fireTableDataChanged();
 	}
 
@@ -91,5 +97,7 @@ public class TrajetsTableModel extends DefaultTableModel {
 	{
 		return true;
 	}
+
+
 
 }

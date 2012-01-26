@@ -20,6 +20,7 @@ import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
 import objets.Trajet;
+import objets.Vehicule;
 
 public class TableTrajetsPanel extends JPanel {
 	private TrajetsTableModel trajetsModel;
@@ -49,7 +50,7 @@ public class TableTrajetsPanel extends JPanel {
 	}
 
 	private void buildReservationsTable() {
-		String[] columnNames = { "Id", "Départ", "Arrivée", "Date départ",
+		String[] columnNames = { "Départ", "Arrivée", "Date départ",
 		"Date arrivée", "Places restantes" };
 		
 		// Create a SpinnerDateModel with current date as the initial value.
@@ -66,6 +67,9 @@ public class TableTrajetsPanel extends JPanel {
 		// container
 		trajetsTable.getModel().addTableModelListener(new CellListener()); 
 
+		addSpinnerToTable(dateDepartSpinner, 2);
+		addSpinnerToTable(dateArriveeSpinner, 3);
+		
 
 		scrollPane = new JScrollPane(trajetsTable);
 		add(scrollPane);
@@ -75,22 +79,23 @@ public class TableTrajetsPanel extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
+		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new SaveAction("Enregistrer")), BorderLayout.CENTER);
 		add(panel);
 	}
 
-
-	public class SaveAction extends AbstractAction {
-		public SaveAction(String texte) {
+	public class AddAction extends AbstractAction {
+		public AddAction(String texte) {
 			super(texte);
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Enregistré !");
+			System.out.println("Ajout !");
+			trajetsModel.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
 		}
 	}
+	
 	public class DeleteAction extends AbstractAction {
 		public DeleteAction(String texte) {
 			super(texte);
