@@ -2,6 +2,7 @@ package graphique.admin;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -14,18 +15,23 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import objets.Trajet;
+
 import logiqueMetier.Serveur;
 
 public class TableTrajetsPanel extends JPanel {
-	private DefaultTableModel reservationsModel;
+	private TrajetsTableModel reservationsModel;
 	private JTable reservationsTable;
 	private JScrollPane scrollPane;
+	
+	private ArrayList<Trajet> trajets;
 
 	private Serveur serveur;
 	
 	public TableTrajetsPanel(Serveur s) {
 		super();
 		serveur = s;
+		trajets = serveur.getTrajets();
 		build();
 	}
 
@@ -41,8 +47,9 @@ public class TableTrajetsPanel extends JPanel {
 		String[] columnNames = { "Id", "Départ", "Arrivée", "Date départ",
 		"Date arrivée", "Places restantes" };
 		
-		reservationsModel = new DefaultTableModel(null, columnNames);
-		reservationsTable = new JTable(null, columnNames);
+		reservationsModel = new TrajetsTableModel(trajets);
+		reservationsModel.setColumnNames(columnNames);
+		reservationsTable = new JTable();
 		reservationsTable.setModel(reservationsModel);
 		reservationsTable.setFillsViewportHeight(true); // Fill all the
 		// container
