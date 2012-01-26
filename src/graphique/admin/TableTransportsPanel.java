@@ -16,24 +16,32 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 import logiqueMetier.Serveur;
+import logiqueMetier.TransportsTableModel;
 import objets.TypeVehicule;
 import objets.Vehicule;
 
 public class TableTransportsPanel extends JPanel {
-	private DefaultTableModel transportModel;
+	private TransportsTableModel transportModel;
 	private JTable transportTable;
 	private JScrollPane scrollPane;
 
+	ArrayList<Vehicule> vehicules;
+
+
+	private ArrayList<Vehicule> modified;
+	private ArrayList<Vehicule> created;
+
 	private Serveur serveur;
-	
+
 	public TableTransportsPanel(Serveur s) {
 		super();
 		serveur = s;
+		vehicules = serveur.getVehicules();
 		build();
 	}
 
@@ -45,43 +53,32 @@ public class TableTransportsPanel extends JPanel {
 	}
 
 	private void buildTrajetsTable() {
-		   /* protected String vehicule;
+		/* protected String vehicule;
 		    protected TypeVehicule type;
 		    protected int capacite;
 		    protected int identifiant;
 		    protected List<ClassesRepas> classes;
 		    protected List<ClassesRepas> repas; */
-		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
-		
-		transportModel = new DefaultTableModel(null, columnNames);
+		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
+
+		transportModel = new TransportsTableModel(vehicules);
+		transportModel.setColumnNames(columnNames);
 		transportTable = new JTable(null, columnNames);
 		transportTable.setModel(transportModel);
 		transportTable.setFillsViewportHeight(true); // Fill all the container
 		transportTable.getSelectionModel().addListSelectionListener(
 				new ReservationListener(transportTable)); 
-		
-		ArrayList<Vehicule> vehicules = serveur.getVehicules();
+
+		transportTable.getModel().addTableModelListener(new CellListener()); 
+
 		Vector<Object> l = null;
 		JComboBox combo = buildTypeCombo();
 		addComboToTable(combo, 1);
-
-		for(Vehicule v : vehicules) {
-			l = new Vector<Object>();
-			l.add(v.getVehicule());
-			
-			combo.setSelectedItem(v.getType());
-
-			l.add(v.getType());
-			l.add(v.getCapacite());
-			transportModel.addRow(l);
-		}
-
 		scrollPane = new JScrollPane(transportTable);
 		add(scrollPane);
 	}
 
 	private void buildButtons() {
-
 		JPanel panel = new JPanel();
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
@@ -99,10 +96,11 @@ public class TableTransportsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
-			DefaultTableModel model = (DefaultTableModel) transportTable.getModel();
-			model.addRow(new Object[]{"","",""});
+			TransportsTableModel model = (TransportsTableModel) transportTable.getModel();
+			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));
 		}
 	}
+	
 	public class SaveAction extends AbstractAction {
 		public SaveAction(String texte) {
 			super(texte);
@@ -124,12 +122,47 @@ public class TableTransportsPanel extends JPanel {
 			int[] selectedIndexes = transportTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				int id = (Integer) transportModel.getValueAt(row, 0);
-				transportModel.removeRow(row);
-				serveur.removeVehicule(id);
+				try {
+					int id = (Integer) transportModel.getValueAt(row, 0);
+					transportModel.removeRow(row);
+					serveur.removeVehicule(id);
+				} catch (Exception e) {
+					System.out.println("Erreur lors de la suppression");
+				}
 			}	  
 		}
 	}
+
+	private class CellListener implements TableModelListener {
+		public CellListener() {
+		}
+
+		public void tableChanged(TableModelEvent e) {
+			int row    = e.getFirstRow();
+			int column = e.getColumn();
+			System.out.println("Row " + row);
+			System.out.println("Column " + column);
+			
+			switch(e.getType()) {
+			case TableModelEvent.INSERT:
+				System.out.println("Insertion");
+				transportModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
+				break;
+			case TableModelEvent.UPDATE:
+				System.out.println("Updated");
+				for(Vehicule v:vehicules) {
+					Vehicule tv = transportModel.getVehicule(row);
+					if(v.getIdentifiant() == tv.getIdentifiant()) {
+						v.setVehicule((String) transportModel.getValueAt(row, 0));
+						v.setType((TypeVehicule)transportModel.getValueAt(row, 1));
+						v.setCapacite((Integer) transportModel.getValueAt(row, 2));
+					}
+				}
+				break;
+			}	
+		}
+	}
+
 
 	private class ReservationListener implements ListSelectionListener {
 		JTable table;
@@ -159,8 +192,8 @@ public class TableTransportsPanel extends JPanel {
 		return combo;
 	}
 	private void addComboToTable(JComboBox combo, int column) {
-	    TableColumn gradeColumn = transportTable.getColumnModel().getColumn(column);
-	    gradeColumn.setCellEditor(new DefaultCellEditor(combo));
+		TableColumn gradeColumn = transportTable.getColumnModel().getColumn(column);
+		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
 	}
 
 }

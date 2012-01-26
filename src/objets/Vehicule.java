@@ -15,7 +15,7 @@ import java.util.List;
  * @version 2011.12.04
  */
 
-public abstract class Vehicule implements Serializable {
+public class Vehicule implements Serializable {
     protected String vehicule;
     protected TypeVehicule type;
     protected int capacite;
@@ -45,6 +45,10 @@ public abstract class Vehicule implements Serializable {
         this.prix=prix;
     }
 
+    public Vehicule(int identifiant) {
+    	this(0, "", TypeVehicule.INCONNU, 0, identifiant);
+    }
+    
     /**
      * @return nom du véhicule
      */
@@ -133,4 +137,8 @@ public abstract class Vehicule implements Serializable {
                 .append("#").append(prix)
                 .append("#").append("\n").toString();
     }
+
+	public void setType(TypeVehicule typeV) {
+		type = typeV;
+	}
 }
