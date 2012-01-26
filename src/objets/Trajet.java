@@ -56,7 +56,7 @@ public class Trajet implements Serializable, Comparable {
     }
 
     public Trajet(int identifiant) {
-    	this(Calendar.getInstance(), Calendar.getInstance(), new Ville(), new Ville(), new Vehicule(), identifiant);
+    	this(Calendar.getInstance(), Calendar.getInstance(), new Ville(), new Ville(), -1, new Vehicule(), identifiant);
     }
     
     /**
