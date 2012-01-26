@@ -2,11 +2,11 @@ package logiqueMetier;
 
 import java.util.ArrayList;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import objets.Vehicule;
 
-public class TransportsTableModel extends AbstractTableModel {
+public class TransportsTableModel extends DefaultTableModel {
 
 	ArrayList<Vehicule> vehicules;
 	String[] columnNames;
@@ -23,7 +23,7 @@ public class TransportsTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return vehicules.size();
+		return (vehicules != null) ? vehicules.size() : 0;
 	}
 
 	@Override
@@ -62,4 +62,10 @@ public class TransportsTableModel extends AbstractTableModel {
 		vehicules.remove(row);
 		   fireTableDataChanged();
 	}
+	
+    public boolean isCellEditable(int row, int column)
+    {
+        return true;
+    }
+    
 }
