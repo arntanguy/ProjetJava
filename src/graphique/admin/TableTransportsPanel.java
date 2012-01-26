@@ -74,10 +74,6 @@ public class TableTransportsPanel extends JPanel {
 		Vector<Object> l = null;
 		JComboBox combo = buildTypeCombo();
 		addComboToTable(combo, 1);
-		for(Vehicule v : vehicules) {
-			transportModel.addRow(v);
-		}
-
 		scrollPane = new JScrollPane(transportTable);
 		add(scrollPane);
 	}
