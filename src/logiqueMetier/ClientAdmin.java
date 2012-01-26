@@ -193,7 +193,8 @@ public class ClientAdmin {
             String dateDepart = "";
             String horaireDepart = "";
             int intervalleVoulue = 12;
-
+            boolean trierParPrix = false;
+            
             // On demande à l'utilisateur toutes les infos qu'on veut
             // puis on vérifie si ce qui a été entré est correct
 
@@ -260,16 +261,39 @@ public class ClientAdmin {
             }
             if (placesVoulues == 0)
                 placesVoulues = 1;
-
+            
+            
+            System.out.print("Trier par prix (0=non,1=oui) : ");
+            int trierPrix=0;
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                trierPrix = Integer.valueOf(tokenizer.next()); // récupère
+                                                                   // le premier
+                                                                   // mot
+            }
+            if (trierPrix != 0)
+            {
+                trierParPrix = true;
+            }
             Calendar dateCompleteDepart = Serveur.textToCalendar(dateDepart,
                     horaireDepart);
             if (dateCompleteDepart == null)
                 throw new Exception("date de départ mal écrite");
 
+            List<Trajet> trajetRecherche=null;
+            if(!trierParPrix)
+            {
             // on recherche les trajets correspondant aux paramètres rentrés
-            List<Trajet> trajetRecherche = a.rechercherTrajet(depart, arrivee,
+                trajetRecherche = s.rechercherTrajet(depart, arrivee,
                     vehicule, placesVoulues, dateCompleteDepart,
                     intervalleVoulue);
+            }
+            else
+            {
+                trajetRecherche = s.rechercherTrajetParPrix(depart, arrivee,
+                        vehicule, placesVoulues, dateCompleteDepart,
+                        intervalleVoulue);
+            }
 
             // on affiche les trajets correspondant aux paramètres rentrés, s'il
             // y en a
