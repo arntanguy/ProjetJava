@@ -2,6 +2,7 @@ package objets;
 
 import java.io.*;
 import java.util.Calendar;
+import java.util.Comparator;
 
 import logiqueMetier.Serveur;
 
@@ -17,7 +18,7 @@ import logiqueMetier.Serveur;
  * @version 2011.12.04
  */
 
-public class Trajet implements Serializable, Comparable {
+public class Trajet implements Serializable, Comparable<Trajet> {
     Calendar dateDepart;
     Calendar dateArrivee;
     Ville depart;
@@ -26,7 +27,7 @@ public class Trajet implements Serializable, Comparable {
     int placesRestantes;
     int identifiant;
     int distance;
-
+    
     /**
      * Crée une instance de trajet
      * 
@@ -241,7 +242,7 @@ public class Trajet implements Serializable, Comparable {
                 .append(dateArrivee.get(Calendar.HOUR_OF_DAY)).append(":")
                 .append(dateArrivee.get(Calendar.MINUTE)).append("\n\t")
                 .append("Il reste ").append(placesRestantes)
-                .append(" places restantes").toString();
+                .append(" places restantes\n").append("Prix=").append(getPrix()).toString();
     }
 
     /**
@@ -277,12 +278,17 @@ public class Trajet implements Serializable, Comparable {
 
     // compare deux trajets suivant leur date de départ
     @Override
-    public int compareTo(Object t) {
-        if (this.getDateDepart().after(((Trajet) t).getDateDepart()))
+    public int compareTo(Trajet t) {
+        if (this.getDateDepart().after(t.getDateDepart()))
             return 1;
-        else if (this.getDateDepart().before(((Trajet) t).getDateDepart()))
+        else if (this.getDateDepart().before(t.getDateDepart()))
             return -1;
         else
             return 0;
+    }
+    
+    public int getPrix()
+    {
+        return vehicule.getPrix()*distance;
     }
 }

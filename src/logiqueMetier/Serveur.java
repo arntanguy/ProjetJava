@@ -2,6 +2,7 @@ package logiqueMetier;
 
 import java.io.*;
 import java.util.*;
+import objets.Trajet;
 
 import objets.*;
 
@@ -21,12 +22,11 @@ import objets.*;
 
 public abstract class Serveur implements Serializable {
     // liste des trajets et des véhicules
-    protected ArrayList<Trajet>   mesTrajets;
+    protected ArrayList<Trajet> mesTrajets;
     protected ArrayList<Vehicule> mesVehicules;
-    protected ArrayList<Ville>    mesVilles;
-    protected ArrayList<Reservation>    mesReservations;
+    protected ArrayList<Ville> mesVilles;
+    protected ArrayList<Reservation> mesReservations;
 
-   
     /**
      * Créer une instance de serveur
      */
@@ -55,14 +55,14 @@ public abstract class Serveur implements Serializable {
             Calendar dateComplete = Calendar.getInstance();
             dateComplete
                     .set(Calendar.DATE, Integer.valueOf(date.split("/")[0]));
-            dateComplete.set(Calendar.MONTH, Integer
-                    .valueOf(date.split("/")[1]) - 1);
+            dateComplete.set(Calendar.MONTH,
+                    Integer.valueOf(date.split("/")[1]) - 1);
             dateComplete
                     .set(Calendar.YEAR, Integer.valueOf(date.split("/")[2]));
-            dateComplete.set(Calendar.HOUR_OF_DAY, Integer.valueOf(horaire
-                    .split(":")[0]));
-            dateComplete.set(Calendar.MINUTE, Integer.valueOf(horaire
-                    .split(":")[1]));
+            dateComplete.set(Calendar.HOUR_OF_DAY,
+                    Integer.valueOf(horaire.split(":")[0]));
+            dateComplete.set(Calendar.MINUTE,
+                    Integer.valueOf(horaire.split(":")[1]));
             return dateComplete;
         } else
             return null;
@@ -90,9 +90,10 @@ public abstract class Serveur implements Serializable {
      * @return l'heure sous la forme hh:mm
      */
     static public String calendarToTime(Calendar c) {
-        return new StringBuffer().append(
-                String.valueOf(c.get(Calendar.HOUR_OF_DAY))).append(":")
-                .append(String.valueOf(c.get(Calendar.MINUTE))).toString();
+        return new StringBuffer()
+                .append(String.valueOf(c.get(Calendar.HOUR_OF_DAY)))
+                .append(":").append(String.valueOf(c.get(Calendar.MINUTE)))
+                .toString();
     }
 
     /**
@@ -144,7 +145,7 @@ public abstract class Serveur implements Serializable {
         }
         return i;
     }
-    
+
     public int getReservationNewIdentifiant() {
         int i = 0;
         if (mesReservations.size() != 0) {
@@ -179,7 +180,7 @@ public abstract class Serveur implements Serializable {
         }
         return null;
     }
-    
+
     public Reservation getReservation(int id) {
         for (Reservation r : mesReservations) {
             if (r.getIdentifiant() == id)
@@ -219,7 +220,7 @@ public abstract class Serveur implements Serializable {
             System.out.println(mesVilles.get(i).toStringC());
         }
     }
-    
+
     public void consulterReservation() {
         System.out.println("Liste des Réservations : ");
         for (int i = 0; i < this.mesReservations.size(); i++) {
@@ -295,33 +296,36 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Ce vehicule appartient deja à la liste des véhicules.");
     }
-    
-    /** 
-     * Créé un véhicule. Attention, ne l'ajoute pas aux listes de véhicules, appeler addVehicule pour ça.
+
+    /**
+     * Créé un véhicule. Attention, ne l'ajoute pas aux listes de véhicules,
+     * appeler addVehicule pour ça.
+     * 
      * @param nom
      * @param type
      * @param capacite
      * @return
      * @throws Exception
      */
-    public Vehicule creerVehicule(String nom, TypeVehicule type, int capacite) throws Exception {
-    	Vehicule v = null;
-    	switch(type) {
-    	case AVION:
-    		v = new Avion(nom, capacite, getVehiculeNewIdentifiant());
-    		break;
-    	case BATEAU:
-    		v = new Bateau(nom, capacite, getVehiculeNewIdentifiant());
-    		break;
-    	case BUS:
-    		v = new Bus(nom, capacite, getVehiculeNewIdentifiant());
-    		break;
-    	case TRAIN:
-    		v = new Train(nom, capacite, getVehiculeNewIdentifiant());
-    		break;
-    	}
-    	//addVehicule(v);
-		return v;
+    public Vehicule creerVehicule(String nom, TypeVehicule type, int capacite)
+            throws Exception {
+        Vehicule v = null;
+        switch (type) {
+        case AVION:
+            v = new Avion(nom, capacite, getVehiculeNewIdentifiant());
+            break;
+        case BATEAU:
+            v = new Bateau(nom, capacite, getVehiculeNewIdentifiant());
+            break;
+        case BUS:
+            v = new Bus(nom, capacite, getVehiculeNewIdentifiant());
+            break;
+        case TRAIN:
+            v = new Train(nom, capacite, getVehiculeNewIdentifiant());
+            break;
+        }
+        // addVehicule(v);
+        return v;
     }
 
     public void addVille(Ville v) throws Exception {
@@ -331,34 +335,33 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Cette ville appartient deja à la liste des villes.");
     }
-    
+
     public void addReservation(Reservation r) throws Exception {
-        if (!mesReservations.contains(r)) { 
+        if (!mesReservations.contains(r)) {
             mesReservations.add(r);
         } else
             throw new Exception(
                     "Cette réservation appartient deja à la liste des réservations.");
     }
-    
-    
-    
+
     public Ville createVille(String ville) throws Exception {
         Ville v = new Ville(ville, getVilleNewIdentifiant());
         try {
-        	addVille(v);
-        } catch(Exception e) {
-        	return null;
+            addVille(v);
+        } catch (Exception e) {
+            return null;
         }
         return v;
     }
-    
+
     /**
      * Renvoit la liste des villes disponibles
+     * 
      * @return Liste de villes
      */
     public ArrayList<Ville> getVilles() {
-		return mesVilles;
-	}
+        return mesVilles;
+    }
 
     /**
      * Ajouter un trajet à la liste des trajets
@@ -406,10 +409,12 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Cette ville ne fait pas partie de la base de données.");
     }
-    
-    public void modifierReservation(Reservation reservation, Reservation reservation2) throws Exception {
+
+    public void modifierReservation(Reservation reservation,
+            Reservation reservation2) throws Exception {
         if (mesReservations.contains(reservation)) {
-            mesReservations.set(mesReservations.indexOf(reservation), reservation2);
+            mesReservations.set(mesReservations.indexOf(reservation),
+                    reservation2);
         } else
             throw new Exception(
                     "Cette réservation ne fait pas partie de la base de données.");
@@ -465,19 +470,19 @@ public abstract class Serveur implements Serializable {
      *            Identifiant du véhicule à supprimer
      */
     public void removeVehicule(int id) {
-    	for(Vehicule v : mesVehicules) {
-    		if(v.getIdentifiant() == id) {
-    			for (int i = 0; i < mesTrajets.size(); i++) {
+        for (Vehicule v : mesVehicules) {
+            if (v.getIdentifiant() == id) {
+                for (int i = 0; i < mesTrajets.size(); i++) {
                     if (mesTrajets.get(i).getVehicule() == v) {
                         mesTrajets.remove(i);
                         i--;
                     }
                 }
                 mesVehicules.remove(v);
-    		}
-    	}
+            }
+        }
     }
-    
+
     /**
      * Supprimer un trajet de la liste des trajets
      * 
@@ -493,7 +498,7 @@ public abstract class Serveur implements Serializable {
         if (mesVilles.contains(v))
             mesVilles.remove(v);
     }
-    
+
     public void removeReservation(Reservation r) {
         if (mesReservations.contains(r))
             mesReservations.remove(r);
@@ -581,6 +586,17 @@ public abstract class Serveur implements Serializable {
         // apparaissent sous forme chronologique
         Collections.sort(trajetsConvenables);
         return trajetsConvenables;
+    }
+
+    public List<Trajet> rechercherTrajetParPrix(Ville depart, Ville arrivee,
+            Vehicule vehicule, int placesVoulues, Calendar dateDepart,
+            int intervalleVoulue) {
+        List<Trajet> list = rechercherTrajet(depart, arrivee, vehicule,
+                placesVoulues, dateDepart, intervalleVoulue);
+        
+        Collections.sort(list,new CompareInteger());
+        
+        return list;
     }
 
     /**
@@ -915,11 +931,11 @@ public abstract class Serveur implements Serializable {
         return trajets;
     }
 
-	public ArrayList<Trajet> getTrajets() {
-		return mesTrajets;
-	}
+    public ArrayList<Trajet> getTrajets() {
+        return mesTrajets;
+    }
 
-	public ArrayList<Vehicule> getVehicules() {
-		return mesVehicules;
-	}
+    public ArrayList<Vehicule> getVehicules() {
+        return mesVehicules;
+    }
 }
