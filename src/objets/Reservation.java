@@ -136,7 +136,7 @@ public class Reservation implements Serializable {
     }
 
     public String getPrix() {
-        int prix = 0;
+        double prix = 0;
         int reductionFidelite = 0;
         int prixModifiable = 5;
         int prixCouchette = 5;
@@ -150,7 +150,7 @@ public class Reservation implements Serializable {
             reductionFidelite = 10;
             prix -= reductionFidelite;
         }
-        prix += trajet.getVehicule().getPrix(); // prix en fonction du
+        prix += (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0; // prix en fonction du
                                                           // type de transport
         for (ClassesRepas cr : trajet.getVehicule().getRepas()) {
             repasTotal += cr.getPrix();

@@ -20,9 +20,9 @@ public class Bus extends Vehicule {
         this(prix, vehicule, 50, identifiant);
     }
     public Bus(String vehicule, int identifiant) {
-        this(2, vehicule, 50, identifiant);
+        this(1, vehicule, 50, identifiant);
     }
     public Bus(String vehicule, int capacite, int identifiant) {
-        this(2, vehicule, capacite, identifiant);
+        this(1, vehicule, capacite, identifiant);
     }
 }

@@ -30,11 +30,11 @@ public class Avion extends Vehicule {
     }
     
     public Avion(String vehicule, int identifiant) {
-        this(500, vehicule, 300, identifiant);
+        this(20, vehicule, 300, identifiant);
     }
     
     public Avion(String vehicule, int capacite, int identifiant) {
-        this(500, vehicule, capacite, identifiant);
+        this(20, vehicule, capacite, identifiant);
     }
 
     public boolean avecCouchette() {
