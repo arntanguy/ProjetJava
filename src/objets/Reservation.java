@@ -15,7 +15,6 @@ public class Reservation implements Serializable {
     private boolean modifiable;
     private int identifiant;
     private int placesVoulues;
-
     private boolean prendCouchette;
     private Map<String, Boolean> prendRepas;
     private Map<String, Boolean> prendClasses;
@@ -150,7 +149,7 @@ public class Reservation implements Serializable {
             reductionFidelite = 10;
             prix -= reductionFidelite;
         }
-        prix += trajet.getVehicule().getType().getPrix(); // prix en fonction du
+        prix += trajet.getVehicule().getPrix(); // prix en fonction du
                                                           // type de transport
         for (ClassesRepas cr : trajet.getVehicule().getRepas()) {
             repasTotal += cr.getPrix();
@@ -173,7 +172,7 @@ public class Reservation implements Serializable {
                 + " euros<br/>";
         texte += "réduction fidèlité=" + reductionFidelite + " euros<br/>";
         texte += "prix type de transport="
-                + trajet.getVehicule().getType().getPrix() + " euros<br/>";
+                + trajet.getVehicule().getPrix() + " euros<br/>";
         texte += "prix repas=" + repasTotal + " euros<br/>";
         texte += "prix classe=" + classesTotal + " euros<br/>";
         texte += "supplément changement du billet=" + prixModifiable

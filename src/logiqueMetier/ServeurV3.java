@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Iterator;
+import java.util.Map;
 import java.io.FileOutputStream;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -34,7 +35,7 @@ public class ServeurV3 extends Serveur {
     Element racineVehicules = getElem(documentVehicules);
     org.jdom.Document documentTrajets = getDoc("MesTrajets.xml");
     Element racineTrajets = getElem(documentTrajets);
-    org.jdom.Document documentReservations = getDoc("MesReservationss.xml");
+    org.jdom.Document documentReservations = getDoc("MesReservations.xml");
     Element racineReservations = getElem(documentReservations);
     private static int idGeneral=0;
     /**
@@ -216,7 +217,7 @@ public class ServeurV3 extends Serveur {
 		}
 		catch (java.io.IOException e){}
     }
-    public void enregistreReservation(){
+    public void enregistreReservations(){
     	Reservation reservation;
     	racineReservations.removeContent();
     		for(int i = 0; i < super.mesReservations.size(); i++){	
@@ -255,40 +256,42 @@ public class ServeurV3 extends Serveur {
     			fidelite.setText(String.valueOf(passager.getFidelite()));
     			bal.addContent(fidelite);
     		    
-    			Element horaireDepart = new Element("horaireDepart");
-    			horaireDepart.setText(super.calendarToTime(dateDeDepart));
-    			bal.addContent(horaireDepart);
+    			Trajet trajet = reservation.getTrajet();
+    			Element idTrajet = new Element("idTrajet");
+    			idTrajet.setText(String.valueOf(trajet.getIdentifiant()));
+    			bal.addContent(idTrajet);
+    		    
+    			Element modifiable = new Element("modifiable");
+    			modifiable.setText(String.valueOf(reservation.isModifiable()));
+    			bal.addContent(modifiable);
     			
-    			Element dateArrivee = new Element("dateArrivee");
-    			Calendar dateDarrivee = Calendar.getInstance();
-				dateDarrivee = trajet.getDateArrivee();
-    			dateArrivee.setText(super.calendarToDate(dateDarrivee));
-    			bal.addContent(dateArrivee);
+    			Element identifiant = new Element("identifiant");
+    			identifiant.setText(String.valueOf(reservation.getIdentifiant()));
+    			bal.addContent(identifiant);
+    		    
+    			Element placesVoulues = new Element("placesVoulues");
+    			placesVoulues.setText(String.valueOf(reservation.getPlacesVoulues()));
+    			bal.addContent(placesVoulues);
+    		    
+    			Element prendCouchette = new Element("prendCouchette");
+    			prendCouchette.setText(String.valueOf(reservation.isPrendCouchette()));
+    			bal.addContent(prendCouchette);
+    		    
+    			for(ClassesRepas classe : reservation.getTrajet().getVehicule().getClasses())
+    			{
+	    				Element prendClasses = new Element(classe.getNom());
+	        			prendClasses.setText(String.valueOf(reservation.getClasse(classe.getNom())));
+	        			bal.addContent(prendClasses);
+    			}
     			
-    			Element horaireArrivee = new Element("horaireArrivee");
-    			horaireArrivee.setText(super.calendarToTime(dateDarrivee));
-    			bal.addContent(horaireArrivee);
-    		
-    			Ville ville = trajet.getDepart();
-    			Element idDepart = new Element("idVilleDepart");
-    			idDepart.setText(String.valueOf(ville.getIdentifiant()));
-    			bal.addContent(idDepart);
-    			
-    			Ville villeAr = trajet.getArrivee();
-    			Element idArrivee = new Element("idVilleArrivee");
-    			idArrivee.setText(String.valueOf(villeAr.getIdentifiant()));
-    			bal.addContent(idArrivee);
-
-    			Vehicule vehiculeDeTransport = trajet.getVehicule();
-    			Element idVehicule = new Element("idVehicule");
-    			idVehicule.setText(String.valueOf(vehiculeDeTransport.getIdentifiant()));
-    			bal.addContent(idVehicule);
-    			
-    			Element placesRestantes = new Element("placesRestantes");
-    			placesRestantes.setText(String.valueOf(trajet.getPlacesRestantes()));
-    			bal.addContent(placesRestantes);
+    			for(ClassesRepas repas : reservation.getTrajet().getVehicule().getRepas())
+    			{
+    				Element prendRepas = new Element(repas.getNom());
+        			prendRepas.setText(String.valueOf(reservation.getRepas(repas.getNom())));
+        			bal.addContent(prendRepas);
+    			}
     		}
-    	enregistreXml("MesTrajets.xml", documentTrajets);	
+    	enregistreXml("MesReservations.xml", documentReservations);	
     }
     public void chargerVilles() throws Exception{
     	List liste = racineVilles.getChildren("ville");
@@ -366,6 +369,7 @@ public class ServeurV3 extends Serveur {
     	enregistreVehicules();
     	enregistreVilles();
     	enregistreTrajets();
+    	enregistreReservations();
     	return true;
     }
 

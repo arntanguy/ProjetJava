@@ -65,8 +65,8 @@ public class AjoutTransportPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			try {
-				serveur.creerVehicule(nomText.getText(), (TypeVehicule)typeTransportsCombo.getSelectedItem(), 
-						(Integer)capaciteSpinner.getValue());
+				serveur.addVehicule(serveur.creerVehicule(nomText.getText(), (TypeVehicule)typeTransportsCombo.getSelectedItem(), 
+						(Integer)capaciteSpinner.getValue()));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -15,11 +15,12 @@ import java.util.List;
  * @version 2011.12.04
  */
 
-public abstract class Vehicule implements Serializable {
+public class Vehicule implements Serializable {
     protected String vehicule;
     protected TypeVehicule type;
     protected int capacite;
     protected int identifiant;
+    protected int prix;
     protected List<ClassesRepas> classes;
     protected List<ClassesRepas> repas;
 
@@ -33,7 +34,7 @@ public abstract class Vehicule implements Serializable {
      * @param identifiant
      *            identifiant du véhicule
      */
-    public Vehicule(String vehicule, TypeVehicule type, int capacite,
+    public Vehicule(int prix, String vehicule, TypeVehicule type, int capacite,
             int identifiant) {
         this.vehicule = vehicule;
         this.type = type;
@@ -41,13 +42,22 @@ public abstract class Vehicule implements Serializable {
         this.identifiant = identifiant;
         classes = new ArrayList<ClassesRepas>();
         repas = new ArrayList<ClassesRepas>();
+        this.prix=prix;
     }
 
+    public Vehicule(int identifiant) {
+    	this(0, "", TypeVehicule.INCONNU, 0, identifiant);
+    }
+    
     /**
      * @return nom du véhicule
      */
     public String getVehicule() {
         return vehicule;
+    }
+    
+    public int getPrix() {
+        return prix;
     }
 
     /**
@@ -124,6 +134,11 @@ public abstract class Vehicule implements Serializable {
     public String print() {
         return new StringBuffer().append(vehicule).append("#").append(type)
                 .append("#").append(capacite).append("#").append(identifiant)
+                .append("#").append(prix)
                 .append("#").append("\n").toString();
     }
+
+	public void setType(TypeVehicule typeV) {
+		type = typeV;
+	}
 }
