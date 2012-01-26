@@ -1,6 +1,8 @@
 package objets;
 
-public enum Profil {
+import java.io.Serializable;
+
+public enum Profil implements Serializable {
     ENFANT("Enfant",1),ENFANTNONACCOMPAGNE("Enfant non accompagné",1),JEUNE("Jeune",2),
     ETUDIANT("Étudiant",3),ADULTE("Adulte",5),SENIOR("Sénior",4),COUPLE("Couple",7),FAMILLE("Famille",10);
     
@@ -27,7 +29,7 @@ public enum Profil {
     /**
      * @return Le mot de commande en tant que String.
      */
-    public String toString() {
+    public String getProfil() {
         return commandString;
     }
 }

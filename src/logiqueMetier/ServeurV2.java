@@ -41,38 +41,49 @@ public class ServeurV2 extends Serveur implements Serializable {
     public boolean sauvegarder() throws IOException {
         PrintWriter writeVehicule = new PrintWriter(new FileWriter(
                 "dataV2vehicule"));
-        PrintWriter writeTrajet = new PrintWriter(
-                new FileWriter("dataV2trajet"));
         PrintWriter writeVille = new PrintWriter(
                 new FileWriter("dataV2ville"));
+        PrintWriter writeTrajet = new PrintWriter(
+                new FileWriter("dataV2trajet"));
+        PrintWriter writeReservation = new PrintWriter(
+                new FileWriter("dataV2reservation"));
         
-        if (writeVehicule.checkError() || writeTrajet.checkError() || writeVille.checkError())
+        if (writeVehicule.checkError() || writeVille.checkError() || writeTrajet.checkError() || writeReservation.checkError())
             return false;
 
         // On créé des String où à chaque ligne est écrit uniquement les
         // informations permettant de reconstituer l'objet.
         // Chaque information est séparée par le séparateur '#'.
         StringBuffer sVehicule = new StringBuffer("");
-        StringBuffer sTrajet = new StringBuffer("");
         StringBuffer sVille = new StringBuffer("");
+        StringBuffer sTrajet = new StringBuffer("");
+        StringBuffer sReservation = new StringBuffer("");
         
-        for (int i = 0; i < mesTrajets.size(); i++) {
-            sTrajet.append(mesTrajets.get(i).print());
+        
+        for (int j = 0; j < mesVilles.size(); j++) {
+            sVille.append(mesVilles.get(j).print());
         }
         for (int j = 0; j < mesVehicules.size(); j++) {
             sVehicule.append(mesVehicules.get(j).print());
         }
-        for (int j = 0; j < mesVilles.size(); j++) {
-            sVille.append(mesVilles.get(j).print());
+        for (int i = 0; i < mesTrajets.size(); i++) {
+            sTrajet.append(mesTrajets.get(i).print());
+        }
+        
+        //System.out.println(mesReservations.size());
+        for (int k = 0; k < mesReservations.size(); k++) {
+            sReservation.append(mesReservations.get(k).print());
         }
         
         // on met ces String dans les fichiers
         writeVehicule.print(sVehicule.toString());
-        writeTrajet.print(sTrajet.toString());
         writeVille.print(sVille.toString());
+        writeTrajet.print(sTrajet.toString());
+        writeReservation.print(sReservation.toString());
         writeVehicule.close();
-        writeTrajet.close();
         writeVille.close();
+        writeTrajet.close();
+        writeReservation.close();
         return true;
     }
 
@@ -90,18 +101,23 @@ public class ServeurV2 extends Serveur implements Serializable {
         BufferedReader bufferVehicule = null;
         BufferedReader bufferTrajet = null;
         BufferedReader bufferVille = null;
+        BufferedReader bufferReservation = null;
+        
         try {
             bufferVehicule = new BufferedReader(
                     new FileReader("dataV2vehicule"));
             bufferTrajet = new BufferedReader(new FileReader("dataV2trajet"));
             bufferVille= new BufferedReader(new FileReader("dataV2ville"));
+            bufferReservation= new BufferedReader(new FileReader("dataV2reservation"));
         } catch (Exception e) {
             return false;
         }
         StringBuffer accumulateur = new StringBuffer("");
-        mesTrajets = new ArrayList<Trajet>();
+        
+        
+
+
         mesVehicules = new ArrayList<Vehicule>();
-        mesVilles = new ArrayList<Ville>();
         
         // On lit chaque ligne du fichier des véhicules
         while (bufferVehicule.ready())
@@ -140,9 +156,27 @@ public class ServeurV2 extends Serveur implements Serializable {
                     this.addVehicule(v);
             }
         }
-
+        
         accumulateur.setLength(0);
         // On lit chaque ligne du fichier des trajets
+        mesVilles = new ArrayList<Ville>();
+        while (bufferVille.ready())
+            accumulateur.append(bufferVille.readLine()).append("\n");
+        String tab5[] = accumulateur.toString().split("\n");
+
+        // Pour chaque ligne, on splite les données séparés par '#'
+        // On peut alors reconstituer le trajet, et l'ajouter à la liste des
+        // trajets        
+        for (int i = 0; i < tab5.length; i++) {
+            String[] tab6 = tab5[i].split("#");
+            if (tab6.length == 2) {
+                this.addVille(new Ville(tab6[0], Integer.valueOf(tab6[1])));
+            }
+        }
+        
+        accumulateur.setLength(0);
+        // On lit chaque ligne du fichier des trajets
+        mesTrajets = new ArrayList<Trajet>();
         while (bufferTrajet.ready())
             accumulateur.append(bufferTrajet.readLine()).append("\n");
         String tab3[] = accumulateur.toString().split("\n");
@@ -159,24 +193,58 @@ public class ServeurV2 extends Serveur implements Serializable {
                         Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7])));
             }
         }
-        
+
         accumulateur.setLength(0);
         // On lit chaque ligne du fichier des trajets
-        while (bufferVille.ready())
-            accumulateur.append(bufferVille.readLine()).append("\n");
-        String tab5[] = accumulateur.toString().split("\n");
+        mesReservations = new ArrayList<Reservation>();
+        while (bufferReservation.ready())
+            accumulateur.append(bufferReservation.readLine()).append("\n");
+        String tab7[] = accumulateur.toString().split("\n");
 
         // Pour chaque ligne, on splite les données séparés par '#'
-        // On peut alors reconstituer le trajet, et l'ajouter à la liste des
-        // trajets        
-        for (int i = 0; i < tab5.length; i++) {
-            String[] tab6 = tab5[i].split("#");
-            if (tab6.length == 4) {
-                this.addVille(new Ville(tab6[0], Integer.valueOf(tab6[1])));
-                System.out.println("Ville "+tab6[0]);
+        // On peut alors reconstituer la réservation, et l'ajouter à la liste des
+        // réservations
+        for (int i = 0; i < tab7.length; i++) {
+            String[] tab8 = tab7[i].split("#");
+            if (tab8.length >=17) {
+                Profil profil=null;
+                for(Profil value : Profil.values())
+                {
+                    if(tab8[3].equals(String.valueOf(value)))
+                    {
+                        profil=value;
+                    }
+                }
+
+                Passager passager=new Passager(tab8[0],tab8[1],Serveur.textToCalendar(tab8[2],"00:00"),profil,Boolean.valueOf(tab8[4]));
+                
+                Vehicule v = this.getVehicule(Integer.valueOf(tab8[11]));
+                Trajet trajet=new Trajet(textToCalendar(tab8[5], tab8[6]),
+                        textToCalendar(tab8[7], tab8[8]), this.getVille(Integer.valueOf(tab8[9])), this.getVille(Integer.valueOf(tab8[10])), v,
+                        Integer.valueOf(tab8[13]), Integer.valueOf(tab8[12]));
+                
+                Map<String, Boolean> prendRepas=new HashMap<String, Boolean>();
+                Map<String, Boolean> prendClasses=new HashMap<String, Boolean>();
+                
+                
+                for(int k=17; k<17+v.getClasses().size();k++)
+                {
+                    String[] tab9 = tab8[k].split("=");
+                    prendClasses.put(tab9[0], Boolean.valueOf(tab9[1]));
+                }
+                for(int k=17+v.getClasses().size()-1; k<17+v.getClasses().size()+v.getRepas().size()-1;k++)
+                {
+                    String[] tab10 = tab8[k].split("=");
+                    prendRepas.put(tab10[0], Boolean.valueOf(tab10[1]));
+                }
+                
+                Reservation reservation=new Reservation(passager,trajet,Boolean.valueOf(tab8[14]),Boolean.valueOf(tab8[15]),prendRepas,prendClasses,Integer.valueOf(tab8[16]));
+                
+                this.addReservation(reservation);
             }
         }
-
+        
+        
         return true;
     }
 

@@ -24,6 +24,7 @@ public abstract class Serveur implements Serializable {
     protected ArrayList<Trajet>   mesTrajets;
     protected ArrayList<Vehicule> mesVehicules;
     protected ArrayList<Ville>    mesVilles;
+    protected ArrayList<Reservation>    mesReservations;
 
    
     /**
@@ -33,6 +34,7 @@ public abstract class Serveur implements Serializable {
         mesTrajets = new ArrayList<Trajet>();
         mesVehicules = new ArrayList<Vehicule>();
         mesVilles = new ArrayList<Ville>();
+        mesReservations = new ArrayList<Reservation>();
     }
 
     /**
@@ -142,6 +144,18 @@ public abstract class Serveur implements Serializable {
         }
         return i;
     }
+    
+    public int getReservationNewIdentifiant() {
+        int i = 0;
+        if (mesReservations.size() != 0) {
+            for (Reservation r : mesReservations) {
+                if (r.getIdentifiant() > i)
+                    i = r.getIdentifiant();
+            }
+            i++;
+        }
+        return i;
+    }
 
     /**
      * Récupère un véhicule grâce à son identifiant
@@ -194,7 +208,14 @@ public abstract class Serveur implements Serializable {
     public void consulterVille() {
         System.out.println("Liste des Villes : ");
         for (int i = 0; i < this.mesVilles.size(); i++) {
-            System.out.println(mesVilles.get(i).toString());
+            System.out.println(mesVilles.get(i).toStringC());
+        }
+    }
+    
+    public void consulterReservation() {
+        System.out.println("Liste des Réservations : ");
+        for (int i = 0; i < this.mesReservations.size(); i++) {
+            System.out.println(mesReservations.get(i).toString());
         }
     }
 
@@ -283,7 +304,6 @@ public abstract class Serveur implements Serializable {
     		v = new Train(nom, capacite, getVehiculeNewIdentifiant());
     		break;
     	}
-    	System.out.println(v);
     	addVehicule(v);
 		return v;
     }
@@ -295,6 +315,16 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Cette ville appartient deja à la liste des villes.");
     }
+    
+    public void addReservation(Reservation r) throws Exception {
+        if (!mesReservations.contains(r)) { 
+            mesReservations.add(r);
+        } else
+            throw new Exception(
+                    "Cette réservation appartient deja à la liste des réservations.");
+    }
+    
+    
     
     public Ville createVille(String ville) throws Exception {
         Ville v = new Ville(ville, getVilleNewIdentifiant());

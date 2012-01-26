@@ -15,7 +15,7 @@ public enum TypeVehicule {
         return prixStandard;
     }
     
-    public String toString() {
+    public String getNom() {
         return nom;
     }
 }

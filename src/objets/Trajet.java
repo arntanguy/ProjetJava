@@ -249,6 +249,16 @@ public class Trajet implements Serializable, Comparable {
                 .append(placesRestantes).append("#").append(identifiant)
                 .append("#").append("\n").toString();
     }
+    
+    public String print2() {
+        return new StringBuffer().append(Serveur.calendarToDate(dateDepart))
+                .append("#").append(Serveur.calendarToTime(dateDepart))
+                .append("#").append(Serveur.calendarToDate(dateArrivee))
+                .append("#").append(Serveur.calendarToTime(dateArrivee))
+                .append("#").append(depart.getIdentifiant()).append("#").append(arrivee.getIdentifiant())
+                .append("#").append(vehicule.getIdentifiant()).append("#")
+                .append(placesRestantes).append("#").append(identifiant).toString();
+    }
 
     // compare deux trajets suivant leur date de départ
     @Override

@@ -1,10 +1,11 @@
 package objets;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import logiqueMetier.Serveur;
 
-public class Passager {
+public class Passager implements Serializable {
     private String nom;
     private String prenom;
     private Calendar dateNaissance;
@@ -43,7 +44,11 @@ public class Passager {
     
     public String toString()
     {
-        String f=(getFidelite()) ? "Fidèle" :"";
-        return getNom()+" "+getPrenom()+" "+Serveur.calendarToDate(getDateNaissance())+" "+getProfil().toString()+" "+f+"<br />";
+        String f=(getFidelite()) ? "(avec la carte fidélité)" :"";
+        return getNom()+" "+getPrenom()+" (né le "+Serveur.calendarToDate(getDateNaissance())+") \nTarif : "+getProfil().toString()+" "+f;
+    }
+    
+    public String print() {
+        return new StringBuffer().append(nom).append("#").append(prenom).append("#").append(Serveur.calendarToDate(dateNaissance)).append("#").append(profil).append("#").append(fidelite).toString();
     }
 }

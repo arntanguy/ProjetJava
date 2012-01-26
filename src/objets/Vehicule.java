@@ -109,7 +109,7 @@ public abstract class Vehicule implements Serializable {
     @Override
     public String toString() {
         return new StringBuffer().append(vehicule).append(" (id=")
-                .append(identifiant).append(") de type "+type+" et qui a une capacité de ")
+                .append(identifiant).append(") de type "+type.getNom()+" et qui a une capacité de ")
                 .append(capacite).toString();
     }
 

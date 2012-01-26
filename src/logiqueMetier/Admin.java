@@ -114,6 +114,11 @@ public class Admin {
     protected void addTrajet(Trajet v) throws Exception {
         serveur.addTrajet(v);
     }
+    
+    protected void addReservation(Reservation r) throws Exception {
+        serveur.addReservation(r);
+    }
+
 
     /**
      * Supprimer un véhicule de la liste des véhicules
@@ -155,6 +160,10 @@ public class Admin {
     
     protected void consulterVille() {
         serveur.consulterVille();
+    }
+    
+    protected void consulterReservation() {
+        serveur.consulterReservation();
     }
 
     /**

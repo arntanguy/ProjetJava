@@ -3,15 +3,17 @@ package objets;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Map;
 
 import logiqueMetier.Serveur;
 
-public class Reservation {
+public class Reservation implements Serializable {
     private Passager passager;
     private Trajet trajet;
     private boolean modifiable;
+    private int identifiant;
 
     private boolean prendCouchette;
     private Map<String, Boolean> prendRepas;
@@ -27,13 +29,18 @@ public class Reservation {
      */
     public Reservation(Passager passager, Trajet trajet, boolean modifiable,
             boolean prendCouchette, Map<String, Boolean> prendRepas,
-            Map<String, Boolean> prendClasses) {
+            Map<String, Boolean> prendClasses, int identifiant) {
         this.passager = passager;
         this.trajet = trajet;
         this.modifiable = modifiable;
         this.prendCouchette = prendCouchette;
         this.prendRepas = prendRepas;
         this.prendClasses = prendClasses;
+        this.identifiant = identifiant;
+    }
+
+    public int getIdentifiant() {
+        return identifiant;
     }
 
     public void genereTicket() {
@@ -82,7 +89,7 @@ public class Reservation {
                 		"<meta name=\"DC.description\" content=\"Votre ticket de réservation\" />" +
                 		"<meta name=\"DC.language\"    content=\"fr\" />" +
                 		"<meta name=\"DC.keywords\"    content=\"ticket; réservation\" />" +
-                		"</head><body><h1>Votre réservation</h1>" +
+                		"</head><body><h1>Votre réservation (n° de réservation = "+identifiant+")</h1>" +
                 		"Passager : "+passager+" "+
                 		"Trajet : "+trajet+" "+
                 		mod+"<br />"+couchette+"<br />"+
@@ -144,6 +151,30 @@ public class Reservation {
         texte+="supplément changement du billet="+prixModifiable+" euros<br/>";
         texte+="prix couchette="+prixCouchette+" euros<br/>";
         texte+="prix total="+prix+" euros<br/>";
+        return texte;
+    }
+    
+    public String print() {
+        String textClasses = "";
+        for(String key :prendClasses.keySet())
+        {
+            textClasses+=key+"="+prendClasses.get(key)+"#";
+        }
+        
+        String textRepas= "";
+        for(String key :prendRepas.keySet())
+        {
+                textRepas+=key+"="+prendRepas.get(key)+"#";
+        }
+        
+        return new StringBuffer().append(passager.print()).append("#").append(trajet.print2()).append("#").append(modifiable).append("#").append(prendCouchette).append("#").append(identifiant).append("#").append(textClasses).append(textRepas).append("\n").toString();
+    }
+    
+    public String toString()
+    {
+        String texte="";
+        String mod=(modifiable) ? "modifiable" : "non modifiable";
+        texte+="Réservation (n°"+identifiant+") du trajet n°"+trajet.getIdentifiant()+" ("+mod+") par "+passager;
         return texte;
     }
 }
