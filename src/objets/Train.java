@@ -29,11 +29,11 @@ public class Train extends Vehicule {
     }
     
     public Train(String vehicule, int identifiant) {
-        this(10, vehicule, 500, identifiant);
+        this(5, vehicule, 500, identifiant);
     }
     
     public Train(String vehicule, int capacite, int identifiant) {
-        this(10, vehicule, capacite, identifiant);
+        this(5, vehicule, capacite, identifiant);
     }
 
     public boolean avecCouchette() {

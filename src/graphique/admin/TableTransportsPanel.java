@@ -41,7 +41,7 @@ public class TableTransportsPanel extends JPanel {
 	}
 
 	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
+		setBorder(BorderFactory.createTitledBorder("Gestion des transports"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		buildTrajetsTable();
 		buildButtons();
@@ -58,15 +58,12 @@ public class TableTransportsPanel extends JPanel {
 
 		transportModel = new TransportsTableModel(vehicules);
 		transportModel.setColumnNames(columnNames);
-		transportTable = new JTable(null, columnNames);
+		transportTable = new JTable();
 		transportTable.setModel(transportModel);
 		transportTable.setFillsViewportHeight(true); // Fill all the container
-		transportTable.getSelectionModel().addListSelectionListener(
-				new ReservationListener(transportTable)); 
-
+		
 		transportTable.getModel().addTableModelListener(new CellListener()); 
 
-		Vector<Object> l = null;
 		JComboBox combo = buildTypeCombo();
 		addComboToTable(combo, 1);
 		scrollPane = new JScrollPane(transportTable);
@@ -78,7 +75,6 @@ public class TableTransportsPanel extends JPanel {
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new SaveAction("Enregistrer")), BorderLayout.CENTER);
 		add(panel);
 	}
 
@@ -96,16 +92,6 @@ public class TableTransportsPanel extends JPanel {
 		}
 	}
 	
-	public class SaveAction extends AbstractAction {
-		public SaveAction(String texte) {
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Enregistré !");
-		}
-	}
 	public class DeleteAction extends AbstractAction {
 		public DeleteAction(String texte) {
 			super(texte);
@@ -162,27 +148,6 @@ public class TableTransportsPanel extends JPanel {
 		}
 	}
 
-
-	private class ReservationListener implements ListSelectionListener {
-		JTable table;
-
-		// It is necessary to keep the table since it is not possible
-		// to determine the table from the event's source
-		ReservationListener(JTable table) {
-			this.table = table;
-		}
-
-		public void valueChanged(ListSelectionEvent e) {
-			// If cell selection is enabled, both row and column change events are fired
-			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
-				// Column selection changed
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
-				System.out.println("Selection changed");
-				System.out.println(table.getModel().getValueAt(table.getSelectedRow(), 2));
-			} 
-		}
-	}
 	private JComboBox buildTypeCombo() {
 		JComboBox combo = new JComboBox();
 		for(TypeVehicule v : TypeVehicule.values()) {

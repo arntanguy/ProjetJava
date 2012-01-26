@@ -24,6 +24,7 @@ public class Main {
             ClassNotFoundException, Exception {
         ClientAdmin ca = new ClientAdmin(3);
         //ClientReservation ca = new ClientReservation(3);
+
         ca.launch();
     }
 

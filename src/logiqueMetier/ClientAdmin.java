@@ -517,6 +517,7 @@ public class ClientAdmin {
             int idDepart = 0;
             int idArrivee = 0;
             int idVehicule = 0;
+            int distance=0;
 
             // On demande à l'utilisateur toutes les infos qu'on veut
             // puis on vérifie si ce qui a été entré est correct
@@ -587,6 +588,14 @@ public class ClientAdmin {
             Vehicule v = a.getVehicule(idVehicule);
             if (v == null)
                 throw new Exception("véhicule non reconnu");
+            
+            
+            System.out.print("Distance (km) : ");
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                distance = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                // premier mot
+            }
 
             // on convertit les dates entrées en Calendar
             Calendar dateCompleteDepart = Serveur.textToCalendar(dateDepart,
@@ -601,7 +610,7 @@ public class ClientAdmin {
 
             // on créé le trajet voulu puis on l'ajoute
             Trajet t = new Trajet(dateCompleteDepart, dateCompleteArrivee,
-                    depart, arrivee, v, a.getTrajetNewIdentifiant());
+                    depart, arrivee,distance, v, a.getTrajetNewIdentifiant());
 
             a.addTrajet(t);
             a.consulterTrajet();
@@ -732,6 +741,7 @@ public class ClientAdmin {
             int idDepart = 0;
             int idArrivee = 0;
             int idVehicule = 0;
+            int distance=0;
 
             a.consulterTrajet();
             // On demande à l'utilisateur l'identifiant du trajet à modifier
@@ -866,6 +876,18 @@ public class ClientAdmin {
                 if (v == null)
                     throw new Exception("véhicule non reconnu");
 
+                System.out.print(new StringBuffer().append("Distance (km) [")
+                        .append(trajetAModifier.getDistance())
+                        .append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    distance = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                    // premier mot
+                }
+                else
+                    distance=trajetAModifier.getDistance();
+                
+                
                 // on convertit les dates entrées en Calendar
                 Calendar dateCompleteDepart = Serveur.textToCalendar(
                         dateDepart, horaireDepart);
@@ -879,7 +901,7 @@ public class ClientAdmin {
                 // On créé le nouveau trajet puis on le met à la place de
                 // l'ancien
                 Trajet t = new Trajet(dateCompleteDepart, dateCompleteArrivee,
-                        depart, arrivee, v, trajetAModifier.getIdentifiant());
+                        depart, arrivee, distance, v, trajetAModifier.getIdentifiant());
                 a.modifierTrajet(trajetAModifier, t);
                 a.consulterTrajet();
             } else {
