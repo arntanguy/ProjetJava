@@ -34,6 +34,8 @@ public class ServeurV3 extends Serveur {
     Element racineVehicules = getElem(documentVehicules);
     org.jdom.Document documentTrajets = getDoc("MesTrajets.xml");
     Element racineTrajets = getElem(documentTrajets);
+    org.jdom.Document documentReservations = getDoc("MesReservationss.xml");
+    Element racineReservations = getElem(documentReservations);
     private static int idGeneral=0;
     /**
      * Renvoie un Element construit a partir du fichier a l'adresse donné.
@@ -169,42 +171,21 @@ public class ServeurV3 extends Serveur {
     			Element horaireArrivee = new Element("horaireArrivee");
     			horaireArrivee.setText(super.calendarToTime(dateDarrivee));
     			bal.addContent(horaireArrivee);
-    			
-    			Element lieuDepart = new Element("lieuDepart");
+    		
     			Ville ville = trajet.getDepart();
-    			lieuDepart.setText(ville.getVille());
-    			bal.addContent(lieuDepart);
-    			
     			Element idDepart = new Element("idVilleDepart");
     			idDepart.setText(String.valueOf(ville.getIdentifiant()));
     			bal.addContent(idDepart);
     			
-    			Element lieuArrivee = new Element("lieuArrivee");
     			Ville villeAr = trajet.getArrivee();
-    			lieuArrivee.setText(villeAr.getVille());
-    			bal.addContent(lieuArrivee);
-    			
     			Element idArrivee = new Element("idVilleArrivee");
     			idArrivee.setText(String.valueOf(villeAr.getIdentifiant()));
     			bal.addContent(idArrivee);
-    			
-    			Element vehicule = new Element("Vehicule");
+
     			Vehicule vehiculeDeTransport = trajet.getVehicule();
-    			vehicule.setText(vehiculeDeTransport.getVehicule());
-    			bal.addContent(vehicule);
-    			
     			Element idVehicule = new Element("idVehicule");
     			idVehicule.setText(String.valueOf(vehiculeDeTransport.getIdentifiant()));
     			bal.addContent(idVehicule);
-    			
-    			Element typeVehicule = new Element("typeVehicule");
-    			String typeDuVehicule = ""+vehiculeDeTransport.getType();
-    			typeVehicule.setText(typeDuVehicule);
-    			bal.addContent(typeVehicule);
-    			
-    			Element capaciteVehicule = new Element("capaciteVehicule");
-    			capaciteVehicule.setText(String.valueOf(vehiculeDeTransport.getCapacite()));
-    			bal.addContent(capaciteVehicule);
     			
     			Element placesRestantes = new Element("placesRestantes");
     			placesRestantes.setText(String.valueOf(trajet.getPlacesRestantes()));
@@ -212,6 +193,7 @@ public class ServeurV3 extends Serveur {
     		}
     	enregistreXml("MesTrajets.xml", documentTrajets);	
     }
+    
     void afficheVehicule() {
 		try {
 	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
@@ -233,6 +215,80 @@ public class ServeurV3 extends Serveur {
 	    	sortie.output(documentTrajets, System.out);
 		}
 		catch (java.io.IOException e){}
+    }
+    public void enregistreReservation(){
+    	Reservation reservation;
+    	racineReservations.removeContent();
+    		for(int i = 0; i < super.mesReservations.size(); i++){	
+    			reservation = super.getReservation(i);
+    			Element bal = new Element("reservation");
+    			racineReservations.addContent(bal);
+    		
+    			Attribute classetrajet = new Attribute("id", String.valueOf(reservation.getIdentifiant()));
+    			bal.setAttribute(classetrajet);
+    		
+    			Passager passager = reservation.getPassager();
+    			Element nomPassager = new Element("nomPassager");
+    			nomPassager.setText(passager.getNom());
+    			bal.addContent(nomPassager);
+    			
+    			Element prenomPassager = new Element("prenomPassager");
+    			prenomPassager.setText(passager.getPrenom());
+    			bal.addContent(prenomPassager);
+    			
+    			Calendar dateDeNaissance = Calendar.getInstance();
+				dateDeNaissance = passager.getDateNaissance();
+    			Element dateNaissance = new Element("dateNaissance");
+    			dateNaissance.setText(calendarToDate(dateDeNaissance));
+    			bal.addContent(dateNaissance);
+    			
+    			Profil profil = passager.getProfil();
+    			Element profilPassager = new Element("profilPassager");
+    			profilPassager.setText(profil.getProfil());
+    			bal.addContent(profilPassager);
+    			
+    			Element prix = new Element("prix");
+    			prix.setText(String.valueOf(profil.getPrix()));
+    			bal.addContent(prix);
+    			
+    			Element fidelite = new Element("fidelite");
+    			fidelite.setText(String.valueOf(passager.getFidelite()));
+    			bal.addContent(fidelite);
+    		    
+    			Element horaireDepart = new Element("horaireDepart");
+    			horaireDepart.setText(super.calendarToTime(dateDeDepart));
+    			bal.addContent(horaireDepart);
+    			
+    			Element dateArrivee = new Element("dateArrivee");
+    			Calendar dateDarrivee = Calendar.getInstance();
+				dateDarrivee = trajet.getDateArrivee();
+    			dateArrivee.setText(super.calendarToDate(dateDarrivee));
+    			bal.addContent(dateArrivee);
+    			
+    			Element horaireArrivee = new Element("horaireArrivee");
+    			horaireArrivee.setText(super.calendarToTime(dateDarrivee));
+    			bal.addContent(horaireArrivee);
+    		
+    			Ville ville = trajet.getDepart();
+    			Element idDepart = new Element("idVilleDepart");
+    			idDepart.setText(String.valueOf(ville.getIdentifiant()));
+    			bal.addContent(idDepart);
+    			
+    			Ville villeAr = trajet.getArrivee();
+    			Element idArrivee = new Element("idVilleArrivee");
+    			idArrivee.setText(String.valueOf(villeAr.getIdentifiant()));
+    			bal.addContent(idArrivee);
+
+    			Vehicule vehiculeDeTransport = trajet.getVehicule();
+    			Element idVehicule = new Element("idVehicule");
+    			idVehicule.setText(String.valueOf(vehiculeDeTransport.getIdentifiant()));
+    			bal.addContent(idVehicule);
+    			
+    			Element placesRestantes = new Element("placesRestantes");
+    			placesRestantes.setText(String.valueOf(trajet.getPlacesRestantes()));
+    			bal.addContent(placesRestantes);
+    		}
+    	enregistreXml("MesTrajets.xml", documentTrajets);	
     }
     public void chargerVilles() throws Exception{
     	List liste = racineVilles.getChildren("ville");
