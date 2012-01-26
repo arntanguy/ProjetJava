@@ -35,12 +35,18 @@ public class ClientAdmin {
      * @param version
      *            la version du serveur choisi
      */
-    public ClientAdmin(int version) {
-        parser = new Parser(); // créer un parser
+	public ClientAdmin(int version) {
+		parser = new Parser(); // créer un parser
 
-        s = (version == 1) ? new ServeurV1() : new ServeurV2();
-        a = new Admin(s); // créer une instance d'admin
-    }
+		if (version == 1) {
+			s = new ServeurV1();
+		} else if (version == 2) {
+			s = new ServeurV2();
+		} else {
+			s = new ServeurV3();
+		}
+		a = new Admin(s); // créer une instance d'admin
+	}
 
     /**
      * Lance le client d'administration

@@ -22,7 +22,7 @@ public class Main {
      */
     public static void main(String[] args) throws IOException,
             ClassNotFoundException, Exception {
-        ClientAdmin ca = new ClientAdmin(2);
+        ClientAdmin ca = new ClientAdmin(3);
         ca.launch();
     }
 

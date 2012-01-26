@@ -8,6 +8,7 @@ package logiqueMetier;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Iterator;
 import java.io.FileOutputStream;
@@ -27,12 +28,12 @@ public class ServeurV3 extends Serveur {
     public ServeurV3() {
         super();
     }
-    static org.jdom.Document documentmesVehicules = getDoc("mesVehicule.xml");
-    static Element racinemesVehicules = getElem(documentmesVehicules);
-    static org.jdom.Document documentmesVilles = getDoc("mesVilles.xml");
-    static Element racinemesVilles = getElem(documentmesVilles);
-    static org.jdom.Document documentmesTrajets = getDoc("mesTrajets.xml");
-    static Element racinemesTrajets = getElem(documentmesTrajets);
+    org.jdom.Document documentVilles = getDoc("MesVilles.xml");
+    Element racineVilles = getElem(documentVilles);
+    org.jdom.Document documentVehicules = getDoc("MesVehicules.xml");
+    Element racineVehicules = getElem(documentVehicules);
+    org.jdom.Document documentTrajets = getDoc("MesTrajets.xml");
+    Element racineTrajets = getElem(documentTrajets);
     private static int idGeneral=0;
     /**
      * Renvoie un Element construit a partir du fichier a l'adresse donné.
@@ -44,7 +45,7 @@ public class ServeurV3 extends Serveur {
      *@throws IOException
      *Si le fichier est inaccessible.
      */
-    static public Element getElem(org.jdom.Document document){
+    public Element getElem(org.jdom.Document document){
     	try{
 	    Element racine = document.getRootElement();
 	    return racine;
@@ -54,7 +55,7 @@ public class ServeurV3 extends Serveur {
 	    return null;
     	}
     }
-    static public org.jdom.Document getDoc(String fichier){
+    public org.jdom.Document getDoc(String fichier){
     	try{
 	    SAXBuilder sxb = new SAXBuilder();
 	    org.jdom.Document document = sxb.build(new File(fichier));
@@ -89,120 +90,214 @@ public class ServeurV3 extends Serveur {
     	// Transformation
     	transformer.transform(source, resultat);
     }
+    public void enregistreVilles(){
+    	Ville ville;
+    	racineVilles.removeContent();
+    	for(int i = 0; i < super.mesVilles.size(); i++){
+    		ville = super.getVille(i);
+    		Element bal = new Element("ville");
+			
+			racineVilles.addContent(bal);
+		
+			Attribute classeville = new Attribute("id", String.valueOf(ville.getIdentifiant()));
+			bal.setAttribute(classeville);
+			
+			Attribute classeville2 = new Attribute("Nom",ville.getVille());
+			bal.setAttribute(classeville2);
+    	}
+    	enregistreNewVille("MesVilles.xml");
+    }
+    void enregistreNewVille(String fichier) {
+		try {
+	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+	    	sortie.output(documentVilles, new FileOutputStream(fichier));
+		}
+		catch (java.io.IOException e){}
+    }    
     public void enregistreVehicules(){
     	Vehicule vehicule;
-    		for(int i = 0; i <= super.mesVehicules.size(); i++){	
+    	racineVehicules.removeContent();
+    		for(int i = 0; i < super.mesVehicules.size(); i++){	
     			vehicule = super.getVehicule(i);
     			Element bal = new Element("vehicule");
-    			racinemesVehicules.removeContent(bal);
-    			racinemesVehicules.addContent(bal);
+    			racineVehicules.addContent(bal);
     		
     			Attribute classevehicule = new Attribute("id", String.valueOf(vehicule.getIdentifiant()));
     			bal.setAttribute(classevehicule);
     		
-    			Attribute classevehicule2 = new Attribute("Type",vehicule.getVehicule());
+    			Attribute classevehicule2 = new Attribute("Nom",vehicule.getVehicule());
     			bal.setAttribute(classevehicule2);
-    		
-    			Element nombresPlaces = new Element("Nombre_de_Places");
+    			
+    			Element typeVehicule = new Element("typeDuVehicule");
+    			String typeDuVehicule = ""+vehicule.getType();
+    			typeVehicule.setText(typeDuVehicule);
+    			bal.addContent(typeVehicule);
+    			
+    			Element nombresPlaces = new Element("nombreDePlaces");
     			nombresPlaces.setText(String.valueOf(vehicule.getCapacite()));
     			bal.addContent(nombresPlaces);
     		}
-    	enregistreNewVehicule("mesVehicule.xml");	
-    }
-    static void afficheVehicule() {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentmesVehicules, System.out);
-		}
-		catch (java.io.IOException e){}
-    }
-    static void enregistreNewVehicule(String fichier) {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentmesVehicules, new FileOutputStream(fichier));
-		}
-		catch (java.io.IOException e){}
-    }
-    public void enregistreVilles(){
-    	Ville  ville;
-    	for(int i = 0; i <= super.mesVilles.size(); i++){
-    		ville = super.getVille(i);
-    		Element bal = new Element("ville");
-			racinemesVehicules.removeContent(bal);
-			racinemesVehicules.addContent(bal);
-		
-			Attribute classeville = new Attribute("id", String.valueOf(ville.getIdentifiant()));
-			bal.setAttribute(classeville);
-		
-			Attribute classeville2 = new Attribute("Nom",ville.getVille());
-			bal.setAttribute(classeville2);
-    	}
-    	enregistreNewVilles("mesVilles.xml");
-    }
-    static void afficheVilles() {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentmesVilles, System.out);
-		}
-		catch (java.io.IOException e){}
-    }
-    static void enregistreNewVilles(String fichier) {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentmesVilles, new FileOutputStream(fichier));
-		}
-		catch (java.io.IOException e){}
+    	enregistreXml("MesVehicules.xml", documentVehicules);	
     }
     public void enregistreTrajets(){
     	Trajet trajet;
-    		for(int i = 0; i <= super.mesTrajets.size(); i++){	
+    	racineTrajets.removeContent();
+    		for(int i = 0; i < super.mesTrajets.size(); i++){	
     			trajet = super.getTrajet(i);
     			Element bal = new Element("trajet");
-    			racinemesTrajets.removeContent(bal);
-    			racinemesTrajets.addContent(bal);
+    			racineTrajets.addContent(bal);
     		
     			Attribute classetrajet = new Attribute("id", String.valueOf(trajet.getIdentifiant()));
     			bal.setAttribute(classetrajet);
     		
-    			Element dateDepart = new Element("Date_de_Départ");
-    			dateDepart.setText(String.valueOf(trajet.getDateDepart()));
+    			Element dateDepart = new Element("dateDepart");
+    			Calendar dateDeDepart = Calendar.getInstance();
+				dateDeDepart = trajet.getDateDepart();
+    			dateDepart.setText(super.calendarToDate(dateDeDepart));
     			bal.addContent(dateDepart);
     			
-    			Element dateArrivee = new Element("Date_d_Arrivee");
-    			dateArrivee.setText(String.valueOf(trajet.getDateArrivee()));
+    			Element horaireDepart = new Element("horaireDepart");
+    			horaireDepart.setText(super.calendarToTime(dateDeDepart));
+    			bal.addContent(horaireDepart);
+    			
+    			Element dateArrivee = new Element("dateArrivee");
+    			Calendar dateDarrivee = Calendar.getInstance();
+				dateDarrivee = trajet.getDateArrivee();
+    			dateArrivee.setText(super.calendarToDate(dateDarrivee));
     			bal.addContent(dateArrivee);
     			
-    			Element lieuDepart = new Element("Lieu_de_Depart");
-    			lieuDepart.setText(String.valueOf(trajet.getDepart()));
+    			Element horaireArrivee = new Element("horaireArrivee");
+    			horaireArrivee.setText(super.calendarToTime(dateDarrivee));
+    			bal.addContent(horaireArrivee);
+    			
+    			Element lieuDepart = new Element("lieuDepart");
+    			Ville ville = trajet.getDepart();
+    			lieuDepart.setText(ville.getVille());
     			bal.addContent(lieuDepart);
     			
-    			Element lieuArrivee = new Element("Lieu_d_Arrivee");
-    			lieuArrivee.setText(String.valueOf(trajet.getArrivee()));
+    			Element idDepart = new Element("idVilleDepart");
+    			idDepart.setText(String.valueOf(ville.getIdentifiant()));
+    			bal.addContent(idDepart);
+    			
+    			Element lieuArrivee = new Element("lieuArrivee");
+    			Ville villeAr = trajet.getArrivee();
+    			lieuArrivee.setText(villeAr.getVille());
     			bal.addContent(lieuArrivee);
     			
+    			Element idArrivee = new Element("idVilleArrivee");
+    			idArrivee.setText(String.valueOf(villeAr.getIdentifiant()));
+    			bal.addContent(idArrivee);
+    			
     			Element vehicule = new Element("Vehicule");
-    			vehicule.setText(String.valueOf(trajet.getVehicule()));
+    			Vehicule vehiculeDeTransport = trajet.getVehicule();
+    			vehicule.setText(vehiculeDeTransport.getVehicule());
     			bal.addContent(vehicule);
     			
-    			Element placesRestantes = new Element("Places_Restantes");
+    			Element idVehicule = new Element("idVehicule");
+    			idVehicule.setText(String.valueOf(vehiculeDeTransport.getIdentifiant()));
+    			bal.addContent(idVehicule);
+    			
+    			Element typeVehicule = new Element("typeVehicule");
+    			String typeDuVehicule = ""+vehiculeDeTransport.getType();
+    			typeVehicule.setText(typeDuVehicule);
+    			bal.addContent(typeVehicule);
+    			
+    			Element capaciteVehicule = new Element("capaciteVehicule");
+    			capaciteVehicule.setText(String.valueOf(vehiculeDeTransport.getCapacite()));
+    			bal.addContent(capaciteVehicule);
+    			
+    			Element placesRestantes = new Element("placesRestantes");
     			placesRestantes.setText(String.valueOf(trajet.getPlacesRestantes()));
     			bal.addContent(placesRestantes);
     		}
-    	enregistreNewTrajets("mesTrajets.xml");	
+    	enregistreXml("MesTrajets.xml", documentTrajets);	
     }
-    static void afficheTrajets() {
+    void afficheVehicule() {
 		try {
 	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentmesTrajets, System.out);
+	    	sortie.output(documentVehicules, System.out);
 		}
 		catch (java.io.IOException e){}
     }
-    static void enregistreNewTrajets(String fichier) {
+    void enregistreXml(String fichier, org.jdom.Document doc) {
 		try {
 	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentmesTrajets, new FileOutputStream(fichier));
+	    	sortie.output(doc, new FileOutputStream(fichier));
 		}
 		catch (java.io.IOException e){}
+    }    
+    
+    void afficheTrajets() {
+		try {
+	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+	    	sortie.output(documentTrajets, System.out);
+		}
+		catch (java.io.IOException e){}
+    }
+    public void chargerVilles() throws Exception{
+    	List liste = racineVilles.getChildren("ville");
+    	//On crée un Iterator sur notre liste
+    	Iterator i = liste.iterator();
+    	while(i.hasNext())
+    	    {
+    		Element courant = (Element)i.next();
+    		String id = courant.getAttributeValue("id");
+    		String nom = courant.getAttributeValue("Nom");
+    		addVille(new Ville(nom, Integer.valueOf(id)));
+        }
+    }
+    public void chargerVehicules() throws Exception{
+    	List liste = racineVehicules.getChildren("vehicule");
+    	//On crée un Iterator sur notre liste
+    	Iterator i = liste.iterator();
+    	while(i.hasNext())
+    	    {
+    		Element courant = (Element)i.next();
+    		String id = courant.getAttributeValue("id");
+    		String nom = courant.getAttributeValue("Nom");
+    		String type = courant.getChild("typeDuVehicule").getText();
+    		String nbPlaces = courant.getChild("nombreDePlaces").getText();
+	    		if(TypeVehicule.valueOf(type)==TypeVehicule.AVION){
+	    			addVehicule(new Avion(nom, Integer.valueOf(nbPlaces), Integer.valueOf(id)));
+	    		}
+	    		else if(TypeVehicule.valueOf(type)==TypeVehicule.BATEAU){
+	    			addVehicule(new Bateau(nom, Integer.valueOf(nbPlaces), Integer.valueOf(id)));
+	    		}
+	    		else if(TypeVehicule.valueOf(type)==TypeVehicule.BUS){
+	    			addVehicule(new Bus(nom, Integer.valueOf(nbPlaces), Integer.valueOf(id)));
+	    		}
+	    		else if(TypeVehicule.valueOf(type)==TypeVehicule.TRAIN){
+	    			addVehicule(new Train(nom, Integer.valueOf(nbPlaces), Integer.valueOf(id)));
+	    		}
+    	    }
+    }
+    public void chargerTrajets() throws Exception{
+    	List liste = racineTrajets.getChildren("trajet");
+    	//On crée un Iterator sur notre liste
+    	Iterator i = liste.iterator();
+    	while(i.hasNext())
+    	    {
+    		Element courant = (Element)i.next();
+    		String id = courant.getAttributeValue("id");
+    		String dateDeDepart = courant.getChild("dateDepart").getText();
+    		String horaireDeDepart = courant.getChildText("horaireDepart");
+    		String dateDArrivee = courant.getChild("dateArrivee").getText();
+    		String horaireDArrivee = courant.getChild("horaireArrivee").getText();
+    		String idVilleDeDepart = courant.getChild("idVilleDepart").getText();
+    		String idVilleDArrivee = courant.getChild("idVilleDepart").getText();
+    		String idDuVehicule = courant.getChild("idVehicule").getText();
+    		String nbPlacesRestantes = courant.getChild("placesRestantes").getText();
+    		
+    		Calendar dateDepart = Calendar.getInstance();
+			dateDepart = textToCalendar(dateDeDepart, horaireDeDepart);
+			Calendar dateArrivee = Calendar.getInstance();
+			dateArrivee = textToCalendar(dateDArrivee, horaireDArrivee);
+			Ville villeDepart = getVille(Integer.valueOf(idVilleDeDepart));
+			Ville villeDArrivee = getVille(Integer.valueOf(idVilleDArrivee));
+			Vehicule vehicule = getVehicule(Integer.valueOf(idDuVehicule));
+			addTrajet(new Trajet(dateDepart, dateArrivee, villeDepart, villeDArrivee, vehicule, Integer.valueOf(id), Integer.valueOf(nbPlacesRestantes)));
+	    	
+    	    }
     }
     /**
      * Lance la sauvegarde des listes de trajet et de véhicule sur le serveur
@@ -211,7 +306,12 @@ public class ServeurV3 extends Serveur {
      * @return true si la sauvegarde a réussi, false sinon
      * @throws IOException
      */
-    public boolean sauvegarder() throws IOException{}
+    public boolean sauvegarder() throws IOException{
+    	enregistreVehicules();
+    	enregistreVilles();
+    	enregistreTrajets();
+    	return true;
+    }
 
     /**
      * Lance le chargement des listes de trajet et de véhicule du serveur
@@ -220,10 +320,15 @@ public class ServeurV3 extends Serveur {
      * @return true si le chargement a réussi, false sinon
      * @throws Exception
      */
-    public boolean charger() throws Exception
-    {}
+    public boolean charger() throws Exception{
+    	chargerVilles();
+    	chargerVehicules();
+    	chargerTrajets();
+    	
+    	return true;
+    }
     
-    public static boolean verifVehicule(String nom) {
+    /*public static boolean verifVehicule(String nom) {
     	if(nom.equals("Avion") || nom.equals("Bateau") || nom.equals("Bus") || nom.equals("Train")) {
     		return true;
     	}
@@ -328,14 +433,14 @@ public class ServeurV3 extends Serveur {
 	clientElt.addContent(nais);
 		
 	enregistreVoyage("Voyage.xml");
-    }
+    }*/
     /**
      *Méthode qui permet d'afficher un avion
      *@param
      @return
     */
 
-    public static void newTrajet(Trajet trajet){
+    /*public static void newTrajet(Trajet trajet){
 	Element trajetElt = new Element("Trajet");
 	racineVoyage.addContent(trajetElt);
 	Attribute trajetAttribute = new Attribute("id",trajet.getId().toString());
@@ -366,13 +471,13 @@ public class ServeurV3 extends Serveur {
 	trajetElt.addContent(nbDispo);
 		
 	enregistreVoyage("Voyage.xml");
-    }
+    }*/
     /**
      *Méthode qui permet d'afficher le fichier xml du trajet
      *@param
      *@return
      */
-    static void afficheTrajet() {
+    /*static void afficheTrajet() {
 	try {
 	    XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
 	    sortie.output(documentVoyage, System.out);
@@ -395,13 +500,13 @@ public class ServeurV3 extends Serveur {
 	reservationElt.addContent(idTrajet);
 		
 	enregistreVoyage("Voyage.xml");
-    }
+    }*/
     /**
      *Méthode qui permet d'afficher le contenu xml d'une reservation
      *@param
      *@return
      */
-    static void afficheRes() {
+    /*static void afficheRes() {
 	try {
 	    XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
 	    sortie.output(documentVoyage, System.out);
@@ -512,5 +617,5 @@ public class ServeurV3 extends Serveur {
 		indice++;
 	    }
     }
-}
+}*/
 }
