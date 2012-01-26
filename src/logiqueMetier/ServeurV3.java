@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
@@ -37,7 +38,6 @@ public class ServeurV3 extends Serveur {
     Element racineTrajets = getElem(documentTrajets);
     org.jdom.Document documentReservations = getDoc("MesReservations.xml");
     Element racineReservations = getElem(documentReservations);
-    private static int idGeneral=0;
     /**
      * Renvoie un Element construit a partir du fichier a l'adresse donné.
      *@param fichier
@@ -108,15 +108,8 @@ public class ServeurV3 extends Serveur {
 			Attribute classeville2 = new Attribute("Nom",ville.getVille());
 			bal.setAttribute(classeville2);
     	}
-    	enregistreNewVille("MesVilles.xml");
+    	enregistreXml("MesVilles.xml", documentVilles);
     }
-    void enregistreNewVille(String fichier) {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentVilles, new FileOutputStream(fichier));
-		}
-		catch (java.io.IOException e){}
-    }    
     public void enregistreVehicules(){
     	Vehicule vehicule;
     	racineVehicules.removeContent();
@@ -182,7 +175,11 @@ public class ServeurV3 extends Serveur {
     			Element idArrivee = new Element("idVilleArrivee");
     			idArrivee.setText(String.valueOf(villeAr.getIdentifiant()));
     			bal.addContent(idArrivee);
-
+    			
+    			Element distance = new Element("distance");
+    			distance.setText(String.valueOf(trajet.getDistance()));
+    			bal.addContent(distance);
+    			
     			Vehicule vehiculeDeTransport = trajet.getVehicule();
     			Element idVehicule = new Element("idVehicule");
     			idVehicule.setText(String.valueOf(vehiculeDeTransport.getIdentifiant()));
@@ -193,29 +190,6 @@ public class ServeurV3 extends Serveur {
     			bal.addContent(placesRestantes);
     		}
     	enregistreXml("MesTrajets.xml", documentTrajets);	
-    }
-    
-    void afficheVehicule() {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentVehicules, System.out);
-		}
-		catch (java.io.IOException e){}
-    }
-    void enregistreXml(String fichier, org.jdom.Document doc) {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(doc, new FileOutputStream(fichier));
-		}
-		catch (java.io.IOException e){}
-    }    
-    
-    void afficheTrajets() {
-		try {
-	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    	sortie.output(documentTrajets, System.out);
-		}
-		catch (java.io.IOException e){}
     }
     public void enregistreReservations(){
     	Reservation reservation;
@@ -264,10 +238,6 @@ public class ServeurV3 extends Serveur {
     			Element modifiable = new Element("modifiable");
     			modifiable.setText(String.valueOf(reservation.isModifiable()));
     			bal.addContent(modifiable);
-    			
-    			Element identifiant = new Element("identifiant");
-    			identifiant.setText(String.valueOf(reservation.getIdentifiant()));
-    			bal.addContent(identifiant);
     		    
     			Element placesVoulues = new Element("placesVoulues");
     			placesVoulues.setText(String.valueOf(reservation.getPlacesVoulues()));
@@ -275,8 +245,8 @@ public class ServeurV3 extends Serveur {
     		    
     			Element prendCouchette = new Element("prendCouchette");
     			prendCouchette.setText(String.valueOf(reservation.isPrendCouchette()));
-    			bal.addContent(prendCouchette);
-    		    
+    			bal.addContent(prendCouchette);	
+    			
     			for(ClassesRepas classe : reservation.getTrajet().getVehicule().getClasses())
     			{
 	    				Element prendClasses = new Element(classe.getNom());
@@ -344,6 +314,7 @@ public class ServeurV3 extends Serveur {
     		String horaireDArrivee = courant.getChild("horaireArrivee").getText();
     		String idVilleDeDepart = courant.getChild("idVilleDepart").getText();
     		String idVilleDArrivee = courant.getChild("idVilleDepart").getText();
+    		String distance = courant.getChild("distance").getText();
     		String idDuVehicule = courant.getChild("idVehicule").getText();
     		String nbPlacesRestantes = courant.getChild("placesRestantes").getText();
     		
@@ -354,10 +325,56 @@ public class ServeurV3 extends Serveur {
 			Ville villeDepart = getVille(Integer.valueOf(idVilleDeDepart));
 			Ville villeDArrivee = getVille(Integer.valueOf(idVilleDArrivee));
 			Vehicule vehicule = getVehicule(Integer.valueOf(idDuVehicule));
-			addTrajet(new Trajet(dateDepart, dateArrivee, villeDepart, villeDArrivee, vehicule, Integer.valueOf(id), Integer.valueOf(nbPlacesRestantes)));
+			addTrajet(new Trajet(dateDepart, dateArrivee, villeDepart, villeDArrivee, Integer.valueOf(distance), vehicule, Integer.valueOf(id), Integer.valueOf(nbPlacesRestantes)));
 	    	
     	    }
     }
+    public void chargerReservations() throws Exception{
+    	List liste = racineReservations.getChildren("reservation");
+    	//On crée un Iterator sur notre liste
+    	Iterator i = liste.iterator();
+    	while(i.hasNext())
+    	    {
+    		Element courant = (Element)i.next();    	           
+    		String id = courant.getAttributeValue("id");
+    		String nomPassager = courant.getAttributeValue("nomPassager");
+    		String prenomPassager = courant.getAttributeValue("prenomPassager");
+    		String dateNaissance = courant.getAttributeValue("dateNaissance");
+    		String profilPassager = courant.getAttributeValue("profil");
+    		String prix = courant.getAttributeValue("prix");
+    		String fidelite = courant.getAttributeValue("fidelite");
+    	    String identifiant = courant.getAttributeValue("identifiant");
+    		String placesVoulues = courant.getAttributeValue("placesVoulues");
+    		String idTrajet = courant.getAttributeValue("idTrajet");
+    		String modifiable = courant.getAttributeValue("modifiable");
+    		String prendCouchette = courant.getAttributeValue("prendCouchette");
+    		Profil profil = null;
+            for (Profil value : Profil.values()) {
+                if (profilPassager.equals(String.valueOf(value))) {
+                    profil = value;
+                }
+            }
+    		Calendar dateNaissancePassager = Calendar.getInstance();
+			dateNaissancePassager = textToCalendar(dateNaissance, "00:00");
+    		Passager passager = new Passager(nomPassager, prenomPassager, dateNaissancePassager, profil, Boolean.valueOf(fidelite));
+			Trajet trajet = getTrajet(Integer.valueOf(idTrajet));
+			
+            Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
+            Map<String, Boolean> prendClasses = new HashMap<String, Boolean>();
+            for(int j=0;j<trajet.getVehicule().getClasses().size();j++)
+            {
+            	prendClasses.put(trajet.getVehicule().getClasses().get(j).getNom(), Boolean.valueOf(trajet.getVehicule().getClasses().get(j).getNom().getText()));
+            }
+			super.addReservation(new Reservation(passager, trajet, Boolean.valueOf(modifiable), Boolean.valueOf(prendCouchette), prendRepas, prendClasses, Integer.valueOf(id), Integer.valueOf(placesVoulues));
+    	    }
+    }
+    void enregistreXml(String fichier, org.jdom.Document doc) {
+		try {
+	    	XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+	    	sortie.output(doc, new FileOutputStream(fichier));
+		}
+		catch (java.io.IOException e){}
+    }    
     /**
      * Lance la sauvegarde des listes de trajet et de véhicule sur le serveur
      * Méthode abstraite implémentée par ServeurV1 ou ServeurV2
@@ -372,7 +389,6 @@ public class ServeurV3 extends Serveur {
     	enregistreReservations();
     	return true;
     }
-
     /**
      * Lance le chargement des listes de trajet et de véhicule du serveur
      * Méthode abstraite implémentée par ServeurV1 ou ServeurV2
@@ -384,298 +400,8 @@ public class ServeurV3 extends Serveur {
     	chargerVilles();
     	chargerVehicules();
     	chargerTrajets();
+    	chargerReservations();
     	
     	return true;
     }
-    
-    /*public static boolean verifVehicule(String nom) {
-    	if(nom.equals("Avion") || nom.equals("Bateau") || nom.equals("Bus") || nom.equals("Train")) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-    }
-    public static void newVehicule(String nom, int cap){
-    	Vehicule vehicule;
-    	if(nom.equals("Avion")) {
-    		vehicule = new Avion(nom, cap, idGeneral);
-    		}
-    	else if(nom.equals("Bus")){
-    		vehicule = new Bus(nom, cap, idGeneral);
-    		}
-    	else if(nom.equals("Bateau")){
-    		vehicule = new Bateau(nom, cap, idGeneral);
-    	}
-    	else if(nom.equals("Train")){
-    		vehicule = new Train(nom, cap, idGeneral);
-    	}
-    	else {
-    		vehicule = new Avion();
-    	}
-		Element bal = new Element("vehicule");
-		racinemesVehicules.addContent(bal);
-	
-		Attribute classevehicule = new Attribute("id", String.valueOf(getIdVehicule()));
-		bal.setAttribute(classevehicule);
-	
-		Attribute classevehicule2 = new Attribute("Type",nom);
-		bal.setAttribute(classevehicule2);
-	
-		Element nombresPlaces = new Element("Nombre_de_Places");
-		nombresPlaces.setText(String.valueOf(vehicule.getCap()));
-		bal.addContent(nombresPlaces);
-    }
-    
-    
-    static int getCapVehicule(int id)
-    {
-	List liste = racineVoyage.getChildren("vehicule");
-	//On crée un Iterator sur notre liste
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		Element courant = (Element)i.next();
-		String id2 = courant.getAttributeValue("id");
-		if(id.equals(id2)) {
-		    return (Integer.parseInt(courant.getChild("Nombre_de_Places").getText()));
-		}
-		else {}
-	    }
-	return -1;
-    }
-    static int getIdVehicule()
-    {
-	int indice=0;
-	List liste = racineVehicules.getChildren("vehicule");
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		Element courant = (Element)i.next();
-		indice ++;
-	    }
-	idGeneral = indice;
-	return indice;
-    }
-    
-        
-	 static void afficheVoyage() {
-	try {
-	    XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    sortie.output(documentVoyage, System.out);
-	}
-	catch (java.io.IOException e){}
-    }
-    static void enregistreVoyage(String fichier) {
-	try {
-	    XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    sortie.output(documentVoyage, new FileOutputStream(fichier));
-	}catch (java.io.IOException e){}
-    }
-      
-    public static void newClient(Client client){
-	Element clientElt = new Element("Client");
-	racineVoyage.addContent(clientElt);
-   		
-	Attribute clientAttribute = new Attribute("id",client.getId().toString());
-	clientElt.setAttribute(clientAttribute);
-		
-	Element nom = new Element("Nom");
-	nom.setText(client.getNom());
-	clientElt.addContent(nom);
-		
-	Element prenom = new Element("Prenom");
-	prenom.setText(client.getPrenom());
-	clientElt.addContent(prenom);
-		
-	Element nais = new Element("Date_de_naissance");
-	nais.setText(client.getNais().toString());
-	clientElt.addContent(nais);
-		
-	enregistreVoyage("Voyage.xml");
-    }*/
-    /**
-     *Méthode qui permet d'afficher un avion
-     *@param
-     @return
-    */
-
-    /*public static void newTrajet(Trajet trajet){
-	Element trajetElt = new Element("Trajet");
-	racineVoyage.addContent(trajetElt);
-	Attribute trajetAttribute = new Attribute("id",trajet.getId().toString());
-	trajetElt.setAttribute(trajetAttribute);
-		
-	Element avion = new Element("idAvion");
-	//avion.setText(trajet.getAvion().getIdVehicule());
-	trajetElt.addContent(avion);
-		
-	Element date = new Element("date");
-	date.setText(trajet.getDate().toString());
-	trajetElt.addContent(date);
-		
-	Element dateAr = new Element("dateAr");
-	dateAr.setText(trajet.getDateAr().toString());
-	trajetElt.addContent(dateAr);
-		
-	Element aeroDep = new Element("aeroDep");
-	aeroDep.setText(trajet.getAeroDep());
-	trajetElt.addContent(aeroDep);
-		
-	Element aeroAr = new Element("aeroAr");
-	aeroAr.setText(trajet.getAeroAr());
-	trajetElt.addContent(aeroAr);
-		
-	Element nbDispo = new Element("nbDispo");
-	nbDispo.setText(String.valueOf(trajet.getNbDispo()));
-	trajetElt.addContent(nbDispo);
-		
-	enregistreVoyage("Voyage.xml");
-    }*/
-    /**
-     *Méthode qui permet d'afficher le fichier xml du trajet
-     *@param
-     *@return
-     */
-    /*static void afficheTrajet() {
-	try {
-	    XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    sortie.output(documentVoyage, System.out);
-	}
-	catch (java.io.IOException e){}
-    }
-    public static void newReservation(Reservation reservation){
-	Element reservationElt = new Element("Reservation");
-	racineVoyage.addContent(reservationElt);
-		
-	Attribute classe = new Attribute("id",reservation.getId().toString());
-	reservationElt.setAttribute(classe);
-		
-	Element idClient = new Element("idClient");
-	idClient.setText(reservation.getIdClient().toString());
-	reservationElt.addContent(idClient);
-		
-	Element idTrajet = new Element("idTrajet");
-	idTrajet.setText(reservation.getIdTrajet().toString());
-	reservationElt.addContent(idTrajet);
-		
-	enregistreVoyage("Voyage.xml");
-    }*/
-    /**
-     *Méthode qui permet d'afficher le contenu xml d'une reservation
-     *@param
-     *@return
-     */
-    /*static void afficheRes() {
-	try {
-	    XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-	    sortie.output(documentVoyage, System.out);
-	}
-	catch (java.io.IOException e) {}
-    }
-    static boolean verifIdAvion(String id)
-    {
-	List liste = racineVoyage.getChildren("Avion");
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		Element courant = (Element)i.next();
-		String id2 = courant.getAttributeValue("idAvion");
-		if(id.equals(id2))
-		    {
-			return true;
-		    }
-	    }
-	return false;
-    }
-    static boolean verifNom(String nom)
-    {
-	if(nom.length()>=3)
-	    {
-		return true;
-	    }
-	else 
-	    {
-		return false;
-	    }
-    }	
-    static boolean verifNbPlaces(int places)
-    {
-	if(places>10 && places<900)
-	    {
-		return true;
-	    }
-	else
-	    {
-		return false;
-	    }
-    }
-    
-    static void idClient()
-    {
-	List liste = racineVoyage.getChildren("Client");
-	//On crée un Iterator sur notre liste
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		//On recrée l'Element courant à chaque tour de boucle afin de
-		//pouvoir utiliser les méthodes propres aux Element comme :
-		//selectionner un noeud fils, modifier du texte, etc...
-		Element courant = (Element)i.next();
-		//On affiche le nom de l'element courant
-		System.out.println(courant.getAttributeValue("id"));
-	    }
-    }
-    static void afficheAvion(String elem)
-    {
-	int indice=0;
-	List liste = racineVoyage.getChildren("Avion");
-	//On crée un Iterator sur notre liste
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		//On recrée l'Element courant à chaque tour de boucle afin de
-		//pouvoir utiliser les méthodes propres aux Element comme :
-		//selectionner un noeud fils, modifier du texte, etc...
-		Element courant = (Element)i.next();
-		//On affiche le nom de l'element courant
-		System.out.println(indice+" : "+courant.getChild(elem).getText());
-		indice++;
-	    }
-    }
-    static void afficheAffTrajet()
-    {
-	int indice=0;
-	List liste = racineVoyage.getChildren("Trajet");
-	//On crée un Iterator sur notre liste
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		//On recrée l'Element courant à chaque tour de boucle afin de
-		//pouvoir utiliser les méthodes propres aux Element comme :
-		//selectionner un noeud fils, modifier du texte, etc...
-		Element courant = (Element)i.next();
-		//On affiche le nom de l'element courant
-		System.out.println(indice+" : "+courant.getChild("aeroDep").getText()+"-"+courant.getChild("aeroAr").getText()+"\n"+courant.getChild("date").getText()+courant.getChild("dateAr").getText());
-		indice++;
-	    }
-    }
-    static void afficheTrajet(String elem)
-    {
-	int indice=0;
-	List liste = racineVoyage.getChildren("Trajet");
-	//On crée un Iterator sur notre liste
-	Iterator i = liste.iterator();
-	while(i.hasNext())
-	    {
-		//On recrée l'Element courant à chaque tour de boucle afin de
-		//pouvoir utiliser les méthodes propres aux Element comme :
-		//selectionner un noeud fils, modifier du texte, etc...
-		Element courant = (Element)i.next();
-		//On affiche le nom de l'element courant
-		System.out.println(indice+" : "+courant.getChild(elem).getText());
-		indice++;
-	    }
-    }
-}*/
 }
