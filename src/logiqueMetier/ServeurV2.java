@@ -206,7 +206,7 @@ public class ServeurV2 extends Serveur implements Serializable {
         // réservations
         for (int i = 0; i < tab7.length; i++) {
             String[] tab8 = tab7[i].split("#");
-            if (tab8.length >=17) {
+            if (tab8.length >=18) {
                 Profil profil=null;
                 for(Profil value : Profil.values())
                 {
@@ -227,18 +227,18 @@ public class ServeurV2 extends Serveur implements Serializable {
                 Map<String, Boolean> prendClasses=new HashMap<String, Boolean>();
                 
                 
-                for(int k=17; k<17+v.getClasses().size();k++)
+                for(int k=18; k<18+v.getClasses().size();k++)
                 {
                     String[] tab9 = tab8[k].split("=");
                     prendClasses.put(tab9[0], Boolean.valueOf(tab9[1]));
                 }
-                for(int k=17+v.getClasses().size()-1; k<17+v.getClasses().size()+v.getRepas().size()-1;k++)
+                for(int k=18+v.getClasses().size(); k<18+v.getClasses().size()+v.getRepas().size();k++)
                 {
                     String[] tab10 = tab8[k].split("=");
                     prendRepas.put(tab10[0], Boolean.valueOf(tab10[1]));
                 }
                 
-                Reservation reservation=new Reservation(passager,trajet,Boolean.valueOf(tab8[14]),Boolean.valueOf(tab8[15]),prendRepas,prendClasses,Integer.valueOf(tab8[16]));
+                Reservation reservation=new Reservation(passager,trajet,Boolean.valueOf(tab8[14]),Boolean.valueOf(tab8[15]),prendRepas,prendClasses,Integer.valueOf(tab8[16]),Integer.valueOf(tab8[17]));
                 
                 this.addReservation(reservation);
             }

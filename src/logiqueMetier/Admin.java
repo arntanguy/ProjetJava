@@ -47,8 +47,8 @@ public class Admin {
     public int getTrajetNewIdentifiant() {
         return serveur.getTrajetNewIdentifiant();
     }
-    
-    public int getVilleNewIdentifiant(){
+
+    public int getVilleNewIdentifiant() {
         return serveur.getVilleNewIdentifiant();
     }
 
@@ -77,11 +77,15 @@ public class Admin {
     public Ville getVille(int id) {
         return serveur.getVille(id);
     }
-  
+
+    public Reservation getReservation(int id) {
+        return serveur.getReservation(id);
+    }
+
     public ArrayList<Ville> getVilles() {
-		return serveur.getVilles();
-	}
-    
+        return serveur.getVilles();
+    }
+
     /**
      * Ajouter un véhicule à la liste des véhicules
      * 
@@ -92,18 +96,17 @@ public class Admin {
     protected void addVehicule(Vehicule v) throws Exception {
         serveur.addVehicule(v);
     }
-    
+
     public void addVille(Ville v) throws Exception {
         serveur.addVille(v);
     }
 
     public Ville createVille(String ville) throws Exception {
-    	Ville v = new Ville(ville, getVilleNewIdentifiant());
-    	serveur.addVille(v);
-		return v;
+        Ville v = new Ville(ville, getVilleNewIdentifiant());
+        serveur.addVille(v);
+        return v;
     }
-    
-    
+
     /**
      * Ajouter un trajet à la liste des trajets
      * 
@@ -114,11 +117,10 @@ public class Admin {
     protected void addTrajet(Trajet v) throws Exception {
         serveur.addTrajet(v);
     }
-    
+
     protected void addReservation(Reservation r) throws Exception {
         serveur.addReservation(r);
     }
-
 
     /**
      * Supprimer un véhicule de la liste des véhicules
@@ -143,7 +145,11 @@ public class Admin {
     protected void removeVille(Ville v) {
         serveur.removeVille(v);
     }
-    
+
+    protected void removeReservation(Reservation r) {
+        serveur.removeReservation(r);
+    }
+
     /**
      * Consulter la liste des véhicules
      */
@@ -157,11 +163,11 @@ public class Admin {
     protected void consulterTrajet() {
         serveur.consulterTrajet();
     }
-    
+
     protected void consulterVille() {
         serveur.consulterVille();
     }
-    
+
     protected void consulterReservation() {
         serveur.consulterReservation();
     }
@@ -193,10 +199,14 @@ public class Admin {
             throws Exception {
         serveur.modifierTrajet(trajet, trajet2);
     }
-    
-    protected void modifierVille(Ville ville, Ville ville2)
-            throws Exception {
+
+    protected void modifierVille(Ville ville, Ville ville2) throws Exception {
         serveur.modifierVille(ville, ville2);
+    }
+
+    public void modifierReservation(Reservation reservation,
+            Reservation reservation2) throws Exception {
+        serveur.modifierReservation(reservation, reservation2);
     }
 
     /**

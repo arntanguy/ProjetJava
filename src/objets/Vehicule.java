@@ -20,6 +20,7 @@ public class Vehicule implements Serializable {
     protected TypeVehicule type;
     protected int capacite;
     protected int identifiant;
+    protected int prix;
     protected List<ClassesRepas> classes;
     protected List<ClassesRepas> repas;
 
@@ -33,7 +34,7 @@ public class Vehicule implements Serializable {
      * @param identifiant
      *            identifiant du véhicule
      */
-    public Vehicule(String vehicule, TypeVehicule type, int capacite,
+    public Vehicule(int prix, String vehicule, TypeVehicule type, int capacite,
             int identifiant) {
         this.vehicule = vehicule;
         this.type = type;
@@ -41,10 +42,11 @@ public class Vehicule implements Serializable {
         this.identifiant = identifiant;
         classes = new ArrayList<ClassesRepas>();
         repas = new ArrayList<ClassesRepas>();
+        this.prix=prix;
     }
 
     public Vehicule(int identifiant) {
-    	this("", TypeVehicule.INCONNU, 0, identifiant);
+    	this(0, "", TypeVehicule.INCONNU, 0, identifiant);
     }
     
     /**
@@ -52,6 +54,10 @@ public class Vehicule implements Serializable {
      */
     public String getVehicule() {
         return vehicule;
+    }
+    
+    public int getPrix() {
+        return prix;
     }
 
     /**

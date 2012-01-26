@@ -1,5 +1,6 @@
 package logiqueMetier;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.Calendar;
@@ -464,7 +465,7 @@ public class ClientAdmin {
                     passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
                     
                     
-                    reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas,prendClasses, s.getReservationNewIdentifiant());
+                    reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas,prendClasses, s.getReservationNewIdentifiant(),placesVoulues);
                     
                     
                     a.reserver(trajetAReserver, placesVoulues);
@@ -1033,7 +1034,238 @@ public class ClientAdmin {
                 throw new Exception(
                         "Aucune ville ne correspond à cet identifiant");
             }
-        } else {
+            
+        } else if (quoi.equals("reservation")) {
+            Reservation reservationAModifier=null;
+            Trajet trajetAReserver = null;
+            int placesVoulues = 1;
+            Passager passager=null;
+            String nom="";
+            String prenom="";
+            String dateNaissance="";
+            int profilId=0;
+            Profil profil=null;
+            
+            boolean fidelite=false;
+            boolean modifiable=false;
+            boolean prendCouchette=false;
+            Map<String,Boolean> prendRepas=new HashMap<String,Boolean>();
+            Map<String,Boolean> prendClasses=new HashMap<String,Boolean>();
+            
+            a.consulterReservation();
+            System.out.print("Réservation à modifier (id) : ");
+            Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                reservationAModifier = a
+                        .getReservation(Integer.valueOf(tokenizer.next())); // récupère
+                                                                       // le
+                                                                       // premier
+                                                                       // mot
+            }
+            if(reservationAModifier==null)
+                throw new Exception(
+                        "Aucune réservation ne correspond à cet identifiant");
+            System.out
+            .println("N'entrez rien si vous voulez la même valeur que précédemment.");
+            
+            trajetAReserver=reservationAModifier.getTrajet();
+            
+            placesVoulues = reservationAModifier.getPlacesVoulues();
+            
+            // On regarde si le trajet existe
+            if (trajetAReserver != null) {
+                
+                    //choix du passager
+                    System.out.print(new StringBuffer().append("Nom du passager [").append(reservationAModifier.getPassager().getNom())
+                            .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        nom = tokenizer.next(); // récupère le premier mot
+                    }
+                    else
+                    {
+                        nom = reservationAModifier.getPassager().getNom();
+                    }
+                    if (nom.trim() == "")
+                        throw new Exception("Nom du passager vide");
+                    
+                    
+                    System.out.print(new StringBuffer().append("Prénom du passager [").append(reservationAModifier.getPassager().getPrenom())
+                            .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        prenom = tokenizer.next(); // récupère le premier mot
+                    }
+                    else
+                    {
+                        prenom = reservationAModifier.getPassager().getPrenom();
+                    }
+                    if (prenom.trim() == "")
+                        throw new Exception("Prénom du passager vide");
+                    
+                    System.out.print(new StringBuffer().append("Date de naissance (jj/mm/aaaa) [").append(Serveur.calendarToDate(reservationAModifier.getPassager().getDateNaissance()))
+                            .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        dateNaissance = tokenizer.next(); // récupère le premier mot
+                    }
+                    else
+                    {
+                        dateNaissance = Serveur.calendarToDate(reservationAModifier.getPassager().getDateNaissance());
+                    }
+                    if (!Pattern.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}", dateNaissance))
+                        throw new Exception("Date de naissance mal écrite");
+                    
+                    for (int i = 0; i < Profil.values().length - 1; i++) {
+                        System.out.print(Profil.values()[i].getProfil() + " (" + i + "), ");
+                    }
+                    int last = Profil.values().length - 1;
+                    System.out.println(Profil.values()[last].getProfil() + " (" + last + ")");
+                    System.out.print(new StringBuffer().append("Profil choisi (id) : ").append(reservationAModifier.getPassager().getProfil())
+                            .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    if (tokenizer.hasNext()) {
+                        profilId = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                    // premier mot
+                        profil = Profil.values()[profilId];
+                    }
+                    else
+                    {
+                        profil = reservationAModifier.getPassager().getProfil();
+                    }
+
+                    if (profil == null)
+                        throw new Exception("profil non reconnu");
+                    
+                    int texteFidelite=0;
+                    if(reservationAModifier.getPassager().getFidelite())
+                        texteFidelite=1;
+                    System.out.print(new StringBuffer().append("Fidélité ? (0=non, 1=oui) [").append(texteFidelite)
+                            .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    int res=0;
+                    if (tokenizer.hasNext()) {
+                        res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                    }
+                    else
+                        res=texteFidelite;
+                    if(res==0)
+                        fidelite=false;
+                    else
+                        fidelite=true;
+                    
+                    
+                    int texteModifiable=0;
+                    if(reservationAModifier.isModifiable())
+                        texteModifiable=1;
+                    System.out.print(new StringBuffer().append("Ticket Modifiable ? (0=non, 1=oui) [").append(texteModifiable)
+                            .append("] : "));
+                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                    res=0;
+                    if (tokenizer.hasNext()) {
+                        res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                    }
+                    else
+                        res=texteModifiable;
+                    if(res==0)
+                        modifiable=false;
+                    else
+                        modifiable=true;
+                    
+                    if(trajetAReserver.getVehicule().avecCouchette())
+                    {
+                        int texteCouchette=0;
+                        if(reservationAModifier.isPrendCouchette())
+                            texteCouchette=1;
+                        System.out.print(new StringBuffer().append("Prend Couchette ? (0=non, 1=oui) [").append(texteCouchette)
+                                .append("] : "));
+                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                        res=0;
+                        if (tokenizer.hasNext()) {
+                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        }
+                        else
+                            res=texteCouchette;
+                        if(res==0)
+                            prendCouchette=false;
+                        else
+                            prendCouchette=true;
+                    }
+                    
+                    
+                    for(ClassesRepas classe : trajetAReserver.getVehicule().getClasses())
+                    {
+                        int texteClasse=0;
+                        if(reservationAModifier.getClasse(classe.getNom()))
+                            texteClasse=1;
+                        System.out.print(new StringBuffer().append(classe.getNom()+" ? (0=non, 1=oui) [").append(texteClasse)
+                                .append("] : "));
+                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                        res=0;
+                        if (tokenizer.hasNext()) {
+                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                            
+                        }
+                        else
+                            res=texteClasse;
+                        if(res==0)
+                        {
+                            prendClasses.put(classe.getNom(), false);
+                        }
+                        else
+                        {
+                            prendClasses.put(classe.getNom(), true);
+                        }
+                    }
+                    
+                    for(ClassesRepas repas : trajetAReserver.getVehicule().getRepas())
+                    {
+                        int texteRepas=0;
+                        if(reservationAModifier.getRepas(repas.getNom()))
+                            texteRepas=1;
+                        System.out.print(new StringBuffer().append(repas.getNom()+" ? (0=non, 1=oui) [").append(texteRepas)
+                                .append("] : "));
+                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                        res=0;
+                        if (tokenizer.hasNext()) {
+                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        }
+                        else
+                            res=texteRepas;
+                        if(res==0)
+                        {
+                            prendRepas.put(repas.getNom(), false);
+                        }
+                        else
+                        {
+                            prendRepas.put(repas.getNom(), true);
+                        }
+                    }
+                    
+                    
+                    passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
+                    
+                    
+                    Reservation reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas,prendClasses, reservationAModifier.getIdentifiant(),placesVoulues);
+                    
+                    a.modifierReservation(reservationAModifier, reservation);
+                    
+                    File file=new File("ticketReservation" + reservationAModifier.getPassager().getNom()
+                            + "$" + reservationAModifier.getPassager().getPrenom() + ".html");
+                    file.delete();
+                    
+                    reservation.genereTicket();
+                    
+                    a.consulterReservation();
+                    
+                    System.out
+                            .println("Merci d'avoir réserver ce trajet ! Bon voyage.");
+            } else {
+                System.out.println("Mauvais identifiant.");
+            }
+            
+        }
+        else {
             System.out
                     .println("Vous ne pouvez modifier qu'un trajet ou un vehicule");
         }
@@ -1102,7 +1334,25 @@ public class ClientAdmin {
             if (villeASupprimer != null) {
                 a.removeVille(villeASupprimer);
             }
+        } else if (quoi.equals("reservation")) {
+            Reservation reservationASupprimer = null;
+
+            a.consulterReservation();
+            // On demande à l'utilisateur l'identifiant du véhicule à supprimer
+            System.out.print("Réservation à supprimer (id) : ");
+            Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                reservationASupprimer = a.getReservation(Integer.valueOf(tokenizer.next())); // récupère
+                                                                                 // le
+                                                                                 // premier
+                                                                                 // mot
+            }
+            // on le supprime s'il existe
+            if (reservationASupprimer != null) {
+                a.removeReservation(reservationASupprimer);
+            }
         }
+        
 
         else {
             System.out

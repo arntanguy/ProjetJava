@@ -12,8 +12,8 @@ public class Avion extends Vehicule {
      * @param
      * @return
      */
-    public Avion(String vehicule, int capacite, int identifiant) {
-        super(vehicule, TypeVehicule.AVION, capacite, identifiant);
+    public Avion(int prix, String vehicule, int capacite, int identifiant) {
+        super(prix, vehicule, TypeVehicule.AVION, capacite, identifiant);
         classes.add(new ClassesRepas("Classe affaire", 20));
         classes.add(new ClassesRepas("Classe première", 10));
         classes.add(new ClassesRepas("Classe standard", 5));
@@ -25,8 +25,16 @@ public class Avion extends Vehicule {
         repas.add(new ClassesRepas("poisson", 5));
     }
 
+    public Avion(int prix, String vehicule, int identifiant) {
+        this(prix, vehicule, 300, identifiant);
+    }
+    
     public Avion(String vehicule, int identifiant) {
-        this(vehicule, 300, identifiant);
+        this(500, vehicule, 300, identifiant);
+    }
+    
+    public Avion(String vehicule, int capacite, int identifiant) {
+        this(500, vehicule, capacite, identifiant);
     }
 
     public boolean avecCouchette() {
