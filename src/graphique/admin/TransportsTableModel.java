@@ -1,4 +1,4 @@
-package logiqueMetier;
+package graphique.admin;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,13 @@ public class TransportsTableModel extends DefaultTableModel {
 	} 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Vehicule v = vehicules.get(rowIndex);
+		Vehicule v = null;
+		try {
+			v = vehicules.get(rowIndex);
+		} catch(Exception e) {
+			System.out.println("TransportsTable : Impossible de lire la ligne "+rowIndex);
+		}
+		if (v==null) return null;
 		switch(columnIndex) {
 		case 0:
 			return v.getVehicule();
@@ -54,26 +60,20 @@ public class TransportsTableModel extends DefaultTableModel {
 		Vehicule v = vehicules.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			v.setVehicule((String) o);
+			v.setVehicule((String)o);
 			break;
 		case 1:
 			v.setType((TypeVehicule)o);
 			break;
 		case 2: 
-			v.setCapacite((Integer)o);
+			v.setCapacite(Integer.parseInt( (String)o ));
 			break;
 		}
+		fireTableDataChanged();
 	}
-
 
 	public Vehicule getVehicule(int rowIndex) {
 		return vehicules.get(rowIndex);
-	}
-
-	public void addRows(ArrayList<Vehicule> vehicules) {
-		for(Vehicule v : vehicules) {
-			addRow(v);
-		}
 	}
 
 	public void addRow(Vehicule v) {

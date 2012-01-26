@@ -21,7 +21,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
-import logiqueMetier.TransportsTableModel;
 import objets.TypeVehicule;
 import objets.Vehicule;
 
@@ -31,10 +30,6 @@ public class TableTransportsPanel extends JPanel {
 	private JScrollPane scrollPane;
 
 	ArrayList<Vehicule> vehicules;
-
-
-	private ArrayList<Vehicule> modified;
-	private ArrayList<Vehicule> created;
 
 	private Serveur serveur;
 
@@ -59,7 +54,7 @@ public class TableTransportsPanel extends JPanel {
 		    protected int identifiant;
 		    protected List<ClassesRepas> classes;
 		    protected List<ClassesRepas> repas; */
-		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
+		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
 		transportModel = new TransportsTableModel(vehicules);
 		transportModel.setColumnNames(columnNames);
@@ -97,7 +92,7 @@ public class TableTransportsPanel extends JPanel {
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
 			TransportsTableModel model = (TransportsTableModel) transportTable.getModel();
-			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));
+			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
 		}
 	}
 	
@@ -121,13 +116,12 @@ public class TableTransportsPanel extends JPanel {
 			System.out.println("Supprimé !");
 			int[] selectedIndexes = transportTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				int row = selectedIndexes[i];
 				try {
-					int id = (Integer) transportModel.getValueAt(row, 0);
+					int row = selectedIndexes[i];
+					serveur.removeVehicule(transportModel.getVehicule(row));
 					transportModel.removeRow(row);
-					serveur.removeVehicule(id);
 				} catch (Exception e) {
-					System.out.println("Erreur lors de la suppression");
+					e.printStackTrace();
 				}
 			}	  
 		}
@@ -156,6 +150,11 @@ public class TableTransportsPanel extends JPanel {
 						v.setVehicule((String) transportModel.getValueAt(row, 0));
 						v.setType((TypeVehicule)transportModel.getValueAt(row, 1));
 						v.setCapacite((Integer) transportModel.getValueAt(row, 2));
+						try {
+							serveur.modifierVehicule(tv, v);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 				break;

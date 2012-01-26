@@ -26,22 +26,5 @@ public class GestionTransportsPanel extends JPanel {
 		
 		tableTransportsPanel = new TableTransportsPanel(serveur);
 		add(tableTransportsPanel);
-		
-		buildButtons();
-	}
-	
-	private void buildButtons() {
-		add(new JButton(new ValidateAction("Valider")));
-	}
-	
-	private class ValidateAction extends AbstractAction {
-		public ValidateAction(String texte){
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Validé");
-		}
-	}
+	}	
 }
