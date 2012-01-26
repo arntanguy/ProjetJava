@@ -23,10 +23,12 @@ public class AjoutTransportPanel extends JPanel {
 	private JComboBox typeTransportsCombo;
 	
 	private Serveur serveur;
+	private GestionTransportsPanel parent;
 	
-	public AjoutTransportPanel(Serveur s) {
+	public AjoutTransportPanel(Serveur s, GestionTransportsPanel p) {
 		super();
 		serveur = s;
+		parent = p;
 		build();
 	}
 	private void build(){

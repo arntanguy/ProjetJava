@@ -435,6 +435,26 @@ public abstract class Serveur implements Serializable {
     }
 
     /**
+     * Supprimer un véhicule de la liste des véhicules
+     * 
+     * @param id
+     *            Identifiant du véhicule à supprimer
+     */
+    public void removeVehicule(int id) {
+    	for(Vehicule v : mesVehicules) {
+    		if(v.getIdentifiant() == id) {
+    			for (int i = 0; i < mesTrajets.size(); i++) {
+                    if (mesTrajets.get(i).getVehicule() == v) {
+                        mesTrajets.remove(i);
+                        i--;
+                    }
+                }
+                mesVehicules.remove(v);
+    		}
+    	}
+    }
+    
+    /**
      * Supprimer un trajet de la liste des trajets
      * 
      * @param t
@@ -865,4 +885,12 @@ public abstract class Serveur implements Serializable {
         }
         return trajets;
     }
+
+	public ArrayList<Trajet> getTrajets() {
+		return mesTrajets;
+	}
+
+	public ArrayList<Vehicule> getVehicules() {
+		return mesVehicules;
+	}
 }

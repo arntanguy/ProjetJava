@@ -13,12 +13,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
-import objets.Trajet;
-import objets.TypeVehicule;
-import objets.Vehicule;
-import tools.DateTools;
-
-import logiqueMetier.Admin;
 import logiqueMetier.Serveur;
 
 
@@ -27,6 +21,7 @@ public class AjoutTrajetPanel extends JPanel {
 	private JTextField villeArriveeText;
 	private JSpinner dateDepartSpinner;
 	private JSpinner dateArriveeSpinner;
+	private TableTrajetsPanel gestionTrajetsPanel;
 	
 	private Serveur serveur;
 
