@@ -130,6 +130,7 @@ public abstract class Vehicule implements Serializable {
     public String print() {
         return new StringBuffer().append(vehicule).append("#").append(type)
                 .append("#").append(capacite).append("#").append(identifiant)
+                .append("#").append(prix)
                 .append("#").append("\n").toString();
     }
 }
