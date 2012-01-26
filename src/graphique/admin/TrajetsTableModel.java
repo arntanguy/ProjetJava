@@ -22,7 +22,7 @@ public class TrajetsTableModel extends DefaultTableModel {
 	public int getColumnCount() {
 		// Returns the number of columns in the model : départ, arrivée, 
 		// date départ, date arrivée, transport, places restantes
-		return 5;
+		return 4;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class TrajetsTableModel extends DefaultTableModel {
 	} 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-	/*	Trajet v = null;
+		Trajet v = null;
 		try {
 			v = trajets.get(rowIndex);
 		} catch(Exception e) {
@@ -49,14 +49,14 @@ public class TrajetsTableModel extends DefaultTableModel {
 		if (v==null) return null;
 		switch(columnIndex) {
 		case 0:
-			return v.getTrajet();
+			return v.getDepart();
 		case 1:
-			return v.getType();
+			return v.getArrivee();
 		case 2: 
-			return v.getCapacite();
-		default:
-			return null;
-		}*/
+			return v.getDateDepart();
+		case 3: 
+			return v.getDateArrivee();
+		}
 		return null;
 	}
 

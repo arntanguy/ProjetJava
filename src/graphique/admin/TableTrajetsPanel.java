@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,7 +22,9 @@ import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
 import objets.Trajet;
+import objets.TypeVehicule;
 import objets.Vehicule;
+import objets.Ville;
 
 public class TableTrajetsPanel extends JPanel {
 	private TrajetsTableModel trajetsModel;
@@ -31,6 +35,7 @@ public class TableTrajetsPanel extends JPanel {
 	private TableSpinnerEditor dateArriveeSpinner;
 	
 	private ArrayList<Trajet> trajets;
+	private ArrayList<Ville> villes;
 
 	private Serveur serveur;
 	
@@ -38,6 +43,7 @@ public class TableTrajetsPanel extends JPanel {
 		super();
 		serveur = s;
 		trajets = serveur.getTrajets();
+		villes = serveur.getVilles();
 		build();
 	}
 
@@ -51,7 +57,7 @@ public class TableTrajetsPanel extends JPanel {
 
 	private void buildReservationsTable() {
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
-		"Date arrivée", "Places restantes" };
+		"Date arrivée" };
 		
 		// Create a SpinnerDateModel with current date as the initial value.
 		SpinnerDateModel model = new SpinnerDateModel();
@@ -67,6 +73,9 @@ public class TableTrajetsPanel extends JPanel {
 		// container
 		trajetsTable.getModel().addTableModelListener(new CellListener()); 
 
+		JComboBox combo = buildDepartCombo();
+		addComboToTable(combo, 0);
+		addComboToTable(combo, 1);
 		addSpinnerToTable(dateDepartSpinner, 2);
 		addSpinnerToTable(dateArriveeSpinner, 3);
 		
@@ -75,6 +84,14 @@ public class TableTrajetsPanel extends JPanel {
 		add(scrollPane);
 	}
 
+	private JComboBox buildDepartCombo() {
+		JComboBox combo = new JComboBox();
+		for(Ville v : villes) {
+			combo.addItem(v);
+		}
+		return combo;
+	}
+	
 	private void buildButtons() {
 
 		JPanel panel = new JPanel();
@@ -153,5 +170,8 @@ public class TableTrajetsPanel extends JPanel {
 		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
 		gradeColumn.setCellEditor(spinner);
 	}
-	
+	private void addComboToTable(JComboBox combo, int column) {
+		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
+		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
+	}
 }
