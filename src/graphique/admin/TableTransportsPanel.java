@@ -21,7 +21,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
-import logiqueMetier.TransportsTableModel;
 import objets.TypeVehicule;
 import objets.Vehicule;
 
@@ -31,10 +30,6 @@ public class TableTransportsPanel extends JPanel {
 	private JScrollPane scrollPane;
 
 	ArrayList<Vehicule> vehicules;
-
-
-	private ArrayList<Vehicule> modified;
-	private ArrayList<Vehicule> created;
 
 	private Serveur serveur;
 
@@ -46,7 +41,7 @@ public class TableTransportsPanel extends JPanel {
 	}
 
 	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
+		setBorder(BorderFactory.createTitledBorder("Gestion des transports"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		buildTrajetsTable();
 		buildButtons();
@@ -59,19 +54,16 @@ public class TableTransportsPanel extends JPanel {
 		    protected int identifiant;
 		    protected List<ClassesRepas> classes;
 		    protected List<ClassesRepas> repas; */
-		String[] columnNames = { "Id", "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
+		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
 		transportModel = new TransportsTableModel(vehicules);
 		transportModel.setColumnNames(columnNames);
-		transportTable = new JTable(null, columnNames);
+		transportTable = new JTable();
 		transportTable.setModel(transportModel);
 		transportTable.setFillsViewportHeight(true); // Fill all the container
-		transportTable.getSelectionModel().addListSelectionListener(
-				new ReservationListener(transportTable)); 
-
+		
 		transportTable.getModel().addTableModelListener(new CellListener()); 
 
-		Vector<Object> l = null;
 		JComboBox combo = buildTypeCombo();
 		addComboToTable(combo, 1);
 		scrollPane = new JScrollPane(transportTable);
@@ -97,7 +89,7 @@ public class TableTransportsPanel extends JPanel {
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
 			TransportsTableModel model = (TransportsTableModel) transportTable.getModel();
-			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));
+			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
 		}
 	}
 	
@@ -121,13 +113,12 @@ public class TableTransportsPanel extends JPanel {
 			System.out.println("Supprimé !");
 			int[] selectedIndexes = transportTable.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				int row = selectedIndexes[i];
 				try {
-					int id = (Integer) transportModel.getValueAt(row, 0);
+					int row = selectedIndexes[i];
+					serveur.removeVehicule(transportModel.getVehicule(row));
 					transportModel.removeRow(row);
-					serveur.removeVehicule(id);
 				} catch (Exception e) {
-					System.out.println("Erreur lors de la suppression");
+					e.printStackTrace();
 				}
 			}	  
 		}
@@ -156,6 +147,11 @@ public class TableTransportsPanel extends JPanel {
 						v.setVehicule((String) transportModel.getValueAt(row, 0));
 						v.setType((TypeVehicule)transportModel.getValueAt(row, 1));
 						v.setCapacite((Integer) transportModel.getValueAt(row, 2));
+						try {
+							serveur.modifierVehicule(tv, v);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 				break;
@@ -163,27 +159,6 @@ public class TableTransportsPanel extends JPanel {
 		}
 	}
 
-
-	private class ReservationListener implements ListSelectionListener {
-		JTable table;
-
-		// It is necessary to keep the table since it is not possible
-		// to determine the table from the event's source
-		ReservationListener(JTable table) {
-			this.table = table;
-		}
-
-		public void valueChanged(ListSelectionEvent e) {
-			// If cell selection is enabled, both row and column change events are fired
-			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
-				// Column selection changed
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
-				System.out.println("Selection changed");
-				System.out.println(table.getModel().getValueAt(table.getSelectedRow(), 2));
-			} 
-		}
-	}
 	private JComboBox buildTypeCombo() {
 		JComboBox combo = new JComboBox();
 		for(TypeVehicule v : TypeVehicule.values()) {

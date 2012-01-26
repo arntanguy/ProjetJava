@@ -21,7 +21,6 @@ public class AjoutTrajetPanel extends JPanel {
 	private JTextField villeArriveeText;
 	private JSpinner dateDepartSpinner;
 	private JSpinner dateArriveeSpinner;
-	private TableTrajetsPanel gestionTrajetsPanel;
 	
 	private Serveur serveur;
 
