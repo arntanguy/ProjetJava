@@ -179,6 +179,14 @@ public abstract class Serveur implements Serializable {
         }
         return null;
     }
+    
+    public Reservation getReservation(int id) {
+        for (Reservation r : mesReservations) {
+            if (r.getIdentifiant() == id)
+                return r;
+        }
+        return null;
+    }
 
     /**
      * Récupère un trajet grâce à son identifiant
@@ -390,6 +398,14 @@ public abstract class Serveur implements Serializable {
             throw new Exception(
                     "Cette ville ne fait pas partie de la base de données.");
     }
+    
+    public void modifierReservation(Reservation reservation, Reservation reservation2) throws Exception {
+        if (mesReservations.contains(reservation)) {
+            mesReservations.set(mesReservations.indexOf(reservation), reservation2);
+        } else
+            throw new Exception(
+                    "Cette réservation ne fait pas partie de la base de données.");
+    }
 
     /**
      * Modifier un trajet se trouvant dans la liste des trajets
@@ -468,6 +484,11 @@ public abstract class Serveur implements Serializable {
     public void removeVille(Ville v) {
         if (mesVilles.contains(v))
             mesVilles.remove(v);
+    }
+    
+    public void removeReservation(Reservation r) {
+        if (mesReservations.contains(r))
+            mesReservations.remove(r);
     }
 
     /**
