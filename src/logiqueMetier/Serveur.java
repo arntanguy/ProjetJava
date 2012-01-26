@@ -288,6 +288,14 @@ public abstract class Serveur implements Serializable {
                     "Ce vehicule appartient deja à la liste des véhicules.");
     }
     
+    /** 
+     * Créé un véhicule. Attention, ne l'ajoute pas aux listes de véhicules, appeler addVehicule pour ça.
+     * @param nom
+     * @param type
+     * @param capacite
+     * @return
+     * @throws Exception
+     */
     public Vehicule creerVehicule(String nom, TypeVehicule type, int capacite) throws Exception {
     	Vehicule v = null;
     	switch(type) {
@@ -304,7 +312,7 @@ public abstract class Serveur implements Serializable {
     		v = new Train(nom, capacite, getVehiculeNewIdentifiant());
     		break;
     	}
-    	addVehicule(v);
+    	//addVehicule(v);
 		return v;
     }
 
