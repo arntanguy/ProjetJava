@@ -14,10 +14,10 @@ public class Avion extends Vehicule {
      */
     public Avion(int prix, String vehicule, int capacite, int identifiant) {
         super(prix, vehicule, TypeVehicule.AVION, capacite, identifiant);
-        repas.add(new Repas("petit dejeuner", 5));
-        repas.add(new Repas("déjeuner", 10));
-        repas.add(new Repas("dîner", 10));
-        repas.add(new Repas("végetarien", 5));
+        repas.add(new Repas("petit_dejeuner", 5));
+        repas.add(new Repas("dejeuner", 10));
+        repas.add(new Repas("diner", 10));
+        repas.add(new Repas("vegetarien", 5));
         repas.add(new Repas("viande", 5));
         repas.add(new Repas("poisson", 5));
     }

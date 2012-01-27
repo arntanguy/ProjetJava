@@ -196,6 +196,7 @@ public class ClientAdmin {
             boolean avecCouchette = false;
             boolean premiereClasse = false;
             boolean trierParPrix = false;
+            boolean trajetDirect = false;
             
             // On demande à l'utilisateur toutes les infos qu'on veut
             // puis on vérifie si ce qui a été entré est correct
@@ -278,6 +279,20 @@ public class ClientAdmin {
                 avecCouchette=true;
             }
             
+            
+            System.out.print("Que les trajets directs ? (1=oui,0=non) : ");
+            int trajetsDirectsString=0;
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                trajetsDirectsString = Integer.valueOf(tokenizer.next()); // récupère
+                                                                   // le premier
+                                                                   // mot
+            }
+            if(trajetsDirectsString!=0)
+            {
+                trajetDirect=true;
+            }
+            
             System.out.print("Première classe ? (1=oui,0=non) : ");
             int classeString=0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
@@ -315,13 +330,13 @@ public class ClientAdmin {
             // on recherche les trajets correspondant aux paramètres rentrés
                 trajetRecherche = s.rechercherTrajet(depart, arrivee,
                     vehicule, placesVoulues, dateCompleteDepart,
-                    intervalleVoulue,avecCouchette,premiereClasse);
+                    intervalleVoulue,avecCouchette,premiereClasse,trajetDirect);
             }
             else
             {
                 trajetRecherche = s.rechercherTrajetParPrix(depart, arrivee,
                         vehicule, placesVoulues, dateCompleteDepart,
-                        intervalleVoulue,avecCouchette,premiereClasse);
+                        intervalleVoulue,avecCouchette,premiereClasse,trajetDirect);
             }
 
             // on affiche les trajets correspondant aux paramètres rentrés, s'il
