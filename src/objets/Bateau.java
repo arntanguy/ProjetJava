@@ -16,7 +16,7 @@ public class Bateau extends Vehicule {
         super(prix, vehicule, TypeVehicule.BATEAU, capacite, identifiant);
         repas.add(new Repas("petit_dejeuner", 5));
         repas.add(new Repas("dejeuner", 10));
-        repas.add(new Repas("dener", 10));
+        repas.add(new Repas("diner", 10));
         repas.add(new Repas("vegetarien", 5));
         repas.add(new Repas("viande", 5));
         repas.add(new Repas("poisson", 5));
