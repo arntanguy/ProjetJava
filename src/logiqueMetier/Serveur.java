@@ -560,28 +560,56 @@ public abstract class Serveur implements Serializable {
      */
     public List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
-            int intervalleVoulue, boolean avecCouchette, boolean premiereClasse) {
+            int intervalleVoulue, boolean avecCouchette,
+            boolean premiereClasse, boolean direct) {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
 
-        for (int i = 0; i < mesTrajets.size(); i++) {
-            Calendar departRetard = (Calendar) mesTrajets.get(i)
+        if (direct) {
+            for (int i = 0; i < mesTrajets.size(); i++) {
+                Calendar departRetard = (Calendar) mesTrajets.get(i)
+                        .getDateDepart().clone();
+                departRetard.add(Calendar.HOUR, intervalleVoulue);
+                Calendar departAvance = (Calendar) mesTrajets.get(i)
+                        .getDateDepart().clone();
+                departAvance.add(Calendar.HOUR, -intervalleVoulue);
+
+                if (mesTrajets.get(i).getDepart().equals(depart)
+                        && mesTrajets.get(i).getArrivee().equals(arrivee)
+                        && (vehicule == null || mesTrajets.get(i).getVehicule()
+                                .equals(vehicule))
+                        && mesTrajets.get(i).restePlaces(placesVoulues)
+                        && (!avecCouchette || mesTrajets.get(i).getVehicule()
+                                .avecCouchette() == avecCouchette)
+                        && mesTrajets.get(i).isPremiereClasse() == premiereClasse
+                        && dateDepart.before(departRetard)
+                        && dateDepart.after(departAvance)) {
+                    trajetsConvenables.add(mesTrajets.get(i));
+                }
+            }
+        }
+        else
+        {
+        Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant());
+        d.cout(depart.getIdentifiant(), arrivee.getIdentifiant());
+        List<Trajet> listeTrajetsChemin = d.getListeTrajetsChemin();
+        
+        for (Trajet trajet : listeTrajetsChemin) {
+            Calendar departRetard = (Calendar) trajet
                     .getDateDepart().clone();
             departRetard.add(Calendar.HOUR, intervalleVoulue);
-            Calendar departAvance = (Calendar) mesTrajets.get(i)
+            Calendar departAvance = (Calendar) trajet
                     .getDateDepart().clone();
             departAvance.add(Calendar.HOUR, -intervalleVoulue);
-
-            if (mesTrajets.get(i).getDepart().equals(depart)
-                    && mesTrajets.get(i).getArrivee().equals(arrivee)
-                    && (vehicule == null || mesTrajets.get(i).getVehicule()
-                            .equals(vehicule))
-                    && mesTrajets.get(i).restePlaces(placesVoulues)
-                    && (!avecCouchette || mesTrajets.get(i).getVehicule().avecCouchette()==avecCouchette)
-                    && mesTrajets.get(i).isPremiereClasse() == premiereClasse
+            
+            if ((vehicule == null || trajet.getVehicule().equals(vehicule))
+                    && trajet.restePlaces(placesVoulues)
+                    && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
+                    && trajet.isPremiereClasse() == premiereClasse
                     && dateDepart.before(departRetard)
                     && dateDepart.after(departAvance)) {
-                trajetsConvenables.add(mesTrajets.get(i));
+                trajetsConvenables.add(trajet);
             }
+        }
         }
 
         // On trie la liste des trajets convenables pour que les trajets
@@ -592,12 +620,14 @@ public abstract class Serveur implements Serializable {
 
     public List<Trajet> rechercherTrajetParPrix(Ville depart, Ville arrivee,
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
-            int intervalleVoulue, boolean avecCouchette, boolean premiereClasse) {
+            int intervalleVoulue, boolean avecCouchette,
+            boolean premiereClasse, boolean direct) {
         List<Trajet> list = rechercherTrajet(depart, arrivee, vehicule,
-                placesVoulues, dateDepart, intervalleVoulue, avecCouchette, premiereClasse);
-        
-        Collections.sort(list,new CompareInteger());
-        
+                placesVoulues, dateDepart, intervalleVoulue, avecCouchette,
+                premiereClasse, direct);
+
+        Collections.sort(list, new CompareInteger());
+
         return list;
     }
 

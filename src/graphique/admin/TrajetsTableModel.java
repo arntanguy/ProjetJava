@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
 
+import logiqueMetier.Serveur;
+
 import objets.Trajet;
 import objets.Ville;
 import tools.DateTools;
@@ -21,8 +23,8 @@ public class TrajetsTableModel extends DefaultTableModel {
 	@Override
 	public int getColumnCount() {
 		// Returns the number of columns in the model : départ, arrivée, 
-		// date départ, date arrivée, transport, places restantes
-		return 4;
+		// date départ, date arrivée, transport, transport
+		return 5;
 	}
 
 	@Override
@@ -53,27 +55,37 @@ public class TrajetsTableModel extends DefaultTableModel {
 		case 1:
 			return v.getArrivee();
 		case 2: 
-			return v.getDateDepart();
+			return Serveur.calendarToDate(v.getDateDepart());
 		case 3: 
-			return v.getDateArrivee();
+			return Serveur.calendarToDate(v.getDateArrivee());
 		}
 		return null;
 	}
 
 	public void setValueAt(Object o, int rowIndex, int columnIndex) {
-		Trajet v = trajets.get(rowIndex);
+		Trajet t = trajets.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			v.setDepart((Ville)o);
+			Ville v = (Ville) o;
+			if (v != null) {
+				t.setDepart(v);
+			} else {
+				t.setDepart(new Ville());
+			}
 			break;
 		case 1:
-			v.setArrivee((Ville)o);
+			Ville v1 = (Ville) o;
+			if (v1 != null) {
+				t.setArrivee(v1);
+			} else {
+				t.setArrivee(new Ville());
+			}
 			break;
 		case 2: 
-			v.setDateDepart(DateTools.dateToCalendar((Date)o));
+			t.setDateDepart(DateTools.dateToCalendar((Date)o));
 			break;
 		case 3: 
-			v.setDateArrivee(DateTools.dateToCalendar((Date)o));
+			t.setDateArrivee(DateTools.dateToCalendar((Date)o));
 			break;
 		}
 		fireTableDataChanged();
@@ -97,7 +109,4 @@ public class TrajetsTableModel extends DefaultTableModel {
 	{
 		return true;
 	}
-
-
-
 }
