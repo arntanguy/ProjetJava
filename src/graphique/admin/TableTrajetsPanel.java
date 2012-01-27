@@ -1,7 +1,6 @@
 package graphique.admin;
 
 import graphique.widgets.TableSpinnerEditor;
-import graphique.widgets.TableTransportSelectionEditor;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -13,13 +12,16 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
@@ -73,16 +75,16 @@ public class TableTrajetsPanel extends JPanel {
 		trajetsTable.setModel(trajetsModel);
 		trajetsTable.setFillsViewportHeight(true); // Fill all the
 		// container
-		trajetsTable.getModel().addTableModelListener(new CellListener()); 
+		//trajetsTable.getModel().addTableModelListener(new CellListener()); 
 
 		JComboBox combo = buildDepartCombo();
 		addComboToTable(combo, 0);
 		addComboToTable(combo, 1);
 		addSpinnerToTable(dateDepartSpinner, 2);
 		addSpinnerToTable(dateArriveeSpinner, 3);
-
-		TableTransportSelectionEditor s = new TableTransportSelectionEditor();
-		addTransportSelectorToTable(s, 4);
+		
+		//TableTransportSelectionEditor s = new TableTransportSelectionEditor();
+		//addTransportSelectorToTable(s, 4);
 		
 		scrollPane = new JScrollPane(trajetsTable);
 		add(scrollPane);
@@ -102,23 +104,26 @@ public class TableTrajetsPanel extends JPanel {
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new LinkAction("Lier à un tranport")));
+		panel.add(new JButton(new LinkAction("Lier à un tranport", this)));
 		add(panel);
 	}
 
 	public class LinkAction extends AbstractAction {
-		public LinkAction(String texte) {
+		private TableTrajetsPanel parent;
+		
+		public LinkAction(String texte, TableTrajetsPanel parent) {
 			super(texte);
+			this.parent = parent;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Link !");
 			int [] selected = trajetsTable.getSelectedRows();
-			for(int i : selected) {
+			for(final int i : selected) {
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
-						TransportSelectorDialog d = new TransportSelectorDialog(serveur);
+						TransportSelectorDialog d = new TransportSelectorDialog(serveur, parent, i);
 						d.setVisible(true);
 					}
 				});
@@ -156,7 +161,7 @@ public class TableTrajetsPanel extends JPanel {
 		}
 	}
 	
-	private class CellListener implements TableModelListener {
+	/*private class CellListener implements TableModelListener {
 		public CellListener() {
 		}
 
@@ -186,11 +191,11 @@ public class TableTrajetsPanel extends JPanel {
 							e1.printStackTrace();
 						}
 					}
-				}*/
+				}
 				break;
 			}	
 		}
-	}
+	}*/
 
 	private void addSpinnerToTable(TableSpinnerEditor spinner, int column) {
 		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
@@ -200,9 +205,15 @@ public class TableTrajetsPanel extends JPanel {
 		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
 		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
 	}
-	
-	private void addTransportSelectorToTable(TableTransportSelectionEditor s, int column) {
+
+	private void addCellEditorToTable(TableCellEditor e, int column) {
 		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(s);
+		gradeColumn.setCellEditor(e);
+	}
+
+
+	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
+		trajetsModel.setValueAt(selectedTransport, parentSelectedRow, 4);
+		System.out.println("Lié à "+selectedTransport.toString());
 	}
 }

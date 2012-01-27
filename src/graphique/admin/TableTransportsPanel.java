@@ -29,6 +29,8 @@ public class TableTransportsPanel extends JPanel {
 	private TransportsTableModel transportModel;
 	private JTable transportTable;
 	private JScrollPane scrollPane;
+	private JPanel buttonsPanel;
+	private boolean buttonsVisible = true;
 
 	ArrayList<Vehicule> vehicules;
 
@@ -66,15 +68,18 @@ public class TableTransportsPanel extends JPanel {
 	}
 
 	private void buildButtons() {
-		JPanel panel = new JPanel();
-		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
-		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
-		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		add(panel);
+		buttonsPanel = new JPanel();
+		buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
+		buttonsPanel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
+		buttonsPanel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
+		add(buttonsPanel);
 	}
 
 	public void setEditable(boolean isEditable) {
 			transportModel.setEditable(isEditable);
+	}
+	public void setButtonsVisible(boolean visible) {
+			buttonsPanel.setVisible(visible);
 	}
 
 	public class AddAction extends AbstractAction {
@@ -120,16 +125,6 @@ public class TableTransportsPanel extends JPanel {
 			int column = e.getColumn();
 			System.out.println("Row " + row);
 			System.out.println("Column " + column);
-			if(column == 5) {
-				SwingUtilities.invokeLater(new Runnable(){
-					public void run(){
-						TransportSelectorDialog p = new TransportSelectorDialog(serveur);
-						p.setVisible(true);
-					}
-				});
-			
-			}
-
 			
 			switch(e.getType()) {
 			case TableModelEvent.INSERT:
@@ -167,6 +162,10 @@ public class TableTransportsPanel extends JPanel {
 	private void addComboToTable(JComboBox combo, int column) {
 		TableColumn gradeColumn = transportTable.getColumnModel().getColumn(column);
 		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
+	}
+
+	public Vehicule getSelectedTransport() {
+		return transportModel.getVehicule(transportTable.getSelectedRow());
 	}
 
 }

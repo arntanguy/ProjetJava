@@ -13,11 +13,15 @@ import logiqueMetier.Serveur;
 
 public class TransportSelectorDialog extends JDialog {
 	private TableTransportsPanel selectorPanel;
+	private TableTrajetsPanel parent;
+	private int parentSelectedRow;
 	
 	private Serveur serveur;
 	
-	public TransportSelectorDialog(Serveur s) {
+	public TransportSelectorDialog(Serveur s, TableTrajetsPanel parent, int row) {
 		serveur = s;
+		this.parent = parent;
+		parentSelectedRow = row;
 		setTitle("Choix du transport à lier.");
 		setSize(800,400); 
 		setLocationRelativeTo(null); 
@@ -32,8 +36,7 @@ public class TransportSelectorDialog extends JDialog {
 
 		panel.add(buildTransportSelector());
 		
-		JButton quit = new JButton("Quitter");
-		panel.add(quit);
+		buildButtons(panel);
 		
 		return panel;
 	}
@@ -44,23 +47,36 @@ public class TransportSelectorDialog extends JDialog {
 
 		selectorPanel = new TableTransportsPanel(serveur);
 		selectorPanel.setEditable(false);
+		selectorPanel.setButtonsVisible(false);
 		panel.add(selectorPanel);
 		
 		return panel;
 	}
 	
-	private void buildButtons() {
-		//BoxLayout l = new BoxLayout(this, BoxLayout.LINE_AXIS);
-		//l.addLayoutComponent(new JButton(new ValidateAction("Valider")), null);
+	private void buildButtons(JPanel panel) {
+		panel.add(new JButton(new LinkAction("Lier")));
+		panel.add(new JButton(new QuitAction("Quitter")));
 	}
 	
-	private class ValidateAction extends AbstractAction {
-		public ValidateAction(String s) {
+	private class QuitAction extends AbstractAction {
+		public QuitAction(String s) {
 			super(s);
 		}
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Validé");
+			System.out.println("Quit");
+			dispose();
+		}
+	}
+	private class LinkAction extends AbstractAction {
+		public LinkAction(String s) {
+			super(s);
+		}
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("Link");			
+			parent.linkTransport(parentSelectedRow, selectorPanel.getSelectedTransport());
+			dispose();
 		}
 	}
 }
