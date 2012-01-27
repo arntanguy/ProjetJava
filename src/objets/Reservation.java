@@ -6,12 +6,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.Map;
 
-import logiqueMetier.Serveur;
 
 public class Reservation implements Serializable {
     private Passager passager;

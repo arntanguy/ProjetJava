@@ -362,6 +362,24 @@ public abstract class Serveur implements Serializable {
     public ArrayList<Ville> getVilles() {
         return mesVilles;
     }
+    
+    /**
+     * Renvoit la liste des villes accessibles depuis une ville de départ donnée
+     * 
+     * @param depart
+     * 			Ville de départ.
+     * @return arrivee
+     * 			Liste des villes accessibles depuis la ville de départ donnée
+     */
+    public ArrayList<Ville> getVillesArrivee(Ville depart) {
+    	ArrayList<Ville> arrivee = new ArrayList<Ville>();
+    	for(Trajet t:mesTrajets) {
+    		if(t.getDepart().equals(depart)) {
+    			arrivee.add(t.getArrivee());
+    		}
+    	}
+    	return arrivee;
+    }
 
     /**
      * Ajouter un trajet à la liste des trajets
