@@ -1211,7 +1211,7 @@ public class ClientAdmin {
                     }
                     int last = Profil.values().length - 1;
                     System.out.println(Profil.values()[last].getProfil() + " (" + last + ")");
-                    System.out.print(new StringBuffer().append("Profil choisi (id) : ").append(reservationAModifier.getPassager().getProfil())
+                    System.out.print(new StringBuffer().append("Profil choisi (id) [").append(reservationAModifier.getPassager().getProfil().getProfil())
                             .append("] : "));
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                     if (tokenizer.hasNext()) {
