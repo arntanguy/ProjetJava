@@ -1,14 +1,18 @@
 package graphique.admin;
 
-import javax.swing.BorderFactory;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import objets.Trajet;
 
 import logiqueMetier.Serveur;
 
 public class GestionTrajetsPanel extends JPanel {
 	private TableTrajetsPanel tableTrajetsPanel;
-	private AjoutTrajetPanel ajoutTrajetsPanel;
 
 	private Serveur serveur;
 	
@@ -19,13 +23,13 @@ public class GestionTrajetsPanel extends JPanel {
 	}
 
 	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
+		//setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-		ajoutTrajetsPanel = new AjoutTrajetPanel(serveur);
-		add(ajoutTrajetsPanel);
 		
 		tableTrajetsPanel = new TableTrajetsPanel(serveur);
 		add(tableTrajetsPanel);
+		
 	}
+	
+	
 }

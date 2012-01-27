@@ -1,6 +1,7 @@
 package graphique.admin;
 
 import graphique.widgets.TableSpinnerEditor;
+import graphique.widgets.TableTransportSelectionEditor;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
@@ -57,7 +59,7 @@ public class TableTrajetsPanel extends JPanel {
 
 	private void buildReservationsTable() {
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
-		"Date arrivée" };
+		"Date arrivée", "Transport" };
 		
 		// Create a SpinnerDateModel with current date as the initial value.
 		SpinnerDateModel model = new SpinnerDateModel();
@@ -78,11 +80,14 @@ public class TableTrajetsPanel extends JPanel {
 		addComboToTable(combo, 1);
 		addSpinnerToTable(dateDepartSpinner, 2);
 		addSpinnerToTable(dateArriveeSpinner, 3);
-		
 
+		TableTransportSelectionEditor s = new TableTransportSelectionEditor();
+		addTransportSelectorToTable(s, 4);
+		
 		scrollPane = new JScrollPane(trajetsTable);
 		add(scrollPane);
 	}
+
 
 	private JComboBox buildDepartCombo() {
 		JComboBox combo = new JComboBox();
@@ -93,14 +98,34 @@ public class TableTrajetsPanel extends JPanel {
 	}
 	
 	private void buildButtons() {
-
 		JPanel panel = new JPanel();
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
+		panel.add(new JButton(new LinkAction("Lier à un tranport")));
 		add(panel);
 	}
 
+	public class LinkAction extends AbstractAction {
+		public LinkAction(String texte) {
+			super(texte);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("Link !");
+			int [] selected = trajetsTable.getSelectedRows();
+			for(int i : selected) {
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						TransportSelectorDialog d = new TransportSelectorDialog(serveur);
+						d.setVisible(true);
+					}
+				});
+				
+			}
+		}
+	}
 	public class AddAction extends AbstractAction {
 		public AddAction(String texte) {
 			super(texte);
@@ -144,8 +169,9 @@ public class TableTrajetsPanel extends JPanel {
 			switch(e.getType()) {
 			case TableModelEvent.INSERT:
 				System.out.println("Insertion");
-				trajetsModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
+				//trajetsModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
 				break;
+				
 			case TableModelEvent.UPDATE:
 			/*	System.out.println("Updated");
 				for(Trajet v:trajets) {
@@ -173,5 +199,10 @@ public class TableTrajetsPanel extends JPanel {
 	private void addComboToTable(JComboBox combo, int column) {
 		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
 		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
+	}
+	
+	private void addTransportSelectorToTable(TableTransportSelectionEditor s, int column) {
+		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
+		gradeColumn.setCellEditor(s);
 	}
 }
