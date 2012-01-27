@@ -193,6 +193,8 @@ public class ClientAdmin {
             String dateDepart = "";
             String horaireDepart = "";
             int intervalleVoulue = 12;
+            boolean avecCouchette = false;
+            boolean premiereClasse = false;
             boolean trierParPrix = false;
             
             // On demande à l'utilisateur toutes les infos qu'on veut
@@ -263,6 +265,33 @@ public class ClientAdmin {
                 placesVoulues = 1;
             
             
+            System.out.print("Qu'avec couchette ? (1=oui,0=non) : ");
+            int couchetteString=0;
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                couchetteString = Integer.valueOf(tokenizer.next()); // récupère
+                                                                   // le premier
+                                                                   // mot
+            }
+            if(couchetteString!=0)
+            {
+                avecCouchette=true;
+            }
+            
+            System.out.print("Première classe ? (1=oui,0=non) : ");
+            int classeString=0;
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                classeString = Integer.valueOf(tokenizer.next()); // récupère
+                                                                   // le premier
+                                                                   // mot
+            }
+            if(classeString!=0)
+            {
+                premiereClasse=true;
+            }
+            
+            
             System.out.print("Trier par prix (0=non,1=oui) : ");
             int trierPrix=0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
@@ -286,13 +315,13 @@ public class ClientAdmin {
             // on recherche les trajets correspondant aux paramètres rentrés
                 trajetRecherche = s.rechercherTrajet(depart, arrivee,
                     vehicule, placesVoulues, dateCompleteDepart,
-                    intervalleVoulue);
+                    intervalleVoulue,avecCouchette,premiereClasse);
             }
             else
             {
                 trajetRecherche = s.rechercherTrajetParPrix(depart, arrivee,
                         vehicule, placesVoulues, dateCompleteDepart,
-                        intervalleVoulue);
+                        intervalleVoulue,avecCouchette,premiereClasse);
             }
 
             // on affiche les trajets correspondant aux paramètres rentrés, s'il
@@ -339,7 +368,6 @@ public class ClientAdmin {
             boolean modifiable=false;
             boolean prendCouchette=false;
             Map<String,Boolean> prendRepas=new HashMap<String,Boolean>();
-            Map<String,Boolean> prendClasses=new HashMap<String,Boolean>();
             
             a.consulterTrajet();
 
@@ -453,27 +481,7 @@ public class ClientAdmin {
                             prendCouchette=true;
                     }
                     
-                    
-                    for(ClassesRepas classe : trajetAReserver.getVehicule().getClasses())
-                    {
-                        System.out.print(classe.getNom()+" ? (0=non, 1=oui)");
-                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                        res=0;
-                        if (tokenizer.hasNext()) {
-                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
-                            
-                        }
-                        if(res==0)
-                        {
-                            prendClasses.put(classe.getNom(), false);
-                        }
-                        else
-                        {
-                            prendClasses.put(classe.getNom(), true);
-                        }
-                    }
-                    
-                    for(ClassesRepas repas : trajetAReserver.getVehicule().getRepas())
+                    for(Repas repas : trajetAReserver.getVehicule().getRepas())
                     {
                         System.out.print(repas.getNom()+" ? (0=non, 1=oui)");
                         tokenizer = new Scanner((new Scanner(System.in)).nextLine());
@@ -495,7 +503,7 @@ public class ClientAdmin {
                     passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
                     
                     
-                    reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas,prendClasses, s.getReservationNewIdentifiant(),placesVoulues);
+                    reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas, s.getReservationNewIdentifiant(),placesVoulues);
                     
                     
                     a.reserver(trajetAReserver, placesVoulues);
@@ -542,6 +550,7 @@ public class ClientAdmin {
             int idArrivee = 0;
             int idVehicule = 0;
             int distance=0;
+            boolean premiereClasse=false;
 
             // On demande à l'utilisateur toutes les infos qu'on veut
             // puis on vérifie si ce qui a été entré est correct
@@ -620,6 +629,17 @@ public class ClientAdmin {
                 distance = Integer.valueOf(tokenizer.next()); // récupère le
                                                                 // premier mot
             }
+            
+            
+            System.out.print("Première classe (0=non,1=oui) : ");
+            int classe=0;
+            tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+            if (tokenizer.hasNext()) {
+                classe = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                // premier mot
+            }
+            if(classe!=0)
+                premiereClasse=true;
 
             // on convertit les dates entrées en Calendar
             Calendar dateCompleteDepart = Serveur.textToCalendar(dateDepart,
@@ -634,7 +654,7 @@ public class ClientAdmin {
 
             // on créé le trajet voulu puis on l'ajoute
             Trajet t = new Trajet(dateCompleteDepart, dateCompleteArrivee,
-                    depart, arrivee,distance, v, a.getTrajetNewIdentifiant());
+                    depart, arrivee,distance, v, a.getTrajetNewIdentifiant(),premiereClasse);
 
             a.addTrajet(t);
             a.consulterTrajet();
@@ -766,6 +786,7 @@ public class ClientAdmin {
             int idArrivee = 0;
             int idVehicule = 0;
             int distance=0;
+            boolean premiereClasse=false;
 
             a.consulterTrajet();
             // On demande à l'utilisateur l'identifiant du trajet à modifier
@@ -912,6 +933,24 @@ public class ClientAdmin {
                     distance=trajetAModifier.getDistance();
                 
                 
+                int texteClasse = (trajetAModifier.isPremiereClasse()) ? 1 : 0;
+                System.out.print(new StringBuffer().append("Première classe (0=non,1=oui) [")
+                        .append(texteClasse)
+                        .append("] : "));
+                int classe=0;
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    classe = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                    // premier mot
+                }
+                else
+                {
+                    classe = texteClasse;
+                }
+                if(classe!=0)
+                    premiereClasse=true;
+                
+                
                 // on convertit les dates entrées en Calendar
                 Calendar dateCompleteDepart = Serveur.textToCalendar(
                         dateDepart, horaireDepart);
@@ -925,7 +964,7 @@ public class ClientAdmin {
                 // On créé le nouveau trajet puis on le met à la place de
                 // l'ancien
                 Trajet t = new Trajet(dateCompleteDepart, dateCompleteArrivee,
-                        depart, arrivee, distance, v, trajetAModifier.getIdentifiant());
+                        depart, arrivee, distance, v, trajetAModifier.getIdentifiant(),premiereClasse);
                 a.modifierTrajet(trajetAModifier, t);
                 a.consulterTrajet();
             } else {
@@ -1102,7 +1141,6 @@ public class ClientAdmin {
             boolean modifiable=false;
             boolean prendCouchette=false;
             Map<String,Boolean> prendRepas=new HashMap<String,Boolean>();
-            Map<String,Boolean> prendClasses=new HashMap<String,Boolean>();
             
             a.consulterReservation();
             System.out.print("Réservation à modifier (id) : ");
@@ -1244,33 +1282,7 @@ public class ClientAdmin {
                             prendCouchette=true;
                     }
                     
-                    
-                    for(ClassesRepas classe : trajetAReserver.getVehicule().getClasses())
-                    {
-                        int texteClasse=0;
-                        if(reservationAModifier.getClasse(classe.getNom()))
-                            texteClasse=1;
-                        System.out.print(new StringBuffer().append(classe.getNom()+" ? (0=non, 1=oui) [").append(texteClasse)
-                                .append("] : "));
-                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                        res=0;
-                        if (tokenizer.hasNext()) {
-                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
-                            
-                        }
-                        else
-                            res=texteClasse;
-                        if(res==0)
-                        {
-                            prendClasses.put(classe.getNom(), false);
-                        }
-                        else
-                        {
-                            prendClasses.put(classe.getNom(), true);
-                        }
-                    }
-                    
-                    for(ClassesRepas repas : trajetAReserver.getVehicule().getRepas())
+                    for(Repas repas : trajetAReserver.getVehicule().getRepas())
                     {
                         int texteRepas=0;
                         if(reservationAModifier.getRepas(repas.getNom()))
@@ -1298,7 +1310,7 @@ public class ClientAdmin {
                     passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
                     
                     
-                    Reservation reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas,prendClasses, reservationAModifier.getIdentifiant(),placesVoulues);
+                    Reservation reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas, reservationAModifier.getIdentifiant(),placesVoulues);
                     
                     a.modifierReservation(reservationAModifier, reservation);
                     
