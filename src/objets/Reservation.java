@@ -194,7 +194,7 @@ public class Reservation implements Serializable {
         }
 
         return new StringBuffer().append(passager.print()).append("#")
-                .append(trajet.print2()).append("#").append(modifiable)
+                .append(trajet.getIdentifiant()).append("#").append(modifiable)
                 .append("#").append(prendCouchette).append("#")
                 .append(identifiant).append("#").append(placesVoulues).append("#")
                 .append(textRepas).append("\n").toString();

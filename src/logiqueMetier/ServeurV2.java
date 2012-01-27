@@ -199,7 +199,7 @@ public class ServeurV2 extends Serveur implements Serializable {
         // réservations
         for (int i = 0; i < tab7.length; i++) {
             String[] tab8 = tab7[i].split("#");
-            if (tab8.length >= 20) {
+            if (tab8.length >= 10) {
                 Profil profil = null;
                 for (Profil value : Profil.values()) {
                     if (tab8[3].equals(String.valueOf(value))) {
@@ -211,25 +211,19 @@ public class ServeurV2 extends Serveur implements Serializable {
                         Serveur.textToCalendar(tab8[2], "00:00"), profil,
                         Boolean.valueOf(tab8[4]));
 
-                Vehicule v = this.getVehicule(Integer.valueOf(tab8[11]));
-                Trajet trajet = new Trajet(textToCalendar(tab8[5], tab8[6]),
-                        textToCalendar(tab8[7], tab8[8]), this.getVille(Integer
-                                .valueOf(tab8[9])), this.getVille(Integer
-                                .valueOf(tab8[10])),Integer
-                                .valueOf(tab8[14]) , v,
-                        Integer.valueOf(tab8[13]), Integer.valueOf(tab8[12]),Boolean.valueOf(tab8[15]));
+                Trajet trajet = getTrajet(Integer.valueOf(tab8[5]));
 
                 Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
 
-                for (int k = 20; k < 20 + v.getRepas().size(); k++) {
+                for (int k = 10; k < 10 + trajet.getVehicule().getRepas().size(); k++) {
                     String[] tab10 = tab8[k].split("=");
                     prendRepas.put(tab10[0], Boolean.valueOf(tab10[1]));
                 }
 
                 Reservation reservation = new Reservation(passager, trajet,
-                        Boolean.valueOf(tab8[16]), Boolean.valueOf(tab8[17]),
-                        prendRepas, Integer.valueOf(tab8[18]),
-                        Integer.valueOf(tab8[19]));
+                        Boolean.valueOf(tab8[6]), Boolean.valueOf(tab8[7]),
+                        prendRepas, Integer.valueOf(tab8[8]),
+                        Integer.valueOf(tab8[9]));
 
                 this.addReservation(reservation);
             }
