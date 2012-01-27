@@ -560,7 +560,7 @@ public abstract class Serveur implements Serializable {
      */
     public List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
-            int intervalleVoulue) {
+            int intervalleVoulue, boolean avecCouchette, boolean premiereClasse) {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
 
         for (int i = 0; i < mesTrajets.size(); i++) {
@@ -576,6 +576,8 @@ public abstract class Serveur implements Serializable {
                     && (vehicule == null || mesTrajets.get(i).getVehicule()
                             .equals(vehicule))
                     && mesTrajets.get(i).restePlaces(placesVoulues)
+                    && (!avecCouchette || mesTrajets.get(i).getVehicule().avecCouchette()==avecCouchette)
+                    && mesTrajets.get(i).isPremiereClasse() == premiereClasse
                     && dateDepart.before(departRetard)
                     && dateDepart.after(departAvance)) {
                 trajetsConvenables.add(mesTrajets.get(i));
@@ -590,9 +592,9 @@ public abstract class Serveur implements Serializable {
 
     public List<Trajet> rechercherTrajetParPrix(Ville depart, Ville arrivee,
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
-            int intervalleVoulue) {
+            int intervalleVoulue, boolean avecCouchette, boolean premiereClasse) {
         List<Trajet> list = rechercherTrajet(depart, arrivee, vehicule,
-                placesVoulues, dateDepart, intervalleVoulue);
+                placesVoulues, dateDepart, intervalleVoulue, avecCouchette, premiereClasse);
         
         Collections.sort(list,new CompareInteger());
         

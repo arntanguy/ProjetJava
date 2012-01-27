@@ -27,6 +27,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     int placesRestantes;
     int identifiant;
     int distance;
+    boolean premiereClasse;
     
     /**
      * Crée une instance de trajet
@@ -45,7 +46,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      *            l'identifiant
      */
     public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
-            Ville arrivee, int distance, Vehicule vehicule, int identifiant) {
+            Ville arrivee, int distance, Vehicule vehicule, int identifiant,boolean premiereClasse) {
         this.dateDepart = dateDepart;
         this.dateArrivee = dateArrivee;
         this.depart = depart;
@@ -54,10 +55,11 @@ public class Trajet implements Serializable, Comparable<Trajet> {
         this.placesRestantes = vehicule.getCapacite();
         this.identifiant = identifiant;
         this.distance = distance;
+        this.premiereClasse = premiereClasse;
     }
 
     public Trajet(int identifiant) {
-    	this(Calendar.getInstance(), Calendar.getInstance(), new Ville(), new Ville(), -1, new Vehicule(), identifiant);
+    	this(Calendar.getInstance(), Calendar.getInstance(), new Ville(), new Ville(), -1, new Vehicule(), identifiant,false);
     }
     
     /**
@@ -80,7 +82,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      */
     public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
             Ville arrivee, int distance, Vehicule vehicule, int identifiant,
-            int placesRestantes) {
+            int placesRestantes,boolean premiereClasse) {
         this.dateDepart = dateDepart;
         this.dateArrivee = dateArrivee;
         this.depart = depart;
@@ -89,6 +91,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
         this.placesRestantes = placesRestantes;
         this.identifiant = identifiant;
         this.distance = distance;
+        this.premiereClasse = premiereClasse;
     }
 
     /**
@@ -103,6 +106,10 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      */
     public Calendar getDateArrivee() {
         return dateArrivee;
+    }
+
+    public boolean isPremiereClasse() {
+        return premiereClasse;
     }
 
     /**
@@ -225,12 +232,13 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     public String toString() {
         int departMois = dateDepart.get(Calendar.MONTH) + 1;
         int arriveeMois = dateArrivee.get(Calendar.MONTH) + 1;
+        String texteClasse=(premiereClasse) ? "première classe" : "standard";
 
         return new StringBuffer().append("Voyage (id=").append(identifiant)
                 .append(") de ").append(depart.getVille()).append(" à ")
                 .append(arrivee.getVille()).append(" en ").append(vehicule.getType().getNom()).append(" (")
                 .append(vehicule.getVehicule()).append(") (id=")
-                .append(vehicule.getIdentifiant()).append(", distance=").append(distance).append("km): \n\t")
+                .append(vehicule.getIdentifiant()).append(", distance=").append(distance).append("km, trajet ").append(texteClasse).append(") : \n\t")
                 .append("Départ le ").append(dateDepart.get(Calendar.DATE))
                 .append("/").append(departMois).append("/")
                 .append(dateDepart.get(Calendar.YEAR)).append(" à ")
@@ -242,7 +250,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append(dateArrivee.get(Calendar.HOUR_OF_DAY)).append(":")
                 .append(dateArrivee.get(Calendar.MINUTE)).append("\n\t")
                 .append("Il reste ").append(placesRestantes)
-                .append(" places restantes\n").append("Prix=").append(getPrix()).toString();
+                .append(" places restantes").toString();
     }
 
     /**
@@ -260,7 +268,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append(arrivee.getIdentifiant()).append("#")
                 .append(vehicule.getIdentifiant()).append("#")
                 .append(placesRestantes).append("#").append(identifiant)
-                .append("#").append(distance).append("#").append("\n")
+                .append("#").append(distance).append("#").append(premiereClasse).append("#").append("\n")
                 .toString();
     }
 
@@ -273,7 +281,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append(arrivee.getIdentifiant()).append("#")
                 .append(vehicule.getIdentifiant()).append("#")
                 .append(placesRestantes).append("#").append(identifiant)
-                .append("#").append(distance).toString();
+                .append("#").append(distance).append("#").append(premiereClasse).toString();
     }
 
     // compare deux trajets suivant leur date de départ

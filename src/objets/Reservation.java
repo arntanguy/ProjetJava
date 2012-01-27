@@ -17,7 +17,6 @@ public class Reservation implements Serializable {
     private int placesVoulues;
     private boolean prendCouchette;
     private Map<String, Boolean> prendRepas;
-    private Map<String, Boolean> prendClasses;
 
     /**
      * @param passager
@@ -28,14 +27,12 @@ public class Reservation implements Serializable {
      * @param prendClasses
      */
     public Reservation(Passager passager, Trajet trajet, boolean modifiable,
-            boolean prendCouchette, Map<String, Boolean> prendRepas,
-            Map<String, Boolean> prendClasses, int identifiant,int placesVoulues) {
+            boolean prendCouchette, Map<String, Boolean> prendRepas, int identifiant,int placesVoulues) {
         this.passager = passager;
         this.trajet = trajet;
         this.modifiable = modifiable;
         this.prendCouchette = prendCouchette;
         this.prendRepas = prendRepas;
-        this.prendClasses = prendClasses;
         this.identifiant = identifiant;
         this.placesVoulues = placesVoulues;
     }
@@ -69,15 +66,6 @@ public class Reservation implements Serializable {
         BufferedWriter out = new BufferedWriter(fstream);
         String mod = (modifiable) ? "Ticket Modifiable" : "";
         String couchette = (prendCouchette) ? "Avec couchette" : "";
-        String classes = "";
-        if (prendClasses != null) {
-            for (String key : prendClasses.keySet()) {
-                if (prendClasses.get(key) != null
-                        && prendClasses.get(key) == true) {
-                    classes += key + "<br />";
-                }
-            }
-        }
 
         String repas = "";
         if (prendRepas != null) {
@@ -114,9 +102,6 @@ public class Reservation implements Serializable {
                     + "Repas : "
                     + repas
                     + "<br />"
-                    + "Classes : "
-                    + classes
-                    + "<br />"
                     + "Synthèse des prix : "
                     + getPrix()
                     + "</body></html>");
@@ -138,9 +123,12 @@ public class Reservation implements Serializable {
         double prix = 0;
         int reductionFidelite = 0;
         int prixModifiable = 5;
+        int prixPremiereClasse = 10;
         int prixCouchette = 5;
         int repasTotal = 0;
-        int classesTotal = 0;
+        int classePaye = 0;
+        int couchettePaye=0;
+        int modifiablePaye=0;
 
         prix += passager.getProfil().getPrix(); // prix en fonction du type de
                                                 // passager
@@ -151,18 +139,35 @@ public class Reservation implements Serializable {
         }
         prix += (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0; // prix en fonction du
                                                           // type de transport
-        for (ClassesRepas cr : trajet.getVehicule().getRepas()) {
-            repasTotal += cr.getPrix();
-            prix += cr.getPrix();
+
+        for (String key : prendRepas.keySet()) {
+            if (prendRepas.get(key) == true) {
+                
+                for(Repas repas : trajet.getVehicule().getRepas())
+                {
+                    if(repas.getNom().equals(key))
+                    {
+                        repasTotal += repas.getPrix();
+                        prix += repas.getPrix();
+                    }
+                }
+            }
         }
-        for (ClassesRepas cr : trajet.getVehicule().getClasses()) {
-            classesTotal += cr.getPrix();
-            prix += cr.getPrix();
+        
+        
+        if(trajet.isPremiereClasse())
+        {
+            classePaye=prixPremiereClasse;
+            prix += prixPremiereClasse;
         }
+        
+        
         if (modifiable) {
+            modifiablePaye=prixModifiable;
             prix += prixModifiable;
         }
         if (prendCouchette) {
+            couchettePaye=prixCouchette;
             prix += prixCouchette;
         }
         
@@ -171,23 +176,18 @@ public class Reservation implements Serializable {
         String texte = "prix passager=" + passager.getProfil().getPrix()
                 + " euros<br/>";
         texte += "réduction fidèlité=" + reductionFidelite + " euros<br/>";
-        texte += "prix type de transport="
-                + trajet.getVehicule().getPrix() + " euros<br/>";
+        texte += "prix transport="
+                + (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0 + " euros<br/>";
         texte += "prix repas=" + repasTotal + " euros<br/>";
-        texte += "prix classe=" + classesTotal + " euros<br/>";
-        texte += "supplément changement du billet=" + prixModifiable
+        texte += "prix classe=" + classePaye + " euros<br/>";
+        texte += "supplément changement du billet=" + modifiablePaye
                 + " euros<br/>";
-        texte += "prix couchette=" + prixCouchette + " euros<br/>";
+        texte += "prix couchette=" + couchettePaye + " euros<br/>";
         texte += "prix total pour "+placesVoulues+" place(s)=" + prix + " euros<br/>";
         return texte;
     }
 
     public String print() {
-        String textClasses = "";
-        for (String key : prendClasses.keySet()) {
-            textClasses += key + "=" + prendClasses.get(key) + "#";
-        }
-
         String textRepas = "";
         for (String key : prendRepas.keySet()) {
             textRepas += key + "=" + prendRepas.get(key) + "#";
@@ -196,7 +196,7 @@ public class Reservation implements Serializable {
         return new StringBuffer().append(passager.print()).append("#")
                 .append(trajet.print2()).append("#").append(modifiable)
                 .append("#").append(prendCouchette).append("#")
-                .append(identifiant).append("#").append(placesVoulues).append("#").append(textClasses)
+                .append(identifiant).append("#").append(placesVoulues).append("#")
                 .append(textRepas).append("\n").toString();
     }
 
@@ -207,11 +207,6 @@ public class Reservation implements Serializable {
     public boolean getRepas(String repas)
     {
         return prendRepas.get(repas);
-    }
-    
-    public boolean getClasse(String classe)
-    {
-        return prendClasses.get(classe);
     }
 
     public String toString() {

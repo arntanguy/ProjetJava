@@ -21,8 +21,7 @@ public class Vehicule implements Serializable {
     protected int capacite;
     protected int identifiant;
     protected int prix;
-    protected List<ClassesRepas> classes;
-    protected List<ClassesRepas> repas;
+    protected List<Repas> repas;
 
     /**
      * Créé une instance de véhicule
@@ -40,8 +39,7 @@ public class Vehicule implements Serializable {
         this.type = type;
         this.capacite = capacite;
         this.identifiant = identifiant;
-        classes = new ArrayList<ClassesRepas>();
-        repas = new ArrayList<ClassesRepas>();
+        repas = new ArrayList<Repas>();
         this.prix=prix;
     }
 
@@ -110,12 +108,8 @@ public class Vehicule implements Serializable {
         return false;
     }
 
-    public List<ClassesRepas> getRepas() {
+    public List<Repas> getRepas() {
         return repas;
-    }
-
-    public List<ClassesRepas> getClasses() {
-        return classes;
     }
 
     @Override

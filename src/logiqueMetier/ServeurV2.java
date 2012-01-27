@@ -176,13 +176,13 @@ public class ServeurV2 extends Serveur implements Serializable {
         // trajets
         for (int j = 0; j < tab3.length; j++) {
             String[] tab4 = tab3[j].split("#");
-            if (tab4.length == 10) {
+            if (tab4.length == 11) {
                 Vehicule v = this.getVehicule(Integer.valueOf(tab4[6]));
                 this.addTrajet(new Trajet(textToCalendar(tab4[0], tab4[1]),
                         textToCalendar(tab4[2], tab4[3]), this.getVille(Integer
                                 .valueOf(tab4[4])), this.getVille(Integer
                                 .valueOf(tab4[5])), Integer.valueOf(tab4[9]),
-                        v, Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7])));
+                        v, Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7]),Boolean.valueOf(tab4[10])));
             }
         }
 
@@ -199,7 +199,7 @@ public class ServeurV2 extends Serveur implements Serializable {
         // réservations
         for (int i = 0; i < tab7.length; i++) {
             String[] tab8 = tab7[i].split("#");
-            if (tab8.length >= 19) {
+            if (tab8.length >= 20) {
                 Profil profil = null;
                 for (Profil value : Profil.values()) {
                     if (tab8[3].equals(String.valueOf(value))) {
@@ -217,25 +217,19 @@ public class ServeurV2 extends Serveur implements Serializable {
                                 .valueOf(tab8[9])), this.getVille(Integer
                                 .valueOf(tab8[10])),Integer
                                 .valueOf(tab8[14]) , v,
-                        Integer.valueOf(tab8[13]), Integer.valueOf(tab8[12]));
+                        Integer.valueOf(tab8[13]), Integer.valueOf(tab8[12]),Boolean.valueOf(tab8[15]));
 
                 Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
-                Map<String, Boolean> prendClasses = new HashMap<String, Boolean>();
 
-                for (int k = 19; k < 19 + v.getClasses().size(); k++) {
-                    String[] tab9 = tab8[k].split("=");
-                    prendClasses.put(tab9[0], Boolean.valueOf(tab9[1]));
-                }
-                for (int k = 19 + v.getClasses().size(); k < 19
-                        + v.getClasses().size() + v.getRepas().size(); k++) {
+                for (int k = 20; k < 20 + v.getRepas().size(); k++) {
                     String[] tab10 = tab8[k].split("=");
                     prendRepas.put(tab10[0], Boolean.valueOf(tab10[1]));
                 }
 
                 Reservation reservation = new Reservation(passager, trajet,
-                        Boolean.valueOf(tab8[15]), Boolean.valueOf(tab8[16]),
-                        prendRepas, prendClasses, Integer.valueOf(tab8[17]),
-                        Integer.valueOf(tab8[18]));
+                        Boolean.valueOf(tab8[16]), Boolean.valueOf(tab8[17]),
+                        prendRepas, Integer.valueOf(tab8[18]),
+                        Integer.valueOf(tab8[19]));
 
                 this.addReservation(reservation);
             }

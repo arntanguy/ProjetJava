@@ -218,6 +218,10 @@ public class ServeurV3 extends Serveur {
     			Element placesRestantes = new Element("placesRestantes");
     			placesRestantes.setText(String.valueOf(trajet.getPlacesRestantes()));
     			bal.addContent(placesRestantes);
+    			
+    			Element premiereClasse = new Element("premiereClasse");
+    			premiereClasse.setText(String.valueOf(trajet.isPremiereClasse()));
+                        bal.addContent(premiereClasse);
     		}
     	enregistreXml("MesTrajets.xml", documentTrajets);	
     }
@@ -282,14 +286,7 @@ public class ServeurV3 extends Serveur {
     			prendCouchette.setText(String.valueOf(reservation.isPrendCouchette()));
     			bal.addContent(prendCouchette);	
     			
-    			for(ClassesRepas classe : reservation.getTrajet().getVehicule().getClasses())
-    			{
-	    				Element prendClasses = new Element(classe.getNom());
-	        			prendClasses.setText(String.valueOf(reservation.getClasse(classe.getNom())));
-	        			bal.addContent(prendClasses);
-    			}
-    			
-    			for(ClassesRepas repas : reservation.getTrajet().getVehicule().getRepas())
+    			for(Repas repas : reservation.getTrajet().getVehicule().getRepas())
     			{
     				Element prendRepas = new Element(repas.getNom());
         			prendRepas.setText(String.valueOf(reservation.getRepas(repas.getNom())));
@@ -368,6 +365,7 @@ public class ServeurV3 extends Serveur {
     		String distance = courant.getChild("distance").getText();
     		String idDuVehicule = courant.getChild("idVehicule").getText();
     		String nbPlacesRestantes = courant.getChild("placesRestantes").getText();
+    		String premiereClasse = courant.getChild("premiereClasse").getText();
     		
     		Calendar dateDepart = Calendar.getInstance();
 			dateDepart = textToCalendar(dateDeDepart, horaireDeDepart);
@@ -376,7 +374,7 @@ public class ServeurV3 extends Serveur {
 			Ville villeDepart = getVille(Integer.valueOf(idVilleDeDepart));
 			Ville villeDArrivee = getVille(Integer.valueOf(idVilleDArrivee));
 			Vehicule vehicule = getVehicule(Integer.valueOf(idDuVehicule));
-			addTrajet(new Trajet(dateDepart, dateArrivee, villeDepart, villeDArrivee, Integer.valueOf(distance), vehicule, Integer.valueOf(id), Integer.valueOf(nbPlacesRestantes)));
+			addTrajet(new Trajet(dateDepart, dateArrivee, villeDepart, villeDArrivee, Integer.valueOf(distance), vehicule, Integer.valueOf(id), Integer.valueOf(nbPlacesRestantes),Boolean.valueOf(premiereClasse)));
 	    	
     	    }
     }
@@ -416,12 +414,8 @@ public class ServeurV3 extends Serveur {
 			Trajet trajet = getTrajet(Integer.valueOf(idTrajet));
 			
             Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
-            Map<String, Boolean> prendClasses = new HashMap<String, Boolean>();
-            for(int j=0;j<trajet.getVehicule().getClasses().size();j++)
-            {
-            	prendClasses.put(trajet.getVehicule().getClasses().get(j).getNom(), Boolean.valueOf(trajet.getVehicule().getClasses().get(j).getNom().getText()));
-            }
-			super.addReservation(new Reservation(passager, trajet, Boolean.valueOf(modifiable), Boolean.valueOf(prendCouchette), prendRepas, prendClasses, Integer.valueOf(id), Integer.valueOf(placesVoulues));
+
+	//super.addReservation(new Reservation(passager, trajet, Boolean.valueOf(modifiable), Boolean.valueOf(prendCouchette), prendRepas, prendClasses, Integer.valueOf(id), Integer.valueOf(placesVoulues));
     	    }
     }
     /**

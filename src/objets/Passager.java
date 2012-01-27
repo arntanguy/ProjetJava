@@ -51,7 +51,7 @@ public class Passager implements Serializable {
         String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
         return getNom() + " " + getPrenom() + " (né le "
                 + Serveur.calendarToDate(getDateNaissance()) + ") \nTarif : "
-                + getProfil().toString() + " " + f;
+                + getProfil().getProfil() + " " + f;
     }
 
     public String print() {

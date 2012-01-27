@@ -14,14 +14,12 @@ public class Bateau extends Vehicule {
      */
     public Bateau(int prix, String vehicule, int capacite, int identifiant) {
         super(prix, vehicule, TypeVehicule.BATEAU, capacite, identifiant);
-        classes.add(new ClassesRepas("Premiere_classe", 10));
-        classes.add(new ClassesRepas("Standard", 5));
-        repas.add(new ClassesRepas("petit_dejeuner", 5));
-        repas.add(new ClassesRepas("dejeuner", 10));
-        repas.add(new ClassesRepas("dener", 10));
-        repas.add(new ClassesRepas("vegetarien", 5));
-        repas.add(new ClassesRepas("viande", 5));
-        repas.add(new ClassesRepas("poisson", 5));
+        repas.add(new Repas("petit_dejeuner", 5));
+        repas.add(new Repas("dejeuner", 10));
+        repas.add(new Repas("dener", 10));
+        repas.add(new Repas("vegetarien", 5));
+        repas.add(new Repas("viande", 5));
+        repas.add(new Repas("poisson", 5));
     }
 
     public Bateau(int prix, String vehicule, int identifiant) {

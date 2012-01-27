@@ -263,8 +263,8 @@ public class Admin {
      */
     protected List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
-            int intervalleVoulue) {
+            int intervalleVoulue,boolean avecCouchette, boolean premiereClasse) {
         return serveur.rechercherTrajet(depart, arrivee, vehicule,
-                placesVoulues, dateDepart, intervalleVoulue);
+                placesVoulues, dateDepart, intervalleVoulue,avecCouchette, premiereClasse);
     }
 }
