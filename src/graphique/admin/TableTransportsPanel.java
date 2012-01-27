@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -72,6 +73,9 @@ public class TableTransportsPanel extends JPanel {
 		add(panel);
 	}
 
+	public void setEditable(boolean isEditable) {
+			transportModel.setEditable(isEditable);
+	}
 
 	public class AddAction extends AbstractAction {
 		public AddAction(String texte) {
@@ -116,11 +120,22 @@ public class TableTransportsPanel extends JPanel {
 			int column = e.getColumn();
 			System.out.println("Row " + row);
 			System.out.println("Column " + column);
+			if(column == 5) {
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						TransportSelectorDialog p = new TransportSelectorDialog(serveur);
+						p.setVisible(true);
+					}
+				});
+			
+			}
+
 			
 			switch(e.getType()) {
 			case TableModelEvent.INSERT:
 				System.out.println("Insertion");
-				transportModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
+//				transportModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
+				
 				break;
 			case TableModelEvent.UPDATE:
 				System.out.println("Updated");

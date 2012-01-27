@@ -18,14 +18,13 @@ public class TrajetsTableModel extends DefaultTableModel {
 
 	public TrajetsTableModel(ArrayList<Trajet> trajets) {
 		this.trajets = trajets;
-		System.out.println(trajets);
 	}
 
 	@Override
 	public int getColumnCount() {
 		// Returns the number of columns in the model : départ, arrivée, 
-		// date départ, date arrivée, transport, places restantes
-		return 4;
+		// date départ, date arrivée, transport, transport
+		return 5;
 	}
 
 	@Override

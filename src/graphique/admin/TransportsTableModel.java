@@ -9,9 +9,10 @@ import objets.Vehicule;
 
 public class TransportsTableModel extends DefaultTableModel {
 
-	ArrayList<Vehicule> vehicules;
-	String[] columnNames;
-
+	private ArrayList<Vehicule> vehicules;
+	private String[] columnNames;
+	private boolean isEditable = true;
+	
 	public TransportsTableModel(ArrayList<Vehicule> vehicules) {
 		this.vehicules = vehicules;
 	}
@@ -86,9 +87,13 @@ public class TransportsTableModel extends DefaultTableModel {
 		fireTableDataChanged();
 	}
 
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
+	
 	public boolean isCellEditable(int row, int column)
 	{
-		return true;
+		return isEditable;
 	}
 
 }
