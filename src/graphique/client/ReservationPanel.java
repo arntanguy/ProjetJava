@@ -1,12 +1,18 @@
 package graphique.client;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import objets.Trajet;
+import objets.Vehicule;
+import objets.Ville;
 
 import logiqueMetier.Admin;
 import logiqueMetier.Serveur;
@@ -40,12 +46,20 @@ public class ReservationPanel extends JPanel {
 	private class ValidateAction extends AbstractAction {
 		public ValidateAction(String texte){
 			super(texte);
-			System.out.println(trajetP.getDateDepart());
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Validé !");
+			ArrayList<Trajet> trajets = (ArrayList<Trajet>) serveur.rechercherTrajet(trajetP
+					.getVilleDepart(), trajetP.getVilleArrivee(), null, clientP
+					.getNbPassagers(), trajetP.getDateDepart(), 12, true,
+					false, true);
+
+			for(Trajet t:trajets) {
+				System.out.println(t);
+			}
+			
 		}
 	}
 }

@@ -49,6 +49,7 @@ public class TrajetPanel extends JPanel {
 
 		DepartComboAction departComboAction = new DepartComboAction();
 		villeDepartCombo.setAction(departComboAction);
+		departComboAction.actionPerformed(null);
 
 		// Create a SpinnerDateModel with current date as the initial value.
 		SpinnerDateModel model = new SpinnerDateModel();

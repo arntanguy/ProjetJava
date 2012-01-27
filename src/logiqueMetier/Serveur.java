@@ -595,7 +595,7 @@ public abstract class Serveur implements Serializable {
                         && mesTrajets.get(i).getArrivee().equals(arrivee)
                         && (vehicule == null || mesTrajets.get(i).getVehicule()
                                 .equals(vehicule))
-                        && mesTrajets.get(i).restePlaces(placesVoulues)
+                        &&  mesTrajets.get(i).restePlaces(placesVoulues)
                         && (!avecCouchette || mesTrajets.get(i).getVehicule()
                                 .avecCouchette() == avecCouchette)
                         && mesTrajets.get(i).isPremiereClasse() == premiereClasse

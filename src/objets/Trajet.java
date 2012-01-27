@@ -25,6 +25,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     Ville arrivee;
     Vehicule vehicule;
     int placesRestantes;
+    int nbPassagers;
     int identifiant;
     int distance;
     boolean premiereClasse;
@@ -47,15 +48,8 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      */
     public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
             Ville arrivee, int distance, Vehicule vehicule, int identifiant,boolean premiereClasse) {
-        this.dateDepart = dateDepart;
-        this.dateArrivee = dateArrivee;
-        this.depart = depart;
-        this.arrivee = arrivee;
-        this.vehicule = vehicule;
-        this.placesRestantes = vehicule.getCapacite();
-        this.identifiant = identifiant;
-        this.distance = distance;
-        this.premiereClasse = premiereClasse;
+    	this(dateDepart, dateArrivee, depart,
+                arrivee, distance,  vehicule, identifiant, 0, premiereClasse);
     }
 
     public Trajet(int identifiant) {
@@ -82,13 +76,13 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      */
     public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
             Ville arrivee, int distance, Vehicule vehicule, int identifiant,
-            int placesRestantes,boolean premiereClasse) {
+            int placesRestantes, boolean premiereClasse) {
         this.dateDepart = dateDepart;
         this.dateArrivee = dateArrivee;
         this.depart = depart;
         this.arrivee = arrivee;
         this.vehicule = vehicule;
-        this.placesRestantes = placesRestantes;
+        this.nbPassagers = vehicule.getCapacite()-placesRestantes;
         this.identifiant = identifiant;
         this.distance = distance;
         this.premiereClasse = premiereClasse;
@@ -137,7 +131,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      * @return nombre de places restantes
      */
     public int getPlacesRestantes() {
-        return placesRestantes;
+        return vehicule.getCapacite()-nbPassagers;
     }
 
     /**
@@ -192,14 +186,6 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     }
 
     /**
-     * @param placesRestantes
-     *            places restantes
-     */
-    public void setPlacesRestantes(int placesRestantes) {
-        this.placesRestantes = placesRestantes;
-    }
-
-    /**
      * @param identifiant
      *            identifiant du trajet
      */
@@ -214,7 +200,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      *            le décrémenteur
      */
     public void decPlacesRestantes(int dec) {
-        this.placesRestantes -= dec;
+        this.nbPassagers += dec;
     }
 
     /**
@@ -225,7 +211,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      * @return true s'il reste des places, false sinon
      */
     public boolean restePlaces(int placesVoulues) {
-        return placesRestantes >= placesVoulues;
+        return vehicule.getCapacite()-nbPassagers >= placesVoulues;
     }
     public String toHtml() {
         int departMois = dateDepart.get(Calendar.MONTH) + 1;
@@ -276,7 +262,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append(dateArrivee.get(Calendar.YEAR)).append(" à ")
                 .append(dateArrivee.get(Calendar.HOUR_OF_DAY)).append(":")
                 .append(dateArrivee.get(Calendar.MINUTE)).append("\n\t")
-                .append("Il reste ").append(placesRestantes)
+                .append("Il reste ").append(vehicule.getCapacite()-nbPassagers)
                 .append(" places restantes").toString();
     }
 
@@ -294,7 +280,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append("#").append(depart.getIdentifiant()).append("#")
                 .append(arrivee.getIdentifiant()).append("#")
                 .append(vehicule.getIdentifiant()).append("#")
-                .append(placesRestantes).append("#").append(identifiant)
+                .append(vehicule.getCapacite() - nbPassagers).append("#").append(identifiant)
                 .append("#").append(distance).append("#").append(premiereClasse).append("#").append("\n")
                 .toString();
     }
@@ -307,7 +293,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append("#").append(depart.getIdentifiant()).append("#")
                 .append(arrivee.getIdentifiant()).append("#")
                 .append(vehicule.getIdentifiant()).append("#")
-                .append(placesRestantes).append("#").append(identifiant)
+                .append(vehicule.getCapacite() - nbPassagers).append("#").append(identifiant)
                 .append("#").append(distance).append("#").append(premiereClasse).toString();
     }
 
