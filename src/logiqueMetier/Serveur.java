@@ -970,4 +970,7 @@ public abstract class Serveur implements Serializable {
     public ArrayList<Vehicule> getVehicules() {
         return mesVehicules;
     }
+    public ArrayList<Reservation> getReservations() {
+        return mesReservations;
+    }
 }

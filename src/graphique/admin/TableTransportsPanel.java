@@ -25,20 +25,15 @@ import logiqueMetier.Serveur;
 import objets.TypeVehicule;
 import objets.Vehicule;
 
-public class TableTransportsPanel extends JPanel {
+public class TableTransportsPanel extends AbstractTablePanel {
 	private TransportsTableModel transportModel;
 	private JTable transportTable;
 	private JScrollPane scrollPane;
-	private JPanel buttonsPanel;
-	private boolean buttonsVisible = true;
 
 	ArrayList<Vehicule> vehicules;
 
-	private Serveur serveur;
-
 	public TableTransportsPanel(Serveur s) {
-		super();
-		serveur = s;
+		super(s);
 		vehicules = serveur.getVehicules();
 		build();
 	}

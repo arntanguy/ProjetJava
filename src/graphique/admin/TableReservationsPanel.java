@@ -12,7 +12,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
@@ -27,8 +26,8 @@ import objets.Trajet;
 import objets.Vehicule;
 import objets.Ville;
 
-public class TableTrajetsPanel extends AbstractTablePanel {
-	private TrajetsTableModel trajetsModel;
+public class TableReservationsPanel extends AbstractTablePanel {
+	private ReservationsTableModel trajetsModel;
 	private JTable trajetsTable;
 	private JScrollPane scrollPane;
 
@@ -38,9 +37,11 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 	private ArrayList<Trajet> trajets;
 	private ArrayList<Ville> villes;
 
-	public TableTrajetsPanel(Serveur s) {
+	private Serveur serveur;
+
+	public TableReservationsPanel(Serveur s) {
 		super(s);
-		trajets = serveur.getTrajets();
+	//	trajets = serveur.getR();
 		villes = serveur.getVilles();
 		build();
 	}
@@ -63,7 +64,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		dateDepartSpinner = new TableSpinnerEditor(model);
 		dateArriveeSpinner = new TableSpinnerEditor(model1);
 
-		trajetsModel = new TrajetsTableModel(trajets);
+		trajetsModel = new ReservationsTableModel(trajets);
 		trajetsModel.setColumnNames(columnNames);
 		trajetsTable = new JTable();
 		trajetsTable.setModel(trajetsModel);
@@ -91,18 +92,16 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 	}
 
 	private void buildButtons() {
-		JPanel panel = new JPanel();
-		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
-		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
-		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new LinkAction("Lier à un tranport", this)));
-		add(panel);
+		buttonsPanel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
+		buttonsPanel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
+		buttonsPanel.add(new JButton(new LinkAction("Lier à un tranport", this)));
+		add(buttonsPanel);
 	}
 
 	public class LinkAction extends AbstractAction {
-		private TableTrajetsPanel parent;
+		private TableReservationsPanel parent;
 
-		public LinkAction(String texte, TableTrajetsPanel parent) {
+		public LinkAction(String texte, TableReservationsPanel parent) {
 			super(texte);
 			this.parent = parent;
 		}
@@ -114,8 +113,9 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 			for(final int i : selected) {
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
-						TransportSelectorDialog d = new TransportSelectorDialog(serveur, parent, i);
-						d.setVisible(true);
+						// TODO
+						//TrajetSelectorDialog d = new TrajetSelectorDialog(serveur, parent, i);
+						//d.setVisible(true);
 					}
 				});
 
@@ -196,16 +196,8 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 
 
 	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
-		trajetsModel.setValueAt(selectedTransport, parentSelectedRow, 4);
+		// FIXME
+		//trajetsModel.setValueAt(selectedTransport, parentSelectedRow, 4);
 		System.out.println("Lié à "+selectedTransport.toString());
-	}
-
-	public void setEditable(boolean b) {
-		// XXX TODO
-	}
-
-	public void setButtonsVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
 	}
 }
