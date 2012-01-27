@@ -71,7 +71,7 @@ public class Reservation implements Serializable {
         if (prendRepas != null) {
             for (String key : prendRepas.keySet()) {
                 if (prendRepas.get(key) != null && prendRepas.get(key) == true) {
-                    repas += key + "<br />";
+                    repas += "<th>"+key+"</th>";
                 }
             }
         }
@@ -86,25 +86,22 @@ public class Reservation implements Serializable {
                     + "<meta name=\"DC.description\" content=\"Votre ticket de réservation\" />"
                     + "<meta name=\"DC.language\"    content=\"fr\" />"
                     + "<meta name=\"DC.keywords\"    content=\"ticket; réservation\" />"
-                    + "</head><body><h1>Votre réservation (n° de réservation = "
+                    + "<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" title=\"Ticket Reservation\" href=\"feuille.css\"/>"
+                    + "</head><body><table><tr><th colspan=\"7\"><h1>Votre réservation (n° de réservation = "
                     + identifiant
-                    + ") pour "+placesVoulues+" place(s)</h1>"
-                    + "Passager : "
-                    + passager
-                    + " "
-                    + "Trajet : "
-                    + trajet
-                    + " "
-                    + mod
-                    + "<br />"
-                    + couchette
-                    + "<br />"
-                    + "Repas : "
-                    + repas
-                    + "<br />"
-                    + "Synthèse des prix : "
+                    + ") pour "+placesVoulues+" place(s)</h1></th></tr>"
+                    + "<tr><th colspan=\"7\"><h2>Passager : "
+                    + passager.toHtml()+"</h2></th></tr>"
+                    + "<tr>"
+                    + trajet.toHtml()+"</tr>"
+                    + "<tr><th>Option Repas</th> "
+                    + repas+"</tr>"
+                    + "<tr><th>Option supplémentaire</th><th>"+mod+"</th>"
+                    + "<th>"+couchette+"</th><th colspan=\"4\"> </th></tr>"
+                    + "</table>"
+                    + "<table><tr><th><h2>Synthèse des prix </h2></th></tr><tr>"
                     + getPrix()
-                    + "</body></html>");
+                    + "</table></body></html>");
 
             // Close the output stream
             out.close();
@@ -173,17 +170,17 @@ public class Reservation implements Serializable {
         
         prix*=placesVoulues;
 
-        String texte = "prix passager=" + passager.getProfil().getPrix()
-                + " euros<br/>";
-        texte += "réduction fidèlité=" + reductionFidelite + " euros<br/>";
-        texte += "prix transport="
-                + (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0 + " euros<br/>";
-        texte += "prix repas=" + repasTotal + " euros<br/>";
-        texte += "prix classe=" + classePaye + " euros<br/>";
-        texte += "supplément changement du billet=" + modifiablePaye
-                + " euros<br/>";
-        texte += "prix couchette=" + couchettePaye + " euros<br/>";
-        texte += "prix total pour "+placesVoulues+" place(s)=" + prix + " euros<br/>";
+        String texte = "<th>prix passager = " + passager.getProfil().getPrix()
+                + " euros</th></tr>";
+        texte += "<tr><th>réduction fidèlité = " + reductionFidelite + " euros</th></tr>";
+        texte += "<tr><th>prix transport="
+                + (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0 + " euros</th></tr>";
+        texte += "<tr><th>prix repas = " + repasTotal + " euros</th></tr>";
+        texte += "<tr><th>prix classe = " + classePaye + " euros</th></tr>";
+        texte += "<tr><th>supplément changement du billet = " + modifiablePaye
+                + " euros</th></tr>";
+        texte += "<tr><th>prix couchette = " + couchettePaye + " euros</th></tr>";
+        texte += "<tr><th><h3>prix total pour "+placesVoulues+" place(s) = " + prix + " euros</h3></th></tr>";
         return texte;
     }
 

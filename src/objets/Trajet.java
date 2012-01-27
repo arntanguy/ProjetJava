@@ -227,7 +227,34 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     public boolean restePlaces(int placesVoulues) {
         return placesRestantes >= placesVoulues;
     }
+    public String toHtml() {
+        int departMois = dateDepart.get(Calendar.MONTH) + 1;
+        int arriveeMois = dateArrivee.get(Calendar.MONTH) + 1;
+        String texteClasse=(premiereClasse) ? "première classe" : "standard";
 
+        return new StringBuffer().append("<th>").append("Voyage (id=").append(identifiant)
+                .append(")").append("</th><th>").append("de ").append(depart.getVille()).append("</th><th> à ")
+                .append(arrivee.getVille()).append("</th><th> En ").append(vehicule.getType().getNom()).append(" (")
+                .append(vehicule.getVehicule()).append(") (id=")
+                .append(vehicule.getIdentifiant()).append((")")).append("</th><th colspan=\"3\">")
+                .append("Distance=").append(distance).append("km").append("</th></tr><tr><th>")
+                .append("Classe </th><th>").append(texteClasse)
+                .append("</th><th colspan=\"5\"></th></tr><tr>").append("<th>")
+                .append("Départ le ").append("</th>").append("<th>")
+                .append(dateDepart.get(Calendar.DATE))
+                .append("/").append(departMois).append("/")
+                .append(dateDepart.get(Calendar.YEAR))
+                .append("</th><th>").append(" à ")
+                .append(dateDepart.get(Calendar.HOUR_OF_DAY)).append(":")
+                .append(dateDepart.get(Calendar.MINUTE)).append("</th><th colspan=\"4\"></th></tr><tr>").append("<th>")
+                .append("Arrivée le ").append("</th>").append("<th>")
+                .append(dateArrivee.get(Calendar.DATE))
+                .append("/").append(arriveeMois).append("/")
+                .append(dateArrivee.get(Calendar.YEAR)).append("</th>").append("<th>")
+                .append(" à ")
+                .append(dateArrivee.get(Calendar.HOUR_OF_DAY)).append(":")
+                .append(dateArrivee.get(Calendar.MINUTE)).append("</th><th colspan=\"4\"></th></tr><tr>").toString();
+    }
     @Override
     public String toString() {
         int departMois = dateDepart.get(Calendar.MONTH) + 1;
