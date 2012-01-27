@@ -1,10 +1,13 @@
 package objets;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
+
 
 public class Reservation implements Serializable {
     private Passager passager;
@@ -13,6 +16,7 @@ public class Reservation implements Serializable {
     private int identifiant;
     private int placesVoulues;
     private boolean prendCouchette;
+    private String nomTicket;
     private Map<String, Boolean> prendRepas;
 
     /**
@@ -32,6 +36,7 @@ public class Reservation implements Serializable {
         this.prendRepas = prendRepas;
         this.identifiant = identifiant;
         this.placesVoulues = placesVoulues;
+        this.nomTicket="";
     }
 
     public Passager getPassager() {
@@ -49,13 +54,32 @@ public class Reservation implements Serializable {
     public int getIdentifiant() {
         return identifiant;
     }
-
+    public void lanceTicketReservation(String ticket){
+    	String cheminReservation = ticket;
+        if(!cheminReservation.equals("")) {
+            System.out.println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
+            String path = new java.io.File(cheminReservation).getAbsolutePath();
+            String[] cmd = {"firefox", "file://"+path};
+            try {
+            final Process process = Runtime.getRuntime().exec(cmd);
+            }
+            catch (Exception e) {
+            e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("Votre réservation n'a pas pu aboutir");
+        }
+        }
     public void genereTicket() {
         // Create file
         FileWriter fstream = null;
         try {
             fstream = new FileWriter("ticketReservation" + passager.getNom()
                     + "$" + passager.getPrenom() + ".html");
+            nomTicket = "ticketReservation" + passager.getNom()+ "$" + passager.getPrenom() + ".html";
+            lanceTicketReservation(nomTicket);
+            System.out.println(nomTicket);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -112,7 +136,9 @@ public class Reservation implements Serializable {
     public int getPlacesVoulues() {
         return placesVoulues;
     }
-
+    public String getNomTicket(){
+    	return nomTicket;
+    }
     public String getPrix() {
         double prix = 0;
         int reductionFidelite = 0;

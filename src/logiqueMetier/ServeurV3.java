@@ -42,7 +42,6 @@ public class ServeurV3 extends Serveur {
     public ServeurV3() {
         super();
     }
-
     /**
      * On charge les fichier xml dans la mémoire afin de pouvoir y accéder
      * lorsque l'on veut sauvegarder une donnée.
@@ -87,40 +86,6 @@ public class ServeurV3 extends Serveur {
             return null;
         }
     }
-
-    /**
-     * Méthode qui créer les fichiers HTML
-     * 
-     * @param String
-     *            fichier xml
-     * @param String
-     *            fichier xsl
-     * @param String
-     *            fichier html
-     */
-    public static void creerHTML(String xml, String xsl, String html)
-            throws Exception {
-        // Création de la source DOM
-        DocumentBuilderFactory fabriqueD = DocumentBuilderFactory.newInstance();
-        DocumentBuilder constructeur = fabriqueD.newDocumentBuilder();
-        File fileXml = new File(xml);
-        org.w3c.dom.Document document = constructeur.parse(fileXml);
-        Source source = new DOMSource(document);
-
-        // Création du fichier de sortie
-        File fileHtml = new File(html);
-        Result resultat = new StreamResult(fileHtml);
-
-        // Configuration du transformer
-        TransformerFactory fabriqueT = TransformerFactory.newInstance();
-        StreamSource stylesource = new StreamSource(xsl);
-        Transformer transformer = fabriqueT.newTransformer(stylesource);
-        transformer.setOutputProperty(OutputKeys.METHOD, "html");
-
-        // Transformation
-        transformer.transform(source, resultat);
-    }
-
     /**
      * Cette méthode permet d'enregistrer les villes dans le fichier xml
      * "MesVilles" La méthode parcourt la liste mesVilles créee dans la classe
@@ -442,7 +407,6 @@ public class ServeurV3 extends Serveur {
             String modifiable = courant.getChild("modifiable").getText();
             String prendCouchette = courant.getChild("prendCouchette").getText();
             Profil profil = null;
-            //System.out.println(courant.getAttributeValue("nomPassager"));
             for (Profil value : Profil.values()) {
                 if (profilPassager.equals(value.getProfil())) {
                     profil = value;
@@ -465,7 +429,6 @@ public class ServeurV3 extends Serveur {
              Integer.valueOf(placesVoulues)));
         }
     }
-
     /**
      * Méthode général qui permet d'enregistrer les fichiers xml dans le bon
      * ficher correspondant
