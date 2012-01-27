@@ -144,7 +144,7 @@ public class TableTrajetsPanel extends JPanel {
 			switch(e.getType()) {
 			case TableModelEvent.INSERT:
 				System.out.println("Insertion");
-				trajetsModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
+				//trajetsModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
 				break;
 			case TableModelEvent.UPDATE:
 			/*	System.out.println("Updated");

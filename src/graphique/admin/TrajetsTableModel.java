@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
 
+import logiqueMetier.Serveur;
+
 import objets.Trajet;
 import objets.Ville;
 import tools.DateTools;
@@ -54,9 +56,9 @@ public class TrajetsTableModel extends DefaultTableModel {
 		case 1:
 			return v.getArrivee();
 		case 2: 
-			return v.getDateDepart();
+			return Serveur.calendarToDate(v.getDateDepart());
 		case 3: 
-			return v.getDateArrivee();
+			return Serveur.calendarToDate(v.getDateArrivee());
 		}
 		return null;
 	}

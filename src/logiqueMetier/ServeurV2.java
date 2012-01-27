@@ -178,11 +178,15 @@ public class ServeurV2 extends Serveur implements Serializable {
             String[] tab4 = tab3[j].split("#");
             if (tab4.length == 11) {
                 Vehicule v = this.getVehicule(Integer.valueOf(tab4[6]));
+                try {
                 this.addTrajet(new Trajet(textToCalendar(tab4[0], tab4[1]),
                         textToCalendar(tab4[2], tab4[3]), this.getVille(Integer
                                 .valueOf(tab4[4])), this.getVille(Integer
                                 .valueOf(tab4[5])), Integer.valueOf(tab4[9]),
                         v, Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7]),Boolean.valueOf(tab4[10])));
+                } catch(Exception e) {
+                	System.out.println("Impossible de charger le trajet !");
+                }
             }
         }
 
