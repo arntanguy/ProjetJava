@@ -5,6 +5,7 @@ import graphique.widgets.TableSpinnerEditor;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -22,6 +23,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
+import objets.Passager;
 import objets.Trajet;
 import objets.Vehicule;
 import objets.Ville;
@@ -55,6 +57,15 @@ public class TableReservationsPanel extends AbstractTablePanel {
 	}
 
 	private void buildReservationsTable() {
+		/*
+		    private Passager passager;
+    		private Trajet trajet;
+    		private boolean modifiable;
+    		private int identifiant;
+    		private int placesVoulues;
+    		private boolean prendCouchette;
+    		private Map<String, Boolean> prendRepas;
+		 */
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
 				"Date arrivée", "Transport" };
 
