@@ -60,7 +60,8 @@ public class TrajetsTableModel extends DefaultTableModel {
 		case 3: 
 			return Serveur.calendarToDate(v.getDateArrivee());
 		case 4:
-			return v.getVehicule().getType().getNom()+" ("+v.getVehicule().getVehicule()+")";
+			return (v.getVehicule() != null) ? v.getVehicule().getType().getNom()+" ("+v.getVehicule().getVehicule()+")"
+											: "Aucun";
 		}
 		return null;
 	}

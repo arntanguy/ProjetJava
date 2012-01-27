@@ -136,7 +136,14 @@ public class TableTransportsPanel extends JPanel {
 				System.out.println("Updated");
 				for(Vehicule v:vehicules) {
 					Vehicule tv = transportModel.getVehicule(row);
-					if(v.getIdentifiant() == tv.getIdentifiant()) {
+					if(tv.getIdentifiant() == v.getIdentifiant()) {
+						try {
+							serveur.modifierVehicule(tv, v);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					/*if(v.getIdentifiant() == tv.getIdentifiant()) {
 						v.setVehicule((String) transportModel.getValueAt(row, 0));
 						v.setType((TypeVehicule)transportModel.getValueAt(row, 1));
 						v.setCapacite((Integer) transportModel.getValueAt(row, 2));
@@ -145,7 +152,7 @@ public class TableTransportsPanel extends JPanel {
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-					}
+					}*/
 				}
 				break;
 			}	
