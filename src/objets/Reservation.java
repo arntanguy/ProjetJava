@@ -55,18 +55,22 @@ public class Reservation implements Serializable {
         return identifiant;
     }
     public void lanceTicketReservation(String ticket){
-    	if (Desktop.isDesktopSupported()) {
-			Desktop desktop = Desktop.getDesktop();
-			if (desktop.isSupported(Desktop.Action.BROWSE)) {				
-				try {
-					desktop.open(new File(nomTicket));
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}
-    }
+    	String cheminReservation = ticket;
+        if(!cheminReservation.equals("")) {
+            System.out.println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
+            String path = new java.io.File(cheminReservation).getAbsolutePath();
+            String[] cmd = {"firefox", "file://"+path};
+            try {
+            final Process process = Runtime.getRuntime().exec(cmd);
+            }
+            catch (Exception e) {
+            e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("Votre réservation n'a pas pu aboutir");
+        }
+        }
     public void genereTicket() {
         // Create file
         FileWriter fstream = null;
@@ -74,6 +78,7 @@ public class Reservation implements Serializable {
             fstream = new FileWriter("ticketReservation" + passager.getNom()
                     + "$" + passager.getPrenom() + ".html");
             nomTicket = "ticketReservation" + passager.getNom()+ "$" + passager.getPrenom() + ".html";
+            lanceTicketReservation(nomTicket);
             System.out.println(nomTicket);
         } catch (IOException e) {
             // TODO Auto-generated catch block
