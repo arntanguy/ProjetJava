@@ -14,18 +14,23 @@ import tools.DateTools;
 
 public class TrajetsTableModel extends DefaultTableModel {
 
-	ArrayList<Trajet> trajets;
-	String[] columnNames;
+	private ArrayList<Trajet> trajets;
+	private String[] columnNames;
+	private boolean isEditable = true;
 
 	public TrajetsTableModel(ArrayList<Trajet> trajets) {
 		this.trajets = trajets;
+	}
+
+	public TrajetsTableModel() {
+		this.trajets = new ArrayList<Trajet>();
 	}
 
 	@Override
 	public int getColumnCount() {
 		// Returns the number of columns in the model : départ, arrivée, 
 		// date départ, date arrivée, transport, transport
-		return 5;
+		return columnNames.length;
 	}
 
 	@Override
@@ -101,18 +106,26 @@ public class TrajetsTableModel extends DefaultTableModel {
 		return trajets.get(rowIndex);
 	}
 
-	public void addRow(Trajet v) {
-		trajets.add(v);
+	public void addRow(Trajet t) {
+		trajets.add(t);
 		fireTableDataChanged();
 	} 
 
+	public void removeAllRows() {
+		trajets.clear();
+		fireTableDataChanged();
+	}
 	public void removeRow(int row) {
 		trajets.remove(row);
 		fireTableDataChanged();
 	}
+	
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
 
 	public boolean isCellEditable(int row, int column)
 	{
-		return true;
+		return isEditable;
 	}
 }

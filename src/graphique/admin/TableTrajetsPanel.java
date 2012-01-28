@@ -12,7 +12,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
@@ -37,7 +36,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 
 	private ArrayList<Trajet> trajets;
 	private ArrayList<Ville> villes;
-
+	
 	public TableTrajetsPanel(Serveur s) {
 		super(s);
 		trajets = serveur.getTrajets();
@@ -91,12 +90,11 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 	}
 
 	private void buildButtons() {
-		JPanel panel = new JPanel();
-		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
-		panel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
-		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new LinkAction("Lier à un tranport", this)));
-		add(panel);
+		buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
+		buttonsPanel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
+		buttonsPanel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
+		buttonsPanel.add(new JButton(new LinkAction("Lier à un tranport", this)));
+		add(buttonsPanel);
 	}
 
 	public class LinkAction extends AbstractAction {
@@ -201,11 +199,6 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 	}
 
 	public void setEditable(boolean b) {
-		// XXX TODO
-	}
-
-	public void setButtonsVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
+		trajetsModel.setEditable(b);
 	}
 }

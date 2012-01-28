@@ -17,4 +17,7 @@ public abstract class AbstractTablePanel extends JPanel {
 		buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
 	}
 	
+	public void setButtonsVisible(boolean isVisible) {
+		buttonsPanel.setVisible(isVisible);
+	}
 }
