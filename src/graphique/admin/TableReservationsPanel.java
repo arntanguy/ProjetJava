@@ -6,12 +6,10 @@ import graphique.widgets.TableSpinnerEditor;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
@@ -20,11 +18,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
-import objets.Passager;
 import objets.Trajet;
 import objets.Vehicule;
 import objets.Ville;
@@ -111,6 +106,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 	}
 
 	public class LinkAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
 		private TableReservationsPanel parent;
 
 		public LinkAction(String texte, TableReservationsPanel parent) {
@@ -135,6 +131,8 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		}
 	}
 	public class AddAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public AddAction(String texte) {
 			super(texte);
 		}
@@ -147,6 +145,8 @@ public class TableReservationsPanel extends AbstractTablePanel {
 	}
 
 	public class DeleteAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public DeleteAction(String texte) {
 			super(texte);
 		}
@@ -191,21 +191,6 @@ public class TableReservationsPanel extends AbstractTablePanel {
 			}	
 		}
 	}
-
-	private void addSpinnerToTable(TableSpinnerEditor spinner, int column) {
-		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(spinner);
-	}
-	private void addComboToTable(JComboBox combo, int column) {
-		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
-	}
-
-	private void addCellEditorToTable(TableCellEditor e, int column) {
-		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(e);
-	}
-
 
 	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
 		// FIXME

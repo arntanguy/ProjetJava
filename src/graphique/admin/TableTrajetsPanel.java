@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
@@ -19,8 +18,6 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
 import objets.Trajet;
@@ -28,10 +25,8 @@ import objets.Vehicule;
 import objets.Ville;
 
 public class TableTrajetsPanel extends AbstractTablePanel {
-	private TrajetsTableModel trajetsModel;
-	private JTable trajetsTable;
-	private JScrollPane scrollPane;
-
+	private static final long serialVersionUID = 1L;
+	
 	private TableSpinnerEditor dateDepartSpinner;
 	private TableSpinnerEditor dateArriveeSpinner;
 
@@ -57,19 +52,16 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
 				"Date arrivée", "Transport" };
 
-		// Create a SpinnerDateModel with current date as the initial value.
-		SpinnerDateModel model = new SpinnerDateModel();
-		SpinnerDateModel model1 = new SpinnerDateModel();
-		dateDepartSpinner = new TableSpinnerEditor(model);
-		dateArriveeSpinner = new TableSpinnerEditor(model1);
+		// Create a Spinner for the date, using a date model with current date as the initial value.
+		dateDepartSpinner = new TableSpinnerEditor( new SpinnerDateModel());
+		dateArriveeSpinner = new TableSpinnerEditor(new SpinnerDateModel());
 
-		trajetsModel = new TrajetsTableModel<Trajet>(trajets);
-		trajetsModel.setColumnNames(columnNames);
-		trajetsTable = new JTable();
-		trajetsTable.setModel(trajetsModel);
-		trajetsTable.setFillsViewportHeight(true); // Fill all the
-		// container
-		trajetsTable.getModel().addTableModelListener(new CellListener()); 
+		model = new TrajetsTableModel<Trajet>(trajets);
+		model.setColumnNames(columnNames);
+		table = new JTable();
+		table.setModel(model);
+		table.setFillsViewportHeight(true); // Fill all the container
+		table.getModel().addTableModelListener(new CellListener()); 
 
 		JComboBox combo = buildDepartCombo();
 		addComboToTable(combo, 0);
@@ -77,7 +69,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		addSpinnerToTable(dateDepartSpinner, 2);
 		addSpinnerToTable(dateArriveeSpinner, 3);
 
-		scrollPane = new JScrollPane(trajetsTable);
+		scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
 
@@ -109,7 +101,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Link !");
-			int [] selected = trajetsTable.getSelectedRows();
+			int [] selected = table.getSelectedRows();
 			for(final int i : selected) {
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
@@ -122,6 +114,8 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		}
 	}
 	public class AddAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public AddAction(String texte) {
 			super(texte);
 		}
@@ -129,11 +123,13 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
-			trajetsModel.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
+			model.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
 		}
 	}
 
 	public class DeleteAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public DeleteAction(String texte) {
 			super(texte);
 		}
@@ -141,12 +137,12 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Supprimé !");
-			int[] selectedIndexes = trajetsTable.getSelectedRows();
+			int[] selectedIndexes = table.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(trajetsModel.getValueAt(row, 0));
-				serveur.removeTrajet((Trajet) trajetsModel.get(row));
-				trajetsModel.removeRow(row);
+				System.out.println(model.getValueAt(row, 0));
+				serveur.removeTrajet((Trajet) model.get(row));
+				model.removeRow(row);
 			}	  
 		}
 	}
@@ -165,7 +161,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 			case TableModelEvent.UPDATE:
 				System.out.println("Updated");
 				for(Trajet t:trajets) {
-					Trajet tt = (Trajet) trajetsModel.get(row);
+					Trajet tt = (Trajet) model.get(row);
 					if(t.getIdentifiant() == tt.getIdentifiant()) {
 						try {
 							serveur.modifierTrajet(t, tt);
@@ -179,27 +175,9 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		}
 	}
 
-	private void addSpinnerToTable(TableSpinnerEditor spinner, int column) {
-		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(spinner);
-	}
-	private void addComboToTable(JComboBox combo, int column) {
-		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
-	}
-
-	private void addCellEditorToTable(TableCellEditor e, int column) {
-		TableColumn gradeColumn = trajetsTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(e);
-	}
-
 
 	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
-		trajetsModel.setValueAt(selectedTransport, parentSelectedRow, 4);
+		model.setValueAt(selectedTransport, parentSelectedRow, 4);
 		System.out.println("Lié à "+selectedTransport.toString());
-	}
-
-	public void setEditable(boolean b) {
-		trajetsModel.setEditable(b);
 	}
 }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -17,13 +16,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableColumn;
 
 import logiqueMetier.Serveur;
 import objets.TypeVehicule;
 import objets.Vehicule;
 
 public class TableTransportsPanel extends AbstractTablePanel {
+	private static final long serialVersionUID = 1L;
+	
 	private TransportsTableModel<Vehicule> transportModel;
 	private JTable transportTable;
 	private JScrollPane scrollPane;
@@ -76,6 +76,8 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	}
 
 	public class AddAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public AddAction(String texte) {
 			super(texte);
 		}
@@ -88,6 +90,8 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	}
 	
 	public class DeleteAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public DeleteAction(String texte) {
 			super(texte);
 		}
@@ -141,11 +145,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 		}
 		return combo;
 	}
-	private void addComboToTable(JComboBox combo, int column) {
-		TableColumn gradeColumn = transportTable.getColumnModel().getColumn(column);
-		gradeColumn.setCellEditor(new DefaultCellEditor(combo));
-	}
-
+	
 	public Vehicule getSelectedTransport() {
 		return (Vehicule) transportModel.get(transportTable.getSelectedRow());
 	}
