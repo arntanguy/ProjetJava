@@ -1,5 +1,6 @@
 package graphique.admin;
 
+import graphique.models.ReservationsTableModel;
 import graphique.widgets.TableSpinnerEditor;
 
 import java.awt.BorderLayout;
@@ -29,7 +30,7 @@ import objets.Vehicule;
 import objets.Ville;
 
 public class TableReservationsPanel extends AbstractTablePanel {
-	private ReservationsTableModel trajetsModel;
+	private ReservationsTableModel<Trajet> trajetsModel;
 	private JTable trajetsTable;
 	private JScrollPane scrollPane;
 
@@ -75,7 +76,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		dateDepartSpinner = new TableSpinnerEditor(model);
 		dateArriveeSpinner = new TableSpinnerEditor(model1);
 
-		trajetsModel = new ReservationsTableModel(trajets);
+		trajetsModel = new ReservationsTableModel<Trajet>(trajets);
 		trajetsModel.setColumnNames(columnNames);
 		trajetsTable = new JTable();
 		trajetsTable.setModel(trajetsModel);
@@ -157,7 +158,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
 				System.out.println(trajetsModel.getValueAt(row, 0));
-				serveur.removeTrajet(trajetsModel.getTrajet(row));
+				serveur.removeTrajet((Trajet) trajetsModel.get(row));
 				trajetsModel.removeRow(row);
 			}	  
 		}
@@ -177,7 +178,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 			case TableModelEvent.UPDATE:
 				System.out.println("Updated");
 				for(Trajet t:trajets) {
-					Trajet tt = trajetsModel.getTrajet(row);
+					Trajet tt = (Trajet) trajetsModel.get(row);
 					if(t.getIdentifiant() == tt.getIdentifiant()) {
 						try {
 							serveur.modifierTrajet(t, tt);

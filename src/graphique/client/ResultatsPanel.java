@@ -1,7 +1,7 @@
 package graphique.client;
 
-import graphique.admin.ReservationsTableModel;
 import graphique.admin.TableTrajetsPanel;
+import graphique.models.ReservationsTableModel;
 import graphique.models.TrajetsTableModel;
 
 import java.awt.BorderLayout;
