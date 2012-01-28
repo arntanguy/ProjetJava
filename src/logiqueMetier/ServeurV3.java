@@ -19,6 +19,8 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
+
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -44,19 +46,6 @@ public class ServeurV3 extends Serveur {
     }
 
     /**
-     * On charge les fichier xml dans la mémoire afin de pouvoir y accéder
-     * lorsque l'on veut sauvegarder une donnée.
-     */
-    org.jdom.Document documentVilles = getDoc("MesVilles.xml");
-    Element racineVilles = getElem(documentVilles);
-    org.jdom.Document documentVehicules = getDoc("MesVehicules.xml");
-    Element racineVehicules = getElem(documentVehicules);
-    org.jdom.Document documentTrajets = getDoc("MesTrajets.xml");
-    Element racineTrajets = getElem(documentTrajets);
-    org.jdom.Document documentReservations = getDoc("MesReservations.xml");
-    Element racineReservations = getElem(documentReservations);
-
-    /**
      * Renvoie un Element construit a partir du fichier a l'adresse donné.
      * 
      * @param fichier
@@ -77,10 +66,11 @@ public class ServeurV3 extends Serveur {
         }
     }
 
-    public org.jdom.Document getDoc(String fichier) {
+    public org.jdom.Document getDoc(File file) {
         try {
             SAXBuilder sxb = new SAXBuilder();
-            org.jdom.Document document = sxb.build(new File(fichier));
+
+            org.jdom.Document document = sxb.build(file);
             return document;
         } catch (Exception e) {
             System.out.println("erreur" + e.getMessage());
@@ -89,47 +79,14 @@ public class ServeurV3 extends Serveur {
     }
 
     /**
-     * Méthode qui créer les fichiers HTML
-     * 
-     * @param String
-     *            fichier xml
-     * @param String
-     *            fichier xsl
-     * @param String
-     *            fichier html
-     */
-    public static void creerHTML(String xml, String xsl, String html)
-            throws Exception {
-        // Création de la source DOM
-        DocumentBuilderFactory fabriqueD = DocumentBuilderFactory.newInstance();
-        DocumentBuilder constructeur = fabriqueD.newDocumentBuilder();
-        File fileXml = new File(xml);
-        org.w3c.dom.Document document = constructeur.parse(fileXml);
-        Source source = new DOMSource(document);
-
-        // Création du fichier de sortie
-        File fileHtml = new File(html);
-        Result resultat = new StreamResult(fileHtml);
-
-        // Configuration du transformer
-        TransformerFactory fabriqueT = TransformerFactory.newInstance();
-        StreamSource stylesource = new StreamSource(xsl);
-        Transformer transformer = fabriqueT.newTransformer(stylesource);
-        transformer.setOutputProperty(OutputKeys.METHOD, "html");
-
-        // Transformation
-        transformer.transform(source, resultat);
-    }
-
-    /**
      * Cette méthode permet d'enregistrer les villes dans le fichier xml
      * "MesVilles" La méthode parcourt la liste mesVilles créee dans la classe
      * serveur cette liste contient directement les données rentrer par
      * l'utilisateur.
      */
-    public void enregistreVilles() {
+    public void enregistreVilles(org.jdom.Document documentVilles) {
         Ville ville;
-        racineVilles.removeContent();
+        Element racineVilles = getElem(documentVilles);
         for (int i = 0; i < super.mesVilles.size(); i++) {
             ville = super.getVille(i);
             Element bal = new Element("ville");
@@ -152,9 +109,9 @@ public class ServeurV3 extends Serveur {
      * classe serveur cette liste contient directement les données rentrer par
      * l'utilisateur.
      */
-    public void enregistreVehicules() {
+    public void enregistreVehicules(org.jdom.Document documentVehicules) {
         Vehicule vehicule;
-        racineVehicules.removeContent();
+        Element racineVehicules = getElem(documentVehicules);
         for (int i = 0; i < super.mesVehicules.size(); i++) {
             vehicule = super.getVehicule(i);
             Element bal = new Element("vehicule");
@@ -186,9 +143,9 @@ public class ServeurV3 extends Serveur {
      * serveur cette liste contient directement les données rentrer par
      * l'utilisateur.
      */
-    public void enregistreTrajets() {
+    public void enregistreTrajets(org.jdom.Document documentTrajets) {
         Trajet trajet;
-        racineTrajets.removeContent();
+        Element racineTrajets = getElem(documentTrajets);
         for (int i = 0; i < super.mesTrajets.size(); i++) {
             trajet = super.getTrajet(i);
             Element bal = new Element("trajet");
@@ -256,9 +213,9 @@ public class ServeurV3 extends Serveur {
      * classe serveur cette liste contient directement les données rentrer par
      * l'utilisateur.
      */
-    public void enregistreReservations() {
+    public void enregistreReservations(org.jdom.Document documentReservations) {
         Reservation reservation;
-        racineReservations.removeContent();
+        Element racineReservations = getElem(documentReservations);
         for (int i = 0; i < super.mesReservations.size(); i++) {
             reservation = super.getReservation(i);
             Element bal = new Element("reservation");
@@ -328,8 +285,8 @@ public class ServeurV3 extends Serveur {
      * 
      * @throws Exception
      */
-    public void chargerVilles() throws Exception {
-        List liste = racineVilles.getChildren("ville");
+    public void chargerVilles(Element e) throws Exception {
+        List liste = e.getChildren("ville");
         // On crée un Iterator sur notre liste
         Iterator i = liste.iterator();
         while (i.hasNext()) {
@@ -347,8 +304,8 @@ public class ServeurV3 extends Serveur {
      * 
      * @throws Exception
      */
-    public void chargerVehicules() throws Exception {
-        List liste = racineVehicules.getChildren("vehicule");
+    public void chargerVehicules(Element e) throws Exception {
+        List liste = e.getChildren("vehicule");
         // On crée un Iterator sur notre liste
         Iterator i = liste.iterator();
         while (i.hasNext()) {
@@ -380,8 +337,8 @@ public class ServeurV3 extends Serveur {
      * 
      * @throws Exception
      */
-    public void chargerTrajets() throws Exception {
-        List liste = racineTrajets.getChildren("trajet");
+    public void chargerTrajets(Element e) throws Exception {
+        List liste = e.getChildren("trajet");
         // On crée un Iterator sur notre liste
         Iterator i = liste.iterator();
         while (i.hasNext()) {
@@ -425,24 +382,26 @@ public class ServeurV3 extends Serveur {
      * 
      * @throws Exception
      */
-    public void chargerReservations() throws Exception {
-        List liste = racineReservations.getChildren("reservation");
+    public void chargerReservations(Element e) throws Exception {
+        List liste = e.getChildren("reservation");
         // On crée un Iterator sur notre liste
         Iterator i = liste.iterator();
         while (i.hasNext()) {
             Element courant = (Element) i.next();
             String id = courant.getAttributeValue("id");
             String nomPassager = courant.getChild("nomPassager").getText();
-            String prenomPassager = courant.getChild("prenomPassager").getText();
+            String prenomPassager = courant.getChild("prenomPassager")
+                    .getText();
             String dateNaissance = courant.getChild("dateNaissance").getText();
             String profilPassager = courant.getChild("profil").getText();
             String fidelite = courant.getChild("fidelite").getText();
             String placesVoulues = courant.getChild("placesVoulues").getText();
             String idTrajet = courant.getChild("idTrajet").getText();
             String modifiable = courant.getChild("modifiable").getText();
-            String prendCouchette = courant.getChild("prendCouchette").getText();
+            String prendCouchette = courant.getChild("prendCouchette")
+                    .getText();
             Profil profil = null;
-            //System.out.println(courant.getAttributeValue("nomPassager"));
+            // System.out.println(courant.getAttributeValue("nomPassager"));
             for (Profil value : Profil.values()) {
                 if (profilPassager.equals(value.getProfil())) {
                     profil = value;
@@ -456,13 +415,14 @@ public class ServeurV3 extends Serveur {
 
             Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
             for (Repas repas : trajet.getVehicule().getRepas()) {
-                prendRepas.put(repas.getNom(), Boolean.valueOf(courant.getChild(repas.getNom()).getText()));
+                prendRepas.put(repas.getNom(), Boolean.valueOf(courant
+                        .getChild(repas.getNom()).getText()));
             }
 
-             super.addReservation(new Reservation(passager, trajet,
-            Boolean.valueOf(modifiable), Boolean.valueOf(prendCouchette),
-             prendRepas, Integer.valueOf(id),
-             Integer.valueOf(placesVoulues)));
+            super.addReservation(new Reservation(passager, trajet, Boolean
+                    .valueOf(modifiable), Boolean.valueOf(prendCouchette),
+                    prendRepas, Integer.valueOf(id), Integer
+                            .valueOf(placesVoulues)));
         }
     }
 
@@ -489,10 +449,19 @@ public class ServeurV3 extends Serveur {
      * @throws IOException
      */
     public boolean sauvegarder() throws IOException {
-        enregistreVehicules();
-        enregistreVilles();
-        enregistreTrajets();
-        enregistreReservations();
+        Element racineVehicule = new Element("vehicule");
+        org.jdom.Document documentVehicule = new Document(racineVehicule);
+        Element racineVille = new Element("ville");
+        org.jdom.Document documentVille = new Document(racineVille);
+        Element racineTrajet = new Element("trajet");
+        org.jdom.Document documentTrajet = new Document(racineTrajet);
+        Element racineReservation = new Element("reservation");
+        org.jdom.Document documentReservation = new Document(racineReservation);
+        
+        enregistreVehicules(documentVehicule);
+        enregistreVilles(documentVille);
+        enregistreTrajets(documentTrajet);
+        enregistreReservations(documentReservation);
         return true;
     }
 
@@ -504,10 +473,38 @@ public class ServeurV3 extends Serveur {
      * @throws Exception
      */
     public boolean charger() throws Exception {
-        chargerVilles();
-        chargerVehicules();
-        chargerTrajets();
-        chargerReservations();
+        /**
+         * On charge les fichier xml dans la mémoire afin de pouvoir y accéder
+         * lorsque l'on veut sauvegarder une donnée.
+         */
+        File fileVille = new File("MesVilles.xml");
+        File fileVehicule = new File("MesVehicules.xml");
+        File fileTrajet = new File("MesTrajets.xml");
+        File fileReservation = new File("MesReservations.xml");
+        
+        if(!fileVille.exists() || !fileVehicule.exists() || !fileTrajet.exists() || !fileReservation.exists())
+        {
+            return false;
+        }
+        
+        org.jdom.Document documentVilles = getDoc(fileVille);
+        Element racineVilles = getElem(documentVilles);
+        org.jdom.Document documentVehicules = getDoc(fileVehicule);
+        Element racineVehicules = getElem(documentVehicules);
+        org.jdom.Document documentTrajets = getDoc(fileTrajet);
+        Element racineTrajets = getElem(documentTrajets);
+        org.jdom.Document documentReservations = getDoc(fileReservation);
+        Element racineReservations = getElem(documentReservations);
+
+        if(racineVilles==null || racineVehicules==null || racineTrajets==null || racineReservations==null)
+        {
+            return false;
+        }
+        
+        chargerVilles(racineVilles);
+        chargerVehicules(racineVehicules);
+        chargerTrajets(racineTrajets);
+        chargerReservations(racineReservations);
 
         return true;
     }

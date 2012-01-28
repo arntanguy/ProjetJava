@@ -588,10 +588,11 @@ public abstract class Serveur implements Serializable {
             }
         }
         else
-        {
-        Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant());
-        d.cout(depart.getIdentifiant(), arrivee.getIdentifiant());
-        List<Trajet> listeTrajetsChemin = d.getListeTrajetsChemin();
+        {   
+        Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant(),getVilleNewIdentifiant());
+        List<Trajet> listeTrajetsChemin=d.cout(depart.getIdentifiant(), arrivee.getIdentifiant());
+        
+        //List<Trajet> listeTrajetsChemin = d.getListeTrajetsChemin();
         
         for (Trajet trajet : listeTrajetsChemin) {
             Calendar departRetard = (Calendar) trajet
@@ -601,15 +602,16 @@ public abstract class Serveur implements Serializable {
                     .getDateDepart().clone();
             departAvance.add(Calendar.HOUR, -intervalleVoulue);
             
-            if ((vehicule == null || trajet.getVehicule().equals(vehicule))
+            if (/*(vehicule == null || trajet.getVehicule().equals(vehicule))
                     && trajet.restePlaces(placesVoulues)
                     && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
                     && trajet.isPremiereClasse() == premiereClasse
                     && dateDepart.before(departRetard)
-                    && dateDepart.after(departAvance)) {
+                    && dateDepart.after(departAvance)*/true) {
                 trajetsConvenables.add(trajet);
             }
         }
+        
         }
 
         // On trie la liste des trajets convenables pour que les trajets
