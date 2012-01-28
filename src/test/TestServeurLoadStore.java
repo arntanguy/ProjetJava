@@ -18,6 +18,7 @@ import logiqueMetier.*;
 public class TestServeurLoadStore {
     Serveur s1 = null;
     Serveur s2 = null;
+    Serveur s3 = null;
     private Trajet       trajet1;
     private Calendar     date1, date2;
     private Ville        paris, montreal;
@@ -27,6 +28,7 @@ public class TestServeurLoadStore {
     public void setUp() {
         s1 = new ServeurV1();
         s2 = new ServeurV2();
+        s3 = new ServeurV3();
         date1 = Calendar.getInstance();
         date2 = Calendar.getInstance();
         date1.set(2012, Calendar.DECEMBER, 13);
@@ -58,5 +60,17 @@ public class TestServeurLoadStore {
         s2.charger();
         
         assertEquals(5, s2.getTrajets().get(0).getIdentifiant());
+    }
+    
+    @Test
+    public void TestServeurV3() throws Exception{
+        s3.addVehicule(v1);
+        trajet1 = new Trajet(date1, date2, paris, montreal, 20, v1, 5, false);
+        s3.addTrajet(trajet1);
+        s3.sauvegarder();
+        s3.removeTrajet(trajet1);
+        s3.charger();
+        
+        assertEquals(5, s3.getTrajets().get(0).getIdentifiant());
     }
 }
