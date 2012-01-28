@@ -56,10 +56,11 @@ public class ReservationPanel extends JPanel {
 					.getNbPassagers(), trajetP.getDateDepart(), 12, true,
 					false, true);
 
+			resultatsP.removeAllRows();
 			for(Trajet t:trajets) {
 				System.out.println(t);
+				resultatsP.addTrajet(t);
 			}
-			
 		}
 	}
 }

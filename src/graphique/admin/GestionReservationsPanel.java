@@ -17,8 +17,10 @@ import javax.swing.table.DefaultTableModel;
 import logiqueMetier.Serveur;
 
 public class GestionReservationsPanel extends JPanel {
-	private DefaultTableModel reservationsModel;
-	private JTable reservationsTable;
+	private static final long serialVersionUID = 1L;
+	
+	private DefaultTableModel model;
+	private JTable table;
 	private JScrollPane scrollPane;
 
 	private Serveur serveur;
@@ -49,18 +51,18 @@ public class GestionReservationsPanel extends JPanel {
 						{ "Jane", "White", "Speed reading", new Integer(20),
 							new Boolean(true) },
 							{ "Joe", "Brown", "Pool", new Integer(10), new Boolean(false) } };
-		reservationsModel = new DefaultTableModel(data, columnNames);
-		reservationsTable = new JTable(data, columnNames);
-		reservationsTable.setModel(reservationsModel);
-		reservationsTable.setFillsViewportHeight(true); // Fill all the
+		model = new DefaultTableModel(data, columnNames);
+		table = new JTable(data, columnNames);
+		table.setModel(model);
+		table.setFillsViewportHeight(true); // Fill all the
 		// container
-		reservationsTable.getSelectionModel().addListSelectionListener(
-				new ReservationListener(reservationsTable));
-		/*reservationsTable.getColumnModel().getSelectionModel()
+		table.getSelectionModel().addListSelectionListener(
+				new ReservationListener(table));
+		/*table.getColumnModel().getSelectionModel()
 				.addListSelectionListener(
-						new ReservationListener(reservationsTable));*/
+						new ReservationListener(table));*/
 
-		scrollPane = new JScrollPane(reservationsTable);
+		scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
 
@@ -69,22 +71,12 @@ public class GestionReservationsPanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout( new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		panel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		panel.add(new JButton(new SaveAction("Enregistrer")), BorderLayout.CENTER);
 		add(panel);
 	}
 
-
-	public class SaveAction extends AbstractAction {
-		public SaveAction(String texte) {
-			super(texte);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Enregistré !");
-		}
-	}
 	public class DeleteAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public DeleteAction(String texte) {
 			super(texte);
 		}
@@ -92,11 +84,11 @@ public class GestionReservationsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Supprimé !");
-			int[] selectedIndexes = reservationsTable.getSelectedRows();
+			int[] selectedIndexes = table.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(reservationsModel.getValueAt(row, 0));
-				reservationsModel.removeRow(row);
+				System.out.println(model.getValueAt(row, 0));
+				model.removeRow(row);
 				// XXX: Call the delete method
 			}	  
 		}
@@ -115,8 +107,8 @@ public class GestionReservationsPanel extends JPanel {
 			// If cell selection is enabled, both row and column change events are fired
 			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
 				// Column selection changed
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
+				//int first = e.getFirstIndex();
+				//int last = e.getLastIndex();
 				System.out.println("Selection changed");
 			} 
 		}

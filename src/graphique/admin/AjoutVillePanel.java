@@ -12,9 +12,9 @@ import javax.swing.JTextField;
 
 import logiqueMetier.Serveur;
 
-
-
 public class AjoutVillePanel extends JPanel {
+	private static final long serialVersionUID = 1L;
+
 	private JTextField nomText;
 	
 	private Serveur serveur;
@@ -39,6 +39,8 @@ public class AjoutVillePanel extends JPanel {
 
 
 	private class ValidateAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public ValidateAction(String texte){
 			super(texte);
 		}
