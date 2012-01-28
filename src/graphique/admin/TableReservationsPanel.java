@@ -1,6 +1,7 @@
 package graphique.admin;
 
 import graphique.models.ReservationsTableModel;
+import graphique.widgets.AbstractTablePanel;
 import graphique.widgets.TableSpinnerEditor;
 
 import java.awt.BorderLayout;

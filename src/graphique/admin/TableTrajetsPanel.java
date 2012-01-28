@@ -1,6 +1,7 @@
 package graphique.admin;
 
 import graphique.models.TrajetsTableModel;
+import graphique.widgets.AbstractTablePanel;
 import graphique.widgets.TableSpinnerEditor;
 
 import java.awt.BorderLayout;
@@ -91,6 +92,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 	}
 
 	public class LinkAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
 		private TableTrajetsPanel parent;
 
 		public LinkAction(String texte, TableTrajetsPanel parent) {

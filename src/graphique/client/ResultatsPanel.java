@@ -1,8 +1,7 @@
 package graphique.client;
 
-import graphique.admin.TableTrajetsPanel;
-import graphique.models.ReservationsTableModel;
 import graphique.models.TrajetsTableModel;
+import graphique.widgets.AbstractTablePanel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -11,24 +10,16 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import logiqueMetier.Serveur;
-import objets.Reservation;
 import objets.Trajet;
 
-public class ResultatsPanel extends JPanel {
-	private TrajetsTableModel trajetsModel;
-	private JTable trajetsTable;
-	private JScrollPane scrollPane;
-	
-	private Serveur serveur;
-	
+public class ResultatsPanel extends AbstractTablePanel {
+
 	public ResultatsPanel(Serveur s) {
-		super();
-		serveur = s;
+		super(s);
 		build();
 	}
 
@@ -43,13 +34,13 @@ public class ResultatsPanel extends JPanel {
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
 				"Date arrivée", "Transport", "Etat" };
 
-		trajetsModel = new TrajetsTableModel();
-		trajetsModel.setColumnNames(columnNames);
-		trajetsTable = new JTable();
-		trajetsTable.setModel(trajetsModel);
-		trajetsTable.setFillsViewportHeight(true); // Fill all the
+		model = new TrajetsTableModel();
+		model.setColumnNames(columnNames);
+		table = new JTable();
+		table.setModel(model);
+		table.setFillsViewportHeight(true); // Fill all the
 
-		scrollPane = new JScrollPane(trajetsTable);		
+		scrollPane = new JScrollPane(table);		
 		add(scrollPane);
 		
 		buildButtons();
@@ -61,6 +52,8 @@ public class ResultatsPanel extends JPanel {
 	}
 
 	public class ReserverAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
 		public ReserverAction(String texte) {
 			super(texte);
 		}
@@ -68,20 +61,20 @@ public class ResultatsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Réserver... !");
-			int[] selectedIndexes = trajetsTable.getSelectedRows();
+			int[] selectedIndexes = table.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(trajetsTable.getValueAt(row, 0));
+				System.out.println(table.getValueAt(row, 0));
 			}	
 		}
 	}
 
 	public void removeAllRows() {
-		trajetsModel.removeAllRows();
+		model.removeAllRows();
 	} 
 	
 	public void addTrajet(Trajet t) {
-		trajetsModel.addRow(t);
+		model.addRow(t);
 	}
 
 }

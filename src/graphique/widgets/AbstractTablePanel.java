@@ -1,7 +1,6 @@
-package graphique.admin;
+package graphique.widgets;
 
 import graphique.models.AbstractTableModel;
-import graphique.widgets.TableSpinnerEditor;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;

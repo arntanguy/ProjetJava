@@ -1,6 +1,7 @@
 package graphique.admin;
 
 import graphique.models.TransportsTableModel;
+import graphique.widgets.AbstractTablePanel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
