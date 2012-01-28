@@ -11,17 +11,17 @@ import java.util.List;
  * Cette classe permet de stocker un véhicule. Un véhicule est constitué d'un
  * String indiquant son nom, de sa capacité et de son identifiant.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class Vehicule implements Serializable {
-    protected String       vehicule;
+    protected String vehicule;
     protected TypeVehicule type;
-    protected int          capacite;
-    protected int          identifiant;
-    protected int          prix;
-    protected List<Repas>  repas;
+    protected int capacite;
+    protected int identifiant;
+    protected int prix;
+    protected List<Repas> repas;
 
     /**
      * Créé une instance de véhicule
@@ -114,10 +114,13 @@ public class Vehicule implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuffer().append(vehicule).append(" (id=").append(
-                identifiant).append(
-                ") de type " + type.getNom() + " et qui a une capacité de ")
-                .append(capacite).toString();
+        return new StringBuffer()
+                .append(vehicule)
+                .append(" (id=")
+                .append(identifiant)
+                .append(") de type " + type.getNom()
+                        + " et qui a une capacité de ").append(capacite)
+                .toString();
     }
 
     /**

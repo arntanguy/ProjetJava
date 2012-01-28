@@ -1,8 +1,13 @@
 package objets;
 
-public enum TypeVehicule {
-    AVION("avion"), BUS("bus"), BATEAU("bateau"), TRAIN("train"), INCONNU("inconnu");
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
 
+public enum TypeVehicule {
+    AVION("avion"), BUS("bus"), BATEAU("bateau"), TRAIN("train"), INCONNU(
+            "inconnu");
 
     private String nom;
 

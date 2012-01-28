@@ -1,10 +1,10 @@
 package objets;
 
 /**
- * 
- * @author
- * @version 1.0
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
+
 public class Train extends Vehicule {
     /**
      * Contructeur par défaut. Permet de construire un Vehicule avec un id.
@@ -25,11 +25,11 @@ public class Train extends Vehicule {
     public Train(int prix, String vehicule, int identifiant) {
         this(prix, vehicule, 500, identifiant);
     }
-    
+
     public Train(String vehicule, int identifiant) {
         this(5, vehicule, 500, identifiant);
     }
-    
+
     public Train(String vehicule, int capacite, int identifiant) {
         this(5, vehicule, capacite, identifiant);
     }

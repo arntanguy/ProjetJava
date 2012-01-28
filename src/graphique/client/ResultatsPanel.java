@@ -18,73 +18,77 @@ import logiqueMetier.Serveur;
 import objets.Reservation;
 import objets.Trajet;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class ResultatsPanel extends AbstractTablePanel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ResultatsPanel(Serveur s) {
-		super(s);
-		build();
-	}
+    public ResultatsPanel(Serveur s) {
+        super(s);
+        build();
+    }
 
-	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    private void build() {
+        setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		buildReservationsTable();
-	}
+        buildReservationsTable();
+    }
 
-	private void buildReservationsTable() {
-		String[] columnNames = { "Départ", "Arrivée", "Date départ",
-				"Date arrivée", "Transport", "Passager", "Réservé" };
+    private void buildReservationsTable() {
+        String[] columnNames = { "Départ", "Arrivée", "Date départ",
+                "Date arrivée", "Transport", "Passager", "Réservé" };
 
-		model = new ReservationsTableModel<Reservation>();
-		model.setColumnNames(columnNames);
-		table = new JTable();
-		table.setModel(model);
-		table.setFillsViewportHeight(true); // Fill all the
+        model = new ReservationsTableModel<Reservation>();
+        model.setColumnNames(columnNames);
+        table = new JTable();
+        table.setModel(model);
+        table.setFillsViewportHeight(true); // Fill all the
 
-		scrollPane = new JScrollPane(table);		
-		add(scrollPane);
-		
-		buildButtons();
-	}
+        scrollPane = new JScrollPane(table);
+        add(scrollPane);
 
-	
-	private void buildButtons() {
-		add(new JButton(new ReserverAction("Réserver")), BorderLayout.CENTER);
-	}
+        buildButtons();
+    }
 
-	public class ReserverAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+    private void buildButtons() {
+        add(new JButton(new ReserverAction("Réserver")), BorderLayout.CENTER);
+    }
 
-		public ReserverAction(String texte) {
-			super(texte);
-		}
+    public class ReserverAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Réserver... !");
-			int[] selectedIndexes = table.getSelectedRows();
-			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				int row = selectedIndexes[i];
-				Reservation r = (Reservation) model.get(row);
-				r.setActive(true);
-				model.fireTableDataChanged();
-				try {
-					serveur.addReservation(r);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}	
-		}
-	}
+        public ReserverAction(String texte) {
+            super(texte);
+        }
 
-	public void removeAllRows() {
-		model.removeAllRows();
-	} 
-	
-	public void addReservation(Reservation r) {
-		model.addRow(r);
-	}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Réserver... !");
+            int[] selectedIndexes = table.getSelectedRows();
+            for (int i = selectedIndexes.length - 1; i >= 0; i--) {
+                int row = selectedIndexes[i];
+                Reservation r = (Reservation) model.get(row);
+                r.setActive(true);
+                model.fireTableDataChanged();
+                try {
+                    serveur.addReservation(r);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void removeAllRows() {
+        model.removeAllRows();
+    }
+
+    public void addReservation(Reservation r) {
+        model.addRow(r);
+    }
 
 }

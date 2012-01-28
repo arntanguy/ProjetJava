@@ -19,68 +19,78 @@ import tools.DateTools;
 import logiqueMetier.Admin;
 import logiqueMetier.Serveur;
 
-
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
 
 public class ClientPanel extends JPanel {
-	private JTextField nomText;
-	private JTextField prenomText;
-	private JSpinner naissanceSpinner;
-	private JSpinner nbPassagersSpinner;
-	private JComboBox categoriePassager;
-	private JCheckBox carteAbonnement;
-		
-	public ClientPanel(){
-		super();
-		build();
-	}
-	private void build(){
-		setBorder(BorderFactory.createTitledBorder("Qui participe à ce voyage ?"));
-		setLayout(new GridLayout(0,2));
+    private JTextField nomText;
+    private JTextField prenomText;
+    private JSpinner naissanceSpinner;
+    private JSpinner nbPassagersSpinner;
+    private JComboBox categoriePassager;
+    private JCheckBox carteAbonnement;
 
-		add(new JLabel("Nom"));
-		nomText = new JTextField();
-		add(nomText);
-		add(new JLabel("Prenom"));
-		prenomText = new JTextField();
-		add(prenomText);
-		
-		add(new JLabel("Date de naissance"));
-		naissanceSpinner = new JSpinner(new SpinnerDateModel());
-		add(naissanceSpinner);
-		
-		add(new JLabel("Nombre de passagers"));
-		nbPassagersSpinner = new JSpinner();
-		nbPassagersSpinner.setValue(1);
-		add(nbPassagersSpinner);
-		
-		add(new JLabel("Passager"));
-		categoriePassager = new JComboBox();
-		for(Profil p : Profil.values()) {
-			categoriePassager.addItem(p);
-		}
-		add(categoriePassager);
-		
-		add(new JLabel("Carte de fidélité"));
-		carteAbonnement = new JCheckBox();
-		add(carteAbonnement);
-	}
-	
-	public String getNom() {
-		return nomText.getText();
-	}
-	public String getPrenom() {
-		return prenomText.getText();
-	}
-	public int getNbPassagers() {
-		return (Integer)nbPassagersSpinner.getValue();
-	}
-	public Calendar getDateNaissance() {
-		return DateTools.dateToCalendar((Date)naissanceSpinner.getValue());
-	}
-	public Profil getProfil() {
-		return (Profil) categoriePassager.getSelectedItem();
-	}
-	public boolean hasFidelite() {
-		return carteAbonnement.isSelected();
-	}
+    public ClientPanel() {
+        super();
+        build();
+    }
+
+    private void build() {
+        setBorder(BorderFactory
+                .createTitledBorder("Qui participe à ce voyage ?"));
+        setLayout(new GridLayout(0, 2));
+
+        add(new JLabel("Nom"));
+        nomText = new JTextField();
+        add(nomText);
+        add(new JLabel("Prenom"));
+        prenomText = new JTextField();
+        add(prenomText);
+
+        add(new JLabel("Date de naissance"));
+        naissanceSpinner = new JSpinner(new SpinnerDateModel());
+        add(naissanceSpinner);
+
+        add(new JLabel("Nombre de passagers"));
+        nbPassagersSpinner = new JSpinner();
+        nbPassagersSpinner.setValue(1);
+        add(nbPassagersSpinner);
+
+        add(new JLabel("Passager"));
+        categoriePassager = new JComboBox();
+        for (Profil p : Profil.values()) {
+            categoriePassager.addItem(p);
+        }
+        add(categoriePassager);
+
+        add(new JLabel("Carte de fidélité"));
+        carteAbonnement = new JCheckBox();
+        add(carteAbonnement);
+    }
+
+    public String getNom() {
+        return nomText.getText();
+    }
+
+    public String getPrenom() {
+        return prenomText.getText();
+    }
+
+    public int getNbPassagers() {
+        return (Integer) nbPassagersSpinner.getValue();
+    }
+
+    public Calendar getDateNaissance() {
+        return DateTools.dateToCalendar((Date) naissanceSpinner.getValue());
+    }
+
+    public Profil getProfil() {
+        return (Profil) categoriePassager.getSelectedItem();
+    }
+
+    public boolean hasFidelite() {
+        return carteAbonnement.isSelected();
+    }
 }

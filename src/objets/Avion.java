@@ -1,9 +1,8 @@
 package objets;
 
 /**
- * 
- * @author
- * @version 1.0
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 public class Avion extends Vehicule {
     /**
@@ -25,11 +24,11 @@ public class Avion extends Vehicule {
     public Avion(int prix, String vehicule, int identifiant) {
         this(prix, vehicule, 300, identifiant);
     }
-    
+
     public Avion(String vehicule, int identifiant) {
         this(20, vehicule, 300, identifiant);
     }
-    
+
     public Avion(String vehicule, int capacite, int identifiant) {
         this(20, vehicule, capacite, identifiant);
     }

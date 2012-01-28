@@ -20,8 +20,8 @@ import objets.*;
  * contient toutes les fonctions pour faire le lien entre les instructions
  * données via la ligne de commande et les fonctions de l'admin.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class ClientAdmin {
@@ -35,18 +35,18 @@ public class ClientAdmin {
      * @param version
      *            la version du serveur choisi
      */
-	public ClientAdmin(int version) {
-		parser = new Parser(); // créer un parser
+    public ClientAdmin(int version) {
+        parser = new Parser(); // créer un parser
 
-		if (version == 1) {
-			s = new ServeurV1();
-		} else if (version == 2) {
-			s = new ServeurV2();
-		} else {
-			s = new ServeurV3();
-		}
-		a = new Admin(s); // créer une instance d'admin
-	}
+        if (version == 1) {
+            s = new ServeurV1();
+        } else if (version == 2) {
+            s = new ServeurV2();
+        } else {
+            s = new ServeurV3();
+        }
+        a = new Admin(s); // créer une instance d'admin
+    }
 
     /**
      * Lance le client d'administration
@@ -188,7 +188,7 @@ public class ClientAdmin {
             int idDepart = 0;
             int idArrivee = 0;
             int idVehicule = 0;
-            Vehicule vehicule=null;
+            Vehicule vehicule = null;
             int placesVoulues = 1;
             String dateDepart = "";
             String horaireDepart = "";
@@ -197,7 +197,7 @@ public class ClientAdmin {
             boolean premiereClasse = false;
             boolean trierParPrix = false;
             boolean trajetDirect = false;
-            
+
             // On demande à l'utilisateur toutes les infos qu'on veut
             // puis on vérifie si ce qui a été entré est correct
 
@@ -228,7 +228,7 @@ public class ClientAdmin {
             Ville depart = a.getVille(idDepart);
             if (depart == null)
                 throw new Exception("ville non reconnu");
-            
+
             a.consulterVille();
             System.out.print("Lieu d'arrivée : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
@@ -239,18 +239,17 @@ public class ClientAdmin {
             Ville arrivee = a.getVille(idArrivee);
             if (arrivee == null)
                 throw new Exception("ville non reconnu");
-            
+
             a.consulterVehicules();
             System.out.print("Véhicule (id) (défaut=n'importe lequel) : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 String textTokenizer = tokenizer.next();
-                
-                if(textTokenizer!="")
-                {
+
+                if (textTokenizer != "") {
                     idVehicule = Integer.valueOf(textTokenizer); // récupère le
-                                                                // premier mot
-                 // on récupère le véhicule choisi
+                                                                 // premier mot
+                    // on récupère le véhicule choisi
                     vehicule = a.getVehicule(idVehicule);
                 }
             }
@@ -264,59 +263,53 @@ public class ClientAdmin {
             }
             if (placesVoulues == 0)
                 placesVoulues = 1;
-            
-            
+
             System.out.print("Qu'avec couchette ? (1=oui,0=non) : ");
-            int couchetteString=0;
+            int couchetteString = 0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 couchetteString = Integer.valueOf(tokenizer.next()); // récupère
-                                                                   // le premier
-                                                                   // mot
+                                                                     // le
+                                                                     // premier
+                                                                     // mot
             }
-            if(couchetteString!=0)
-            {
-                avecCouchette=true;
+            if (couchetteString != 0) {
+                avecCouchette = true;
             }
-            
-            
+
             System.out.print("Que les trajets directs ? (1=oui,0=non) : ");
-            int trajetsDirectsString=0;
+            int trajetsDirectsString = 0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 trajetsDirectsString = Integer.valueOf(tokenizer.next()); // récupère
-                                                                   // le premier
-                                                                   // mot
+                // le premier
+                // mot
             }
-            if(trajetsDirectsString!=0)
-            {
-                trajetDirect=true;
+            if (trajetsDirectsString != 0) {
+                trajetDirect = true;
             }
-            
+
             System.out.print("Première classe ? (1=oui,0=non) : ");
-            int classeString=0;
+            int classeString = 0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 classeString = Integer.valueOf(tokenizer.next()); // récupère
-                                                                   // le premier
-                                                                   // mot
+                                                                  // le premier
+                                                                  // mot
             }
-            if(classeString!=0)
-            {
-                premiereClasse=true;
+            if (classeString != 0) {
+                premiereClasse = true;
             }
-            
-            
+
             System.out.print("Trier par prix (0=non,1=oui) : ");
-            int trierPrix=0;
+            int trierPrix = 0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 trierPrix = Integer.valueOf(tokenizer.next()); // récupère
-                                                                   // le premier
-                                                                   // mot
+                                                               // le premier
+                                                               // mot
             }
-            if (trierPrix != 0)
-            {
+            if (trierPrix != 0) {
                 trierParPrix = true;
             }
             Calendar dateCompleteDepart = Serveur.textToCalendar(dateDepart,
@@ -324,19 +317,17 @@ public class ClientAdmin {
             if (dateCompleteDepart == null)
                 throw new Exception("date de départ mal écrite");
 
-            List<Trajet> trajetRecherche=null;
-            if(!trierParPrix)
-            {
-            // on recherche les trajets correspondant aux paramètres rentrés
-                trajetRecherche = s.rechercherTrajet(depart, arrivee,
-                    vehicule, placesVoulues, dateCompleteDepart,
-                    intervalleVoulue,avecCouchette,premiereClasse,trajetDirect);
-            }
-            else
-            {
+            List<Trajet> trajetRecherche = null;
+            if (!trierParPrix) {
+                // on recherche les trajets correspondant aux paramètres rentrés
+                trajetRecherche = s.rechercherTrajet(depart, arrivee, vehicule,
+                        placesVoulues, dateCompleteDepart, intervalleVoulue,
+                        avecCouchette, premiereClasse, trajetDirect);
+            } else {
                 trajetRecherche = s.rechercherTrajetParPrix(depart, arrivee,
                         vehicule, placesVoulues, dateCompleteDepart,
-                        intervalleVoulue,avecCouchette,premiereClasse,trajetDirect);
+                        intervalleVoulue, avecCouchette, premiereClasse,
+                        trajetDirect);
             }
 
             // on affiche les trajets correspondant aux paramètres rentrés, s'il
@@ -369,21 +360,21 @@ public class ClientAdmin {
 
         if (quoi.equals("trajets")) {
             // on demande les infos sur le trajet à réserver
-            Reservation reservation=null;
+            Reservation reservation = null;
             Trajet trajetAReserver = null;
             int placesVoulues = 1;
-            Passager passager=null;
-            String nom="";
-            String prenom="";
-            String dateNaissance="";
-            int profilId=0;
-            Profil profil=null;
-            
-            boolean fidelite=false;
-            boolean modifiable=false;
-            boolean prendCouchette=false;
-            Map<String,Boolean> prendRepas=new HashMap<String,Boolean>();
-            
+            Passager passager = null;
+            String nom = "";
+            String prenom = "";
+            String dateNaissance = "";
+            int profilId = 0;
+            Profil profil = null;
+
+            boolean fidelite = false;
+            boolean modifiable = false;
+            boolean prendCouchette = false;
+            Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
+
             a.consulterTrajet();
 
             // On demande à l'utilisateur toutes les infos qu'on veut
@@ -407,14 +398,13 @@ public class ClientAdmin {
             }
             if (placesVoulues == 0)
                 placesVoulues = 1;
-            
+
             // On regarde si le trajet existe
             if (trajetAReserver != null) {
-                
+
                 // On réserve le trajet que s'il reste des places
-                if (trajetAReserver.restePlaces(placesVoulues))
-                {
-                    //choix du passager
+                if (trajetAReserver.restePlaces(placesVoulues)) {
+                    // choix du passager
                     System.out.print("Nom du passager : ");
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                     if (tokenizer.hasNext()) {
@@ -422,8 +412,7 @@ public class ClientAdmin {
                     }
                     if (nom.trim() == "")
                         throw new Exception("Nom du passager vide");
-                    
-                    
+
                     System.out.print("Prénom du passager : ");
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                     if (tokenizer.hasNext()) {
@@ -431,106 +420,113 @@ public class ClientAdmin {
                     }
                     if (prenom.trim() == "")
                         throw new Exception("Prénom du passager vide");
-                    
+
                     System.out.print("Date de naissance (jj/mm/aaaa) : ");
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                     if (tokenizer.hasNext()) {
-                        dateNaissance = tokenizer.next(); // récupère le premier mot
+                        dateNaissance = tokenizer.next(); // récupère le premier
+                                                          // mot
                     }
-                    if (!Pattern.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}", dateNaissance))
+                    if (!Pattern.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}",
+                            dateNaissance))
                         throw new Exception("Date de naissance mal écrite");
-                    
-                    
-                    
+
                     for (int i = 0; i < Profil.values().length - 1; i++) {
-                        System.out.print(Profil.values()[i].getProfil() + " (" + i + "), ");
+                        System.out.print(Profil.values()[i].getProfil() + " ("
+                                + i + "), ");
                     }
                     int last = Profil.values().length - 1;
-                    System.out.println(Profil.values()[last].getProfil() + " (" + last + ")");
+                    System.out.println(Profil.values()[last].getProfil() + " ("
+                            + last + ")");
                     System.out.print("Profil choisi (id) : ");
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                     if (tokenizer.hasNext()) {
-                        profilId = Integer.valueOf(tokenizer.next()); // récupère le
-                                                                    // premier mot
+                        profilId = Integer.valueOf(tokenizer.next()); // récupère
+                                                                      // le
+                                                                      // premier
+                                                                      // mot
                     }
 
                     // on récupère le profil choisi
                     profil = Profil.values()[profilId];
                     if (profil == null)
                         throw new Exception("profil non reconnu");
-                    
-                    
+
                     System.out.print("Fidélité ? (0=non, 1=oui)");
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    int res=0;
+                    int res = 0;
                     if (tokenizer.hasNext()) {
-                        res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        res = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                 // premier mot
                     }
-                    if(res==0)
-                        fidelite=false;
+                    if (res == 0)
+                        fidelite = false;
                     else
-                        fidelite=true;
-                    
+                        fidelite = true;
+
                     System.out.print("Ticket Modifiable ? (0=non, 1=oui)");
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    res=0;
+                    res = 0;
                     if (tokenizer.hasNext()) {
-                        res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        res = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                 // premier mot
                     }
-                    if(res==0)
-                        modifiable=false;
+                    if (res == 0)
+                        modifiable = false;
                     else
-                        modifiable=true;
-                    
-                    if(trajetAReserver.getVehicule().avecCouchette())
-                    {
+                        modifiable = true;
+
+                    if (trajetAReserver.getVehicule().avecCouchette()) {
                         System.out.print("Prend Couchette ? (0=non, 1=oui)");
-                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                        res=0;
+                        tokenizer = new Scanner(
+                                (new Scanner(System.in)).nextLine());
+                        res = 0;
                         if (tokenizer.hasNext()) {
-                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                            res = Integer.valueOf(tokenizer.next()); // récupère
+                                                                     // le
+                                                                     // premier
+                                                                     // mot
                         }
-                        if(res==0)
-                            prendCouchette=false;
+                        if (res == 0)
+                            prendCouchette = false;
                         else
-                            prendCouchette=true;
+                            prendCouchette = true;
                     }
-                    
-                    for(Repas repas : trajetAReserver.getVehicule().getRepas())
-                    {
-                        System.out.print(repas.getNom()+" ? (0=non, 1=oui)");
-                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                        res=0;
+
+                    for (Repas repas : trajetAReserver.getVehicule().getRepas()) {
+                        System.out.print(repas.getNom() + " ? (0=non, 1=oui)");
+                        tokenizer = new Scanner(
+                                (new Scanner(System.in)).nextLine());
+                        res = 0;
                         if (tokenizer.hasNext()) {
-                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                            res = Integer.valueOf(tokenizer.next()); // récupère
+                                                                     // le
+                                                                     // premier
+                                                                     // mot
                         }
-                        if(res==0)
-                        {
+                        if (res == 0) {
                             prendRepas.put(repas.getNom(), false);
-                        }
-                        else
-                        {
+                        } else {
                             prendRepas.put(repas.getNom(), true);
                         }
                     }
-                    
-                    
-                    passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
-                    
-                    
-                    reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas, s.getReservationNewIdentifiant(),placesVoulues);
-                    
-                    
+
+                    passager = new Passager(nom, prenom, s.textToCalendar(
+                            dateNaissance, "00:00"), profil, fidelite);
+
+                    reservation = new Reservation(passager, trajetAReserver,
+                            modifiable, prendCouchette, prendRepas,
+                            s.getReservationNewIdentifiant(), placesVoulues);
+
                     a.reserver(trajetAReserver, placesVoulues);
                     reservation.genereTicket();
-                    
+
                     a.addReservation(reservation);
                     a.consulterReservation();
-                    
+
                     System.out
                             .println("Merci d'avoir réserver ce trajet ! Bon voyage.");
-                }
-                else
+                } else
                     System.out
                             .println("Il ne reste plus de place à bord de ce véhicule !");
             } else {
@@ -564,8 +560,8 @@ public class ClientAdmin {
             int idDepart = 0;
             int idArrivee = 0;
             int idVehicule = 0;
-            int distance=0;
-            boolean premiereClasse=false;
+            int distance = 0;
+            boolean premiereClasse = false;
 
             // On demande à l'utilisateur toutes les infos qu'on veut
             // puis on vérifie si ce qui a été entré est correct
@@ -636,25 +632,23 @@ public class ClientAdmin {
             Vehicule v = a.getVehicule(idVehicule);
             if (v == null)
                 throw new Exception("véhicule non reconnu");
-            
-            
+
             System.out.print("Distance (km) : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 distance = Integer.valueOf(tokenizer.next()); // récupère le
-                                                                // premier mot
+                                                              // premier mot
             }
-            
-            
+
             System.out.print("Première classe (0=non,1=oui) : ");
-            int classe=0;
+            int classe = 0;
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
                 classe = Integer.valueOf(tokenizer.next()); // récupère le
-                                                                // premier mot
+                                                            // premier mot
             }
-            if(classe!=0)
-                premiereClasse=true;
+            if (classe != 0)
+                premiereClasse = true;
 
             // on convertit les dates entrées en Calendar
             Calendar dateCompleteDepart = Serveur.textToCalendar(dateDepart,
@@ -669,7 +663,8 @@ public class ClientAdmin {
 
             // on créé le trajet voulu puis on l'ajoute
             Trajet t = new Trajet(dateCompleteDepart, dateCompleteArrivee,
-                    depart, arrivee,distance, v, a.getTrajetNewIdentifiant(),premiereClasse);
+                    depart, arrivee, distance, v, a.getTrajetNewIdentifiant(),
+                    premiereClasse);
 
             a.addTrajet(t);
             a.consulterTrajet();
@@ -691,10 +686,12 @@ public class ClientAdmin {
                 throw new Exception("Nom du véhicule vide");
 
             for (int i = 0; i < TypeVehicule.values().length - 1; i++) {
-                System.out.print(TypeVehicule.values()[i].getNom() + " (" + i + "), ");
+                System.out.print(TypeVehicule.values()[i].getNom() + " (" + i
+                        + "), ");
             }
             int last = TypeVehicule.values().length - 1;
-            System.out.println(TypeVehicule.values()[last].getNom() + " (" + last + ")");
+            System.out.println(TypeVehicule.values()[last].getNom() + " ("
+                    + last + ")");
             System.out.print("Type choisi (id) : ");
             tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
@@ -729,8 +726,7 @@ public class ClientAdmin {
                     v = new Bateau(vehicule, capacite,
                             a.getVehiculeNewIdentifiant());
                 else
-                    v = new Bateau(vehicule,
-                            a.getVehiculeNewIdentifiant());
+                    v = new Bateau(vehicule, a.getVehiculeNewIdentifiant());
             } else if (type == TypeVehicule.BUS) {
                 if (capacite != 0)
                     v = new Bus(vehicule, capacite,
@@ -764,7 +760,7 @@ public class ClientAdmin {
 
             // on créé le véhicule voulu puis on l'ajoute
             Ville v = new Ville(ville, a.getVilleNewIdentifiant());
-            
+
             if (v != null)
                 a.addVille(v);
             a.consulterVille();
@@ -800,8 +796,8 @@ public class ClientAdmin {
             int idDepart = 0;
             int idArrivee = 0;
             int idVehicule = 0;
-            int distance=0;
-            boolean premiereClasse=false;
+            int distance = 0;
+            boolean premiereClasse = false;
 
             a.consulterTrajet();
             // On demande à l'utilisateur l'identifiant du trajet à modifier
@@ -937,35 +933,29 @@ public class ClientAdmin {
                     throw new Exception("véhicule non reconnu");
 
                 System.out.print(new StringBuffer().append("Distance (km) [")
-                        .append(trajetAModifier.getDistance())
-                        .append("] : "));
+                        .append(trajetAModifier.getDistance()).append("] : "));
                 tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                 if (tokenizer.hasNext()) {
                     distance = Integer.valueOf(tokenizer.next()); // récupère le
-                                                                    // premier mot
-                }
-                else
-                    distance=trajetAModifier.getDistance();
-                
-                
+                                                                  // premier mot
+                } else
+                    distance = trajetAModifier.getDistance();
+
                 int texteClasse = (trajetAModifier.isPremiereClasse()) ? 1 : 0;
-                System.out.print(new StringBuffer().append("Première classe (0=non,1=oui) [")
-                        .append(texteClasse)
-                        .append("] : "));
-                int classe=0;
+                System.out.print(new StringBuffer()
+                        .append("Première classe (0=non,1=oui) [")
+                        .append(texteClasse).append("] : "));
+                int classe = 0;
                 tokenizer = new Scanner((new Scanner(System.in)).nextLine());
                 if (tokenizer.hasNext()) {
                     classe = Integer.valueOf(tokenizer.next()); // récupère le
-                                                                    // premier mot
-                }
-                else
-                {
+                                                                // premier mot
+                } else {
                     classe = texteClasse;
                 }
-                if(classe!=0)
-                    premiereClasse=true;
-                
-                
+                if (classe != 0)
+                    premiereClasse = true;
+
                 // on convertit les dates entrées en Calendar
                 Calendar dateCompleteDepart = Serveur.textToCalendar(
                         dateDepart, horaireDepart);
@@ -979,7 +969,8 @@ public class ClientAdmin {
                 // On créé le nouveau trajet puis on le met à la place de
                 // l'ancien
                 Trajet t = new Trajet(dateCompleteDepart, dateCompleteArrivee,
-                        depart, arrivee, distance, v, trajetAModifier.getIdentifiant(),premiereClasse);
+                        depart, arrivee, distance, v,
+                        trajetAModifier.getIdentifiant(), premiereClasse);
                 a.modifierTrajet(trajetAModifier, t);
                 a.consulterTrajet();
             } else {
@@ -1066,29 +1057,30 @@ public class ClientAdmin {
                 if (type == TypeVehicule.AVION) {
                     if (capacite != 0)
                         v = new Avion(vehicule, capacite,
-                            vehiculeAModifier.getIdentifiant());
+                                vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Avion(vehicule, vehiculeAModifier.getIdentifiant());
+                        v = new Avion(vehicule,
+                                vehiculeAModifier.getIdentifiant());
                 } else if (type == TypeVehicule.BATEAU) {
                     if (capacite != 0)
                         v = new Bateau(vehicule, capacite,
-                            vehiculeAModifier.getIdentifiant());
+                                vehiculeAModifier.getIdentifiant());
                     else
                         v = new Bateau(vehicule,
                                 vehiculeAModifier.getIdentifiant());
                 } else if (type == TypeVehicule.BUS) {
                     if (capacite != 0)
                         v = new Bus(vehicule, capacite,
-                            vehiculeAModifier.getIdentifiant());
+                                vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Bus(vehicule, 
-                        		vehiculeAModifier.getIdentifiant());
+                        v = new Bus(vehicule,
+                                vehiculeAModifier.getIdentifiant());
                 } else if (type == TypeVehicule.TRAIN) {
                     if (capacite != 0)
                         v = new Train(vehicule, capacite,
-                            vehiculeAModifier.getIdentifiant());
+                                vehiculeAModifier.getIdentifiant());
                     else
-                        v = new Train(vehicule, 
+                        v = new Train(vehicule,
                                 vehiculeAModifier.getIdentifiant());
                 }
 
@@ -1140,211 +1132,215 @@ public class ClientAdmin {
                 throw new Exception(
                         "Aucune ville ne correspond à cet identifiant");
             }
-            
+
         } else if (quoi.equals("reservation")) {
-            Reservation reservationAModifier=null;
+            Reservation reservationAModifier = null;
             Trajet trajetAReserver = null;
             int placesVoulues = 1;
-            Passager passager=null;
-            String nom="";
-            String prenom="";
-            String dateNaissance="";
-            int profilId=0;
-            Profil profil=null;
-            
-            boolean fidelite=false;
-            boolean modifiable=false;
-            boolean prendCouchette=false;
-            Map<String,Boolean> prendRepas=new HashMap<String,Boolean>();
-            
+            Passager passager = null;
+            String nom = "";
+            String prenom = "";
+            String dateNaissance = "";
+            int profilId = 0;
+            Profil profil = null;
+
+            boolean fidelite = false;
+            boolean modifiable = false;
+            boolean prendCouchette = false;
+            Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
+
             a.consulterReservation();
             System.out.print("Réservation à modifier (id) : ");
             Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
-                reservationAModifier = a
-                        .getReservation(Integer.valueOf(tokenizer.next())); // récupère
-                                                                       // le
-                                                                       // premier
-                                                                       // mot
+                reservationAModifier = a.getReservation(Integer
+                        .valueOf(tokenizer.next())); // récupère
+                // le
+                // premier
+                // mot
             }
-            if(reservationAModifier==null)
+            if (reservationAModifier == null)
                 throw new Exception(
                         "Aucune réservation ne correspond à cet identifiant");
             System.out
-            .println("N'entrez rien si vous voulez la même valeur que précédemment.");
-            
-            trajetAReserver=reservationAModifier.getTrajet();
-            
+                    .println("N'entrez rien si vous voulez la même valeur que précédemment.");
+
+            trajetAReserver = reservationAModifier.getTrajet();
+
             placesVoulues = reservationAModifier.getPlacesVoulues();
-            
+
             // On regarde si le trajet existe
             if (trajetAReserver != null) {
-                
-                    //choix du passager
-                    System.out.print(new StringBuffer().append("Nom du passager [").append(reservationAModifier.getPassager().getNom())
-                            .append("] : "));
-                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    if (tokenizer.hasNext()) {
-                        nom = tokenizer.next(); // récupère le premier mot
-                    }
-                    else
-                    {
-                        nom = reservationAModifier.getPassager().getNom();
-                    }
-                    if (nom.trim() == "")
-                        throw new Exception("Nom du passager vide");
-                    
-                    
-                    System.out.print(new StringBuffer().append("Prénom du passager [").append(reservationAModifier.getPassager().getPrenom())
-                            .append("] : "));
-                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    if (tokenizer.hasNext()) {
-                        prenom = tokenizer.next(); // récupère le premier mot
-                    }
-                    else
-                    {
-                        prenom = reservationAModifier.getPassager().getPrenom();
-                    }
-                    if (prenom.trim() == "")
-                        throw new Exception("Prénom du passager vide");
-                    
-                    System.out.print(new StringBuffer().append("Date de naissance (jj/mm/aaaa) [").append(Serveur.calendarToDate(reservationAModifier.getPassager().getDateNaissance()))
-                            .append("] : "));
-                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    if (tokenizer.hasNext()) {
-                        dateNaissance = tokenizer.next(); // récupère le premier mot
-                    }
-                    else
-                    {
-                        dateNaissance = Serveur.calendarToDate(reservationAModifier.getPassager().getDateNaissance());
-                    }
-                    if (!Pattern.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}", dateNaissance))
-                        throw new Exception("Date de naissance mal écrite");
-                    
-                    for (int i = 0; i < Profil.values().length - 1; i++) {
-                        System.out.print(Profil.values()[i].getProfil() + " (" + i + "), ");
-                    }
-                    int last = Profil.values().length - 1;
-                    System.out.println(Profil.values()[last].getProfil() + " (" + last + ")");
-                    System.out.print(new StringBuffer().append("Profil choisi (id) [").append(reservationAModifier.getPassager().getProfil().getProfil())
-                            .append("] : "));
-                    tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    if (tokenizer.hasNext()) {
-                        profilId = Integer.valueOf(tokenizer.next()); // récupère le
-                                                                    // premier mot
-                        profil = Profil.values()[profilId];
-                    }
-                    else
-                    {
-                        profil = reservationAModifier.getPassager().getProfil();
-                    }
 
-                    if (profil == null)
-                        throw new Exception("profil non reconnu");
-                    
-                    int texteFidelite=0;
-                    if(reservationAModifier.getPassager().getFidelite())
-                        texteFidelite=1;
-                    System.out.print(new StringBuffer().append("Fidélité ? (0=non, 1=oui) [").append(texteFidelite)
-                            .append("] : "));
+                // choix du passager
+                System.out.print(new StringBuffer().append("Nom du passager [")
+                        .append(reservationAModifier.getPassager().getNom())
+                        .append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    nom = tokenizer.next(); // récupère le premier mot
+                } else {
+                    nom = reservationAModifier.getPassager().getNom();
+                }
+                if (nom.trim() == "")
+                    throw new Exception("Nom du passager vide");
+
+                System.out.print(new StringBuffer()
+                        .append("Prénom du passager [")
+                        .append(reservationAModifier.getPassager().getPrenom())
+                        .append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    prenom = tokenizer.next(); // récupère le premier mot
+                } else {
+                    prenom = reservationAModifier.getPassager().getPrenom();
+                }
+                if (prenom.trim() == "")
+                    throw new Exception("Prénom du passager vide");
+
+                System.out.print(new StringBuffer()
+                        .append("Date de naissance (jj/mm/aaaa) [")
+                        .append(Serveur.calendarToDate(reservationAModifier
+                                .getPassager().getDateNaissance()))
+                        .append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    dateNaissance = tokenizer.next(); // récupère le premier mot
+                } else {
+                    dateNaissance = Serveur.calendarToDate(reservationAModifier
+                            .getPassager().getDateNaissance());
+                }
+                if (!Pattern.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}",
+                        dateNaissance))
+                    throw new Exception("Date de naissance mal écrite");
+
+                for (int i = 0; i < Profil.values().length - 1; i++) {
+                    System.out.print(Profil.values()[i].getProfil() + " (" + i
+                            + "), ");
+                }
+                int last = Profil.values().length - 1;
+                System.out.println(Profil.values()[last].getProfil() + " ("
+                        + last + ")");
+                System.out.print(new StringBuffer()
+                        .append("Profil choisi (id) [")
+                        .append(reservationAModifier.getPassager().getProfil()
+                                .getProfil()).append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                if (tokenizer.hasNext()) {
+                    profilId = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                  // premier mot
+                    profil = Profil.values()[profilId];
+                } else {
+                    profil = reservationAModifier.getPassager().getProfil();
+                }
+
+                if (profil == null)
+                    throw new Exception("profil non reconnu");
+
+                int texteFidelite = 0;
+                if (reservationAModifier.getPassager().getFidelite())
+                    texteFidelite = 1;
+                System.out.print(new StringBuffer()
+                        .append("Fidélité ? (0=non, 1=oui) [")
+                        .append(texteFidelite).append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                int res = 0;
+                if (tokenizer.hasNext()) {
+                    res = Integer.valueOf(tokenizer.next()); // récupère le
+                                                             // premier mot
+                } else
+                    res = texteFidelite;
+                if (res == 0)
+                    fidelite = false;
+                else
+                    fidelite = true;
+
+                int texteModifiable = 0;
+                if (reservationAModifier.isModifiable())
+                    texteModifiable = 1;
+                System.out.print(new StringBuffer()
+                        .append("Ticket Modifiable ? (0=non, 1=oui) [")
+                        .append(texteModifiable).append("] : "));
+                tokenizer = new Scanner((new Scanner(System.in)).nextLine());
+                res = 0;
+                if (tokenizer.hasNext()) {
+                    res = Integer.valueOf(tokenizer.next()); // récupère le
+                                                             // premier mot
+                } else
+                    res = texteModifiable;
+                if (res == 0)
+                    modifiable = false;
+                else
+                    modifiable = true;
+
+                if (trajetAReserver.getVehicule().avecCouchette()) {
+                    int texteCouchette = 0;
+                    if (reservationAModifier.isPrendCouchette())
+                        texteCouchette = 1;
+                    System.out.print(new StringBuffer()
+                            .append("Prend Couchette ? (0=non, 1=oui) [")
+                            .append(texteCouchette).append("] : "));
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    int res=0;
+                    res = 0;
                     if (tokenizer.hasNext()) {
-                        res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
-                    }
+                        res = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                 // premier mot
+                    } else
+                        res = texteCouchette;
+                    if (res == 0)
+                        prendCouchette = false;
                     else
-                        res=texteFidelite;
-                    if(res==0)
-                        fidelite=false;
-                    else
-                        fidelite=true;
-                    
-                    
-                    int texteModifiable=0;
-                    if(reservationAModifier.isModifiable())
-                        texteModifiable=1;
-                    System.out.print(new StringBuffer().append("Ticket Modifiable ? (0=non, 1=oui) [").append(texteModifiable)
-                            .append("] : "));
+                        prendCouchette = true;
+                }
+
+                for (Repas repas : trajetAReserver.getVehicule().getRepas()) {
+                    int texteRepas = 0;
+                    if (reservationAModifier.getRepas(repas.getNom()))
+                        texteRepas = 1;
+                    System.out.print(new StringBuffer()
+                            .append(repas.getNom() + " ? (0=non, 1=oui) [")
+                            .append(texteRepas).append("] : "));
                     tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                    res=0;
+                    res = 0;
                     if (tokenizer.hasNext()) {
-                        res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
+                        res = Integer.valueOf(tokenizer.next()); // récupère le
+                                                                 // premier mot
+                    } else
+                        res = texteRepas;
+                    if (res == 0) {
+                        prendRepas.put(repas.getNom(), false);
+                    } else {
+                        prendRepas.put(repas.getNom(), true);
                     }
-                    else
-                        res=texteModifiable;
-                    if(res==0)
-                        modifiable=false;
-                    else
-                        modifiable=true;
-                    
-                    if(trajetAReserver.getVehicule().avecCouchette())
-                    {
-                        int texteCouchette=0;
-                        if(reservationAModifier.isPrendCouchette())
-                            texteCouchette=1;
-                        System.out.print(new StringBuffer().append("Prend Couchette ? (0=non, 1=oui) [").append(texteCouchette)
-                                .append("] : "));
-                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                        res=0;
-                        if (tokenizer.hasNext()) {
-                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
-                        }
-                        else
-                            res=texteCouchette;
-                        if(res==0)
-                            prendCouchette=false;
-                        else
-                            prendCouchette=true;
-                    }
-                    
-                    for(Repas repas : trajetAReserver.getVehicule().getRepas())
-                    {
-                        int texteRepas=0;
-                        if(reservationAModifier.getRepas(repas.getNom()))
-                            texteRepas=1;
-                        System.out.print(new StringBuffer().append(repas.getNom()+" ? (0=non, 1=oui) [").append(texteRepas)
-                                .append("] : "));
-                        tokenizer = new Scanner((new Scanner(System.in)).nextLine());
-                        res=0;
-                        if (tokenizer.hasNext()) {
-                            res=Integer.valueOf(tokenizer.next()); // récupère le premier mot
-                        }
-                        else
-                            res=texteRepas;
-                        if(res==0)
-                        {
-                            prendRepas.put(repas.getNom(), false);
-                        }
-                        else
-                        {
-                            prendRepas.put(repas.getNom(), true);
-                        }
-                    }
-                    
-                    
-                    passager=new Passager(nom,prenom,s.textToCalendar(dateNaissance, "00:00"),profil,fidelite);
-                    
-                    
-                    Reservation reservation=new Reservation(passager,trajetAReserver,modifiable,prendCouchette,prendRepas, reservationAModifier.getIdentifiant(),placesVoulues);
-                    
-                    a.modifierReservation(reservationAModifier, reservation);
-                    
-                    File file=new File("ticketReservation" + reservationAModifier.getPassager().getNom()
-                            + "$" + reservationAModifier.getPassager().getPrenom() + ".html");
-                    file.delete();
-                    
-                    reservation.genereTicket();
-                    
-                    a.consulterReservation();
-                    
-                    System.out
-                            .println("Merci d'avoir réserver ce trajet ! Bon voyage.");
+                }
+
+                passager = new Passager(nom, prenom, s.textToCalendar(
+                        dateNaissance, "00:00"), profil, fidelite);
+
+                Reservation reservation = new Reservation(passager,
+                        trajetAReserver, modifiable, prendCouchette,
+                        prendRepas, reservationAModifier.getIdentifiant(),
+                        placesVoulues);
+
+                a.modifierReservation(reservationAModifier, reservation);
+
+                File file = new File("ticketReservation"
+                        + reservationAModifier.getPassager().getNom() + "$"
+                        + reservationAModifier.getPassager().getPrenom()
+                        + ".html");
+                file.delete();
+
+                reservation.genereTicket();
+
+                a.consulterReservation();
+
+                System.out
+                        .println("Merci d'avoir réserver ce trajet ! Bon voyage.");
             } else {
                 System.out.println("Mauvais identifiant.");
             }
-            
-        }
-        else {
+
+        } else {
             System.out
                     .println("Vous ne pouvez modifier qu'un trajet ou un vehicule");
         }
@@ -1421,17 +1417,17 @@ public class ClientAdmin {
             System.out.print("Réservation à supprimer (id) : ");
             Scanner tokenizer = new Scanner((new Scanner(System.in)).nextLine());
             if (tokenizer.hasNext()) {
-                reservationASupprimer = a.getReservation(Integer.valueOf(tokenizer.next())); // récupère
-                                                                                 // le
-                                                                                 // premier
-                                                                                 // mot
+                reservationASupprimer = a.getReservation(Integer
+                        .valueOf(tokenizer.next())); // récupère
+                // le
+                // premier
+                // mot
             }
             // on le supprime s'il existe
             if (reservationASupprimer != null) {
                 a.removeReservation(reservationASupprimer);
             }
         }
-        
 
         else {
             System.out

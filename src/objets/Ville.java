@@ -9,8 +9,8 @@ import java.io.*;
  * Cette classe permet de stocker un véhicule. Un véhicule est constitué d'un
  * String indiquant son nom, de sa capacité et de son identifiant.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class Ville implements Serializable {
@@ -31,9 +31,9 @@ public class Ville implements Serializable {
         this.ville = ville;
         this.identifiant = identifiant;
     }
-    
+
     public Ville() {
-    	this("", -1);
+        this("", -1);
     }
 
     /**

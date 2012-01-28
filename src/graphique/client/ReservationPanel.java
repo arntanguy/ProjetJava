@@ -15,60 +15,70 @@ import objets.Passager;
 import objets.Reservation;
 import objets.Trajet;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
 
 public class ReservationPanel extends JPanel {
-	private Serveur serveur;
-	private TrajetPanel trajetP;
-	private ClientPanel clientP;
-	private ResultatsPanel resultatsP;
-	
-	public ReservationPanel(Serveur s){
-		super();
-		serveur = s;
-		build(); 
-	}
-	private void build(){
-		setBorder(BorderFactory.createTitledBorder("Réservation d'un trajet"));
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    private Serveur serveur;
+    private TrajetPanel trajetP;
+    private ClientPanel clientP;
+    private ResultatsPanel resultatsP;
 
-		trajetP = new TrajetPanel(serveur);
-		clientP = new ClientPanel();
-		resultatsP = new ResultatsPanel(serveur);
-		add(trajetP);
-		add(clientP);
-		add(new JButton(new ValidateAction("Rechercher")));
-		add(resultatsP);			
-	}
+    public ReservationPanel(Serveur s) {
+        super();
+        serveur = s;
+        build();
+    }
 
-	
-	private class ValidateAction extends AbstractAction {
-		public ValidateAction(String texte){
-			super(texte);
-		}
+    private void build() {
+        setBorder(BorderFactory.createTitledBorder("Réservation d'un trajet"));
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Validé !");
-			ArrayList<Trajet> trajets = (ArrayList<Trajet>) serveur.rechercherTrajet(trajetP
-					.getVilleDepart(), trajetP.getVilleArrivee(), null, clientP
-					.getNbPassagers(), trajetP.getDateDepart(), 12, true,
-					false, true);
+        trajetP = new TrajetPanel(serveur);
+        clientP = new ClientPanel();
+        resultatsP = new ResultatsPanel(serveur);
+        add(trajetP);
+        add(clientP);
+        add(new JButton(new ValidateAction("Rechercher")));
+        add(resultatsP);
+    }
 
-			resultatsP.removeAllRows();
-			/* Reservation(Passager passager, Trajet trajet, boolean modifiable,
-            boolean prendCouchette, Map<String, Boolean> prendRepas, int identifiant,int placesVoulues */
-			Passager p = new Passager(clientP.getNom(), clientP.getPrenom(),
-					clientP.getDateNaissance(), clientP.getProfil(), clientP
-							.hasFidelite());
-			System.out.println(p);
+    private class ValidateAction extends AbstractAction {
+        public ValidateAction(String texte) {
+            super(texte);
+        }
 
-			for(Trajet t:trajets) {
-				Reservation r = new Reservation(p, t, trajetP.getModifiable(), trajetP.getCouchette(),
-						trajetP.getRepas(), serveur.getReservationNewIdentifiant(), clientP.getNbPassagers());
-				r.setActive(false);
-				System.out.println(r);
-				resultatsP.addReservation(r);
-			}
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Validé !");
+            ArrayList<Trajet> trajets = (ArrayList<Trajet>) serveur
+                    .rechercherTrajet(trajetP.getVilleDepart(),
+                            trajetP.getVilleArrivee(), null,
+                            clientP.getNbPassagers(), trajetP.getDateDepart(),
+                            12, true, false, true);
+
+            resultatsP.removeAllRows();
+            /*
+             * Reservation(Passager passager, Trajet trajet, boolean modifiable,
+             * boolean prendCouchette, Map<String, Boolean> prendRepas, int
+             * identifiant,int placesVoulues
+             */
+            Passager p = new Passager(clientP.getNom(), clientP.getPrenom(),
+                    clientP.getDateNaissance(), clientP.getProfil(),
+                    clientP.hasFidelite());
+            System.out.println(p);
+
+            for (Trajet t : trajets) {
+                Reservation r = new Reservation(p, t, trajetP.getModifiable(),
+                        trajetP.getCouchette(), trajetP.getRepas(),
+                        serveur.getReservationNewIdentifiant(),
+                        clientP.getNbPassagers());
+                r.setActive(false);
+                System.out.println(r);
+                resultatsP.addReservation(r);
+            }
+        }
+    }
 }

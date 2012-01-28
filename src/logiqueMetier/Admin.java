@@ -13,8 +13,8 @@ import objets.*;
  * d'administrer les véhicules et les trajets en étroite relation avec le
  * serveur.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class Admin {
@@ -263,8 +263,10 @@ public class Admin {
      */
     protected List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
-            int intervalleVoulue,boolean avecCouchette, boolean premiereClasse,boolean direct) {
+            int intervalleVoulue, boolean avecCouchette,
+            boolean premiereClasse, boolean direct) {
         return serveur.rechercherTrajet(depart, arrivee, vehicule,
-                placesVoulues, dateDepart, intervalleVoulue,avecCouchette, premiereClasse,direct);
+                placesVoulues, dateDepart, intervalleVoulue, avecCouchette,
+                premiereClasse, direct);
     }
 }

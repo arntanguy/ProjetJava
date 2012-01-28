@@ -5,6 +5,10 @@ import java.util.Calendar;
 
 import logiqueMetier.Serveur;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
 public class Passager implements Serializable {
     private String nom;
     private String prenom;
@@ -48,22 +52,24 @@ public class Passager implements Serializable {
     }
 
     public String toString() {
-       return nom+" "+prenom;
+        return nom + " " + prenom;
     }
-    
+
     public String detailledToString() {
-    	String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
+        String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
         return getNom() + " " + getPrenom() + " (né le "
                 + Serveur.calendarToDate(getDateNaissance()) + ") \nTarif : "
                 + getProfil().getProfil() + " " + f;
     }
-    
-    public String toHtml(){
-    	String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
+
+    public String toHtml() {
+        String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
         return getNom() + " " + getPrenom() + " (né le "
-                + Serveur.calendarToDate(getDateNaissance()) + ")</th></tr><th colspan=\"7\"><h3> Tarif : "
-                + getProfil().getProfil() + " " + f+"</h3>";
+                + Serveur.calendarToDate(getDateNaissance())
+                + ")</th></tr><th colspan=\"7\"><h3> Tarif : "
+                + getProfil().getProfil() + " " + f + "</h3>";
     }
+
     public String print() {
         return new StringBuffer().append(nom).append("#").append(prenom)
                 .append("#").append(Serveur.calendarToDate(dateNaissance))

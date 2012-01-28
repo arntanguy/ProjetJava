@@ -13,8 +13,8 @@ import objets.*;
  * données, on stocke directement les listes dans le fichier. Pour lire les
  * données, on récupère directement les listes à partir du fichier.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class ServeurV1 extends Serveur implements Serializable {

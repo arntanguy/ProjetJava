@@ -20,87 +20,100 @@ import tools.DateTools;
 
 import logiqueMetier.Serveur;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class TrajetPanel extends JPanel {
-	private JComboBox villeDepartCombo;
-	private JComboBox villeArriveeCombo;
-	private JSpinner dateDepartSpinner;
-	private JCheckBox modifiable;
-	private JCheckBox couchette;
+    private JComboBox villeDepartCombo;
+    private JComboBox villeArriveeCombo;
+    private JSpinner dateDepartSpinner;
+    private JCheckBox modifiable;
+    private JCheckBox couchette;
 
-	private Serveur serveur;
-	
-	public TrajetPanel(Serveur s){
-		super();
-		serveur = s;
-		build(); 
-	}
-	private void build(){
-		setBorder(BorderFactory.createTitledBorder("Où et quand souhaitez-vous partir ?"));
-		setLayout(new GridLayout(0,2));
+    private Serveur serveur;
 
-		
-		villeDepartCombo = new JComboBox();
-		for(Ville v:serveur.getVilles()) {
-			villeDepartCombo.addItem(v);
-		}
-		add(new JLabel("Ville de départ "));
-		add(villeDepartCombo);
+    public TrajetPanel(Serveur s) {
+        super();
+        serveur = s;
+        build();
+    }
 
-		add(new JLabel("Ville d'arrivée"));
-		villeArriveeCombo = new JComboBox();
-		add(villeArriveeCombo);
+    private void build() {
+        setBorder(BorderFactory
+                .createTitledBorder("Où et quand souhaitez-vous partir ?"));
+        setLayout(new GridLayout(0, 2));
 
-		DepartComboAction departComboAction = new DepartComboAction();
-		villeDepartCombo.setAction(departComboAction);
-		departComboAction.actionPerformed(null);
+        villeDepartCombo = new JComboBox();
+        for (Ville v : serveur.getVilles()) {
+            villeDepartCombo.addItem(v);
+        }
+        add(new JLabel("Ville de départ "));
+        add(villeDepartCombo);
 
-		// Create a SpinnerDateModel with current date as the initial value.
-		SpinnerDateModel model = new SpinnerDateModel();
+        add(new JLabel("Ville d'arrivée"));
+        villeArriveeCombo = new JComboBox();
+        add(villeArriveeCombo);
 
-		add(new JLabel("Date de départ "));
-		dateDepartSpinner = new JSpinner(model);
-		add(dateDepartSpinner);
-		
-		add(new JLabel("Trajet modifiable"));
-		modifiable = new JCheckBox();
-		add(modifiable);
-		
-		add(new JLabel("Avec couchette"));
-		couchette = new JCheckBox();
-		add(couchette);
-	}
+        DepartComboAction departComboAction = new DepartComboAction();
+        villeDepartCombo.setAction(departComboAction);
+        departComboAction.actionPerformed(null);
 
-	public Ville getVilleDepart() {
-		return (Ville)villeDepartCombo.getSelectedItem();
-	}
-	public Ville getVilleArrivee() {
-		return (Ville)villeArriveeCombo.getSelectedItem();
-	}
-	public Calendar getDateDepart() {
-		return DateTools.dateToCalendar((Date)dateDepartSpinner.getModel().getValue());
-	}
+        // Create a SpinnerDateModel with current date as the initial value.
+        SpinnerDateModel model = new SpinnerDateModel();
 
-	private class DepartComboAction extends AbstractAction {
-		public DepartComboAction() {
-		}
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			villeArriveeCombo.removeAllItems();
-			for(Ville v:serveur.getVillesArrivee((Ville)villeDepartCombo.getSelectedItem())) {
-				villeArriveeCombo.addItem(v);
-			}
-		}
-	
-	}
+        add(new JLabel("Date de départ "));
+        dateDepartSpinner = new JSpinner(model);
+        add(dateDepartSpinner);
 
-	public boolean getCouchette() {
-		return couchette.isSelected();
-	}
-	public boolean getModifiable() {
-		return modifiable.isSelected();
-	}
-	public Map<String, Boolean> getRepas() {
-//TODO
-		return null;
-	}
+        add(new JLabel("Trajet modifiable"));
+        modifiable = new JCheckBox();
+        add(modifiable);
+
+        add(new JLabel("Avec couchette"));
+        couchette = new JCheckBox();
+        add(couchette);
+    }
+
+    public Ville getVilleDepart() {
+        return (Ville) villeDepartCombo.getSelectedItem();
+    }
+
+    public Ville getVilleArrivee() {
+        return (Ville) villeArriveeCombo.getSelectedItem();
+    }
+
+    public Calendar getDateDepart() {
+        return DateTools.dateToCalendar((Date) dateDepartSpinner.getModel()
+                .getValue());
+    }
+
+    private class DepartComboAction extends AbstractAction {
+        public DepartComboAction() {
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            villeArriveeCombo.removeAllItems();
+            for (Ville v : serveur.getVillesArrivee((Ville) villeDepartCombo
+                    .getSelectedItem())) {
+                villeArriveeCombo.addItem(v);
+            }
+        }
+
+    }
+
+    public boolean getCouchette() {
+        return couchette.isSelected();
+    }
+
+    public boolean getModifiable() {
+        return modifiable.isSelected();
+    }
+
+    public Map<String, Boolean> getRepas() {
+        // TODO
+        return null;
+    }
 }

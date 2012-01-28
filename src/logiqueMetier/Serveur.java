@@ -17,8 +17,8 @@ import objets.*;
  * Cette classe est abstraite, car deux classes héritent d'elle pour implémenter
  * les méthodes sauvegarder et charger.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public abstract class Serveur implements Serializable {
@@ -338,7 +338,7 @@ public abstract class Serveur implements Serializable {
     }
 
     public void addReservation(Reservation r) throws Exception {
-    	if (!mesReservations.contains(r)) {
+        if (!mesReservations.contains(r)) {
             mesReservations.add(r);
         } else
             throw new Exception(
@@ -363,23 +363,23 @@ public abstract class Serveur implements Serializable {
     public ArrayList<Ville> getVilles() {
         return mesVilles;
     }
-    
+
     /**
      * Renvoit la liste des villes accessibles depuis une ville de départ donnée
      * 
      * @param depart
-     * 			Ville de départ.
-     * @return arrivee
-     * 			Liste des villes accessibles depuis la ville de départ donnée
+     *            Ville de départ.
+     * @return arrivee Liste des villes accessibles depuis la ville de départ
+     *         donnée
      */
     public ArrayList<Ville> getVillesArrivee(Ville depart) {
-    	ArrayList<Ville> arrivee = new ArrayList<Ville>();
-    	for(Trajet t:mesTrajets) {
-    		if(t.getDepart().equals(depart)) {
-    			arrivee.add(t.getArrivee());
-    		}
-    	}
-    	return arrivee;
+        ArrayList<Ville> arrivee = new ArrayList<Ville>();
+        for (Trajet t : mesTrajets) {
+            if (t.getDepart().equals(depart)) {
+                arrivee.add(t.getArrivee());
+            }
+        }
+        return arrivee;
     }
 
     /**
@@ -596,7 +596,7 @@ public abstract class Serveur implements Serializable {
                         && mesTrajets.get(i).getArrivee().equals(arrivee)
                         && (vehicule == null || mesTrajets.get(i).getVehicule()
                                 .equals(vehicule))
-                        &&  mesTrajets.get(i).restePlaces(placesVoulues)
+                        && mesTrajets.get(i).restePlaces(placesVoulues)
                         && (!avecCouchette || mesTrajets.get(i).getVehicule()
                                 .avecCouchette() == avecCouchette)
                         && mesTrajets.get(i).isPremiereClasse() == premiereClasse
@@ -605,27 +605,27 @@ public abstract class Serveur implements Serializable {
                     trajetsConvenables.add(mesTrajets.get(i));
                 }
             }
-        }
-        else
-        {   
-            Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant(),getVilleNewIdentifiant(),depart.getIdentifiant(), arrivee.getIdentifiant(),intervalleVoulue,dateDepart);
-            
-            List<Trajet> listeTrajetsChemin=d.cout();
-                
-            if(listeTrajetsChemin!=null)
-            {
+        } else {
+            Distance d = new Distance(mesTrajets, getTrajetNewIdentifiant(),
+                    getVilleNewIdentifiant(), depart.getIdentifiant(),
+                    arrivee.getIdentifiant(), intervalleVoulue, dateDepart);
+
+            List<Trajet> listeTrajetsChemin = d.cout();
+
+            if (listeTrajetsChemin != null) {
                 for (Trajet trajet : listeTrajetsChemin) {
-                    
-                    
-                    if ((vehicule == null || trajet.getVehicule().equals(vehicule))
-                           /* && trajet.restePlaces(placesVoulues)*/
-                            && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
+
+                    if ((vehicule == null || trajet.getVehicule().equals(
+                            vehicule))
+                            /* && trajet.restePlaces(placesVoulues) */
+                            && (!avecCouchette || trajet.getVehicule()
+                                    .avecCouchette() == avecCouchette)
                             && trajet.isPremiereClasse() == premiereClasse) {
                         trajetsConvenables.add(trajet);
                     }
                 }
             }
-        
+
         }
 
         // On trie la liste des trajets convenables pour que les trajets
@@ -986,6 +986,7 @@ public abstract class Serveur implements Serializable {
     public ArrayList<Vehicule> getVehicules() {
         return mesVehicules;
     }
+
     public ArrayList<Reservation> getReservations() {
         return mesReservations;
     }
