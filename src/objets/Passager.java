@@ -48,11 +48,16 @@ public class Passager implements Serializable {
     }
 
     public String toString() {
-        String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
+       return nom+" "+prenom;
+    }
+    
+    public String detailledToString() {
+    	String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
         return getNom() + " " + getPrenom() + " (né le "
                 + Serveur.calendarToDate(getDateNaissance()) + ") \nTarif : "
                 + getProfil().getProfil() + " " + f;
     }
+    
     public String toHtml(){
     	String f = (getFidelite()) ? "(avec la carte fidélité)" : "";
         return getNom() + " " + getPrenom() + " (né le "

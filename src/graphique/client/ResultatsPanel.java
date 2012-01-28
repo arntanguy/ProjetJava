@@ -1,5 +1,6 @@
 package graphique.client;
 
+import graphique.models.ReservationsTableModel;
 import graphique.models.TrajetsTableModel;
 import graphique.widgets.AbstractTablePanel;
 
@@ -14,9 +15,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import logiqueMetier.Serveur;
+import objets.Reservation;
 import objets.Trajet;
 
 public class ResultatsPanel extends AbstractTablePanel {
+	private static final long serialVersionUID = 1L;
 
 	public ResultatsPanel(Serveur s) {
 		super(s);
@@ -32,9 +35,9 @@ public class ResultatsPanel extends AbstractTablePanel {
 
 	private void buildReservationsTable() {
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
-				"Date arrivée", "Transport", "Etat" };
+				"Date arrivée", "Transport", "Passager", "Réservé" };
 
-		model = new TrajetsTableModel();
+		model = new ReservationsTableModel<Reservation>();
 		model.setColumnNames(columnNames);
 		table = new JTable();
 		table.setModel(model);
@@ -64,7 +67,14 @@ public class ResultatsPanel extends AbstractTablePanel {
 			int[] selectedIndexes = table.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(table.getValueAt(row, 0));
+				Reservation r = (Reservation) model.get(row);
+				r.setActive(true);
+				model.fireTableDataChanged();
+				try {
+					serveur.addReservation(r);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}	
 		}
 	}
@@ -73,8 +83,8 @@ public class ResultatsPanel extends AbstractTablePanel {
 		model.removeAllRows();
 	} 
 	
-	public void addTrajet(Trajet t) {
-		model.addRow(t);
+	public void addReservation(Reservation r) {
+		model.addRow(r);
 	}
 
 }

@@ -265,6 +265,14 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append("Il reste ").append(vehicule.getCapacite()-nbPassagers)
                 .append(" places restantes").toString();
     }
+    
+    /**
+     * Retourne une chaine à afficher pour l'interface graphique
+     * @return la ligne de description à afficher
+     */
+    public String toGString() {
+		return vehicule.getType().getNom()+" ("+vehicule.getVehicule()+")";
+	}
 
     /**
      * retourner une ligne de texte contenant les informations utiles pour
@@ -312,4 +320,6 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     {
         return vehicule.getPrix()*distance;
     }
+
+	
 }

@@ -4,9 +4,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +24,8 @@ public class TrajetPanel extends JPanel {
 	private JComboBox villeDepartCombo;
 	private JComboBox villeArriveeCombo;
 	private JSpinner dateDepartSpinner;
+	private JCheckBox modifiable;
+	private JCheckBox couchette;
 
 	private Serveur serveur;
 	
@@ -56,6 +60,14 @@ public class TrajetPanel extends JPanel {
 		add(new JLabel("Date de départ "));
 		dateDepartSpinner = new JSpinner(model);
 		add(dateDepartSpinner);
+		
+		add(new JLabel("Trajet modifiable"));
+		modifiable = new JCheckBox();
+		add(modifiable);
+		
+		add(new JLabel("Avec couchette"));
+		couchette = new JCheckBox();
+		add(couchette);
 	}
 
 	public Ville getVilleDepart() {
@@ -79,5 +91,16 @@ public class TrajetPanel extends JPanel {
 			}
 		}
 	
+	}
+
+	public boolean getCouchette() {
+		return couchette.isSelected();
+	}
+	public boolean getModifiable() {
+		return modifiable.isSelected();
+	}
+	public Map<String, Boolean> getRepas() {
+//TODO
+		return null;
 	}
 }

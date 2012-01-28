@@ -38,11 +38,11 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	private void build() {
 		setBorder(BorderFactory.createTitledBorder("Gestion des transports"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		buildTrajetsTable();
+		buildTable();
 		buildButtons();
 	}
 
-	private void buildTrajetsTable() {
+	private void buildTable() {
 		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
 		model = new TransportsTableModel<Vehicule>(vehicules);

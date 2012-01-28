@@ -2,75 +2,81 @@ package graphique.models;
 
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.swing.table.DefaultTableModel;
 
 import logiqueMetier.Serveur;
 
+import objets.Passager;
+import objets.Reservation;
 import objets.Trajet;
-import objets.Vehicule;
-import objets.Ville;
-import tools.DateTools;
 
-public class ReservationsTableModel<T> extends AbstractTableModel {
+public class ReservationsTableModel<T> extends AbstractTableModel<T> {
+	private static final long serialVersionUID = 1L;
 
 	public ReservationsTableModel(ArrayList<T> liste) {
 		super(liste);
 	}
 	
+	public ReservationsTableModel() {
+		super();
+	}
+	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Trajet v = null;
+		Reservation r = null;
 		try {
-			v = (Trajet) liste.get(rowIndex);
+			r = (Reservation) liste.get(rowIndex);
 		} catch(Exception e) {
-			System.out.println("TransportsTable : Impossible de lire la ligne "+rowIndex);
+			System.out.println("Reservations : Impossible de lire la ligne "+rowIndex);
 		}
-		if (v==null) return null;
+		if (r==null) return null;
+		Trajet t = r.getTrajet();
 		switch(columnIndex) {
 		case 0:
-			return v.getDepart();
+			return t.getDepart();
 		case 1:
-			return v.getArrivee();
+			return t.getArrivee();
 		case 2: 
-			return Serveur.calendarToDate(v.getDateDepart());
+			return Serveur.calendarToDate(t.getDateDepart());
 		case 3: 
-			return Serveur.calendarToDate(v.getDateArrivee());
+			return Serveur.calendarToDate(t.getDateArrivee());
 		case 4:
-			return (v.getVehicule() != null) ? v.getVehicule().getType().getNom()+" ("+v.getVehicule().getVehicule()+")"
+			return (t.getVehicule() != null) ? t.getVehicule().getType().getNom()+" ("+t.getVehicule().getVehicule()+")"
 											: "Aucun";
+		case 5:
+			if(!r.isActive()) return "";
+			else {
+				Passager p = r.getPassager();
+				System.out.println(p);
+				return (p!=null) ? p.getNom()+" "+p.getPrenom() : "null";
+			}
+		case 6:
+			return (r.isActive()) ? "Réservé" : "Non réservé";
 		}
 		return null;
 	}
 
 	public void setValueAt(Object o, int rowIndex, int columnIndex) {
-		Trajet t = (Trajet) liste.get(rowIndex);
+		Reservation r = (Reservation) liste.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			Ville v = (Ville) o;
-			if (v != null) {
-				t.setDepart(v);
-			} else {
-				t.setDepart(new Ville());
-			}
+			r.setPassager((Passager)o);
 			break;
-		case 1:
+	/*	case 1:
 			Ville v1 = (Ville) o;
 			if (v1 != null) {
-				t.setArrivee(v1);
+				r.setArrivee(v1);
 			} else {
-				t.setArrivee(new Ville());
-			}
+				r.setArrivee(new Ville());
+			} 
 			break;
 		case 2: 
-			t.setDateDepart(DateTools.dateToCalendar((Date)o));
+			r.setDateDepart(DateTools.dateToCalendar((Date)o));
 			break;
 		case 3: 
-			t.setDateArrivee(DateTools.dateToCalendar((Date)o));
+			r.setDateArrivee(DateTools.dateToCalendar((Date)o));
 			break;
 		case 4:
-			t.setVehicule((Vehicule)o);
+			r.setVehicule((Vehicule)o); */
 		}
 		fireTableDataChanged();
 	}

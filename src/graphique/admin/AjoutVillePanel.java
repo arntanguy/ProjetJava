@@ -50,7 +50,7 @@ public class AjoutVillePanel extends JPanel {
 			System.out.println("Validé !");
 			try {
 				serveur.createVille(nomText.getText());
-				serveur.sauvegarder();
+				nomText.setText("");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -16,6 +16,8 @@ public class Reservation implements Serializable {
     private boolean prendCouchette;
     private String nomTicket;
     private Map<String, Boolean> prendRepas;
+   
+	boolean active = true;
 
     /**
      * @param passager
@@ -221,7 +223,15 @@ public class Reservation implements Serializable {
     public boolean isModifiable() {
         return modifiable;
     }
-    
+   
+    public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
     public boolean getRepas(String repas)
     {
         return prendRepas.get(repas);
@@ -234,4 +244,8 @@ public class Reservation implements Serializable {
                 + trajet.getIdentifiant() + " (" + mod + ") par " + passager;
         return texte;
     }
+
+	public void setPassager(Passager p) {
+		passager = p;
+	}
 }

@@ -337,7 +337,7 @@ public abstract class Serveur implements Serializable {
     }
 
     public void addReservation(Reservation r) throws Exception {
-        if (!mesReservations.contains(r)) {
+    	if (!mesReservations.contains(r)) {
             mesReservations.add(r);
         } else
             throw new Exception(

@@ -1,13 +1,20 @@
 package graphique.client;
 
 import java.awt.GridLayout;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
+
+import objets.Profil;
+import tools.DateTools;
 
 import logiqueMetier.Admin;
 import logiqueMetier.Serveur;
@@ -17,13 +24,12 @@ import logiqueMetier.Serveur;
 public class ClientPanel extends JPanel {
 	private JTextField nomText;
 	private JTextField prenomText;
+	private JSpinner naissanceSpinner;
 	private JSpinner nbPassagersSpinner;
 	private JComboBox categoriePassager;
-	private JComboBox carteAbonnement;
-	
-	private Serveur serveur;
-	
-	public ClientPanel(Serveur s){
+	private JCheckBox carteAbonnement;
+		
+	public ClientPanel(){
 		super();
 		build();
 	}
@@ -38,18 +44,24 @@ public class ClientPanel extends JPanel {
 		prenomText = new JTextField();
 		add(prenomText);
 		
+		add(new JLabel("Date de naissance"));
+		naissanceSpinner = new JSpinner(new SpinnerDateModel());
+		add(naissanceSpinner);
+		
 		add(new JLabel("Nombre de passagers"));
 		nbPassagersSpinner = new JSpinner();
 		nbPassagersSpinner.setValue(1);
 		add(nbPassagersSpinner);
 		
 		add(new JLabel("Passager"));
-		String[] test = { "", "12-25" };
-		categoriePassager = new JComboBox(test);
+		categoriePassager = new JComboBox();
+		for(Profil p : Profil.values()) {
+			categoriePassager.addItem(p);
+		}
 		add(categoriePassager);
 		
-		add(new JLabel(""));
-		carteAbonnement = new JComboBox(test);
+		add(new JLabel("Carte de fidélité"));
+		carteAbonnement = new JCheckBox();
 		add(carteAbonnement);
 	}
 	
@@ -61,5 +73,14 @@ public class ClientPanel extends JPanel {
 	}
 	public int getNbPassagers() {
 		return (Integer)nbPassagersSpinner.getValue();
+	}
+	public Calendar getDateNaissance() {
+		return DateTools.dateToCalendar((Date)naissanceSpinner.getValue());
+	}
+	public Profil getProfil() {
+		return (Profil) categoriePassager.getSelectedItem();
+	}
+	public boolean hasFidelite() {
+		return carteAbonnement.isSelected();
 	}
 }

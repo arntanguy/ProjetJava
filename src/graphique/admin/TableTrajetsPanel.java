@@ -40,7 +40,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		villes = serveur.getVilles();
 		build();
 	}
-
+	
 	private void build() {
 		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));

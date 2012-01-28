@@ -1,5 +1,6 @@
 package graphique.models;
 
+import java.awt.List;
 import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;

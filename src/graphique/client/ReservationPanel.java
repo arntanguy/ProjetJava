@@ -2,7 +2,7 @@ package graphique.client;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -10,12 +10,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import objets.Trajet;
-import objets.Vehicule;
-import objets.Ville;
-
-import logiqueMetier.Admin;
 import logiqueMetier.Serveur;
+import objets.Passager;
+import objets.Reservation;
+import objets.Trajet;
 
 
 public class ReservationPanel extends JPanel {
@@ -34,7 +32,7 @@ public class ReservationPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		trajetP = new TrajetPanel(serveur);
-		clientP = new ClientPanel(serveur);
+		clientP = new ClientPanel();
 		resultatsP = new ResultatsPanel(serveur);
 		add(trajetP);
 		add(clientP);
@@ -57,9 +55,19 @@ public class ReservationPanel extends JPanel {
 					false, true);
 
 			resultatsP.removeAllRows();
+			/* Reservation(Passager passager, Trajet trajet, boolean modifiable,
+            boolean prendCouchette, Map<String, Boolean> prendRepas, int identifiant,int placesVoulues */
+			Passager p = new Passager(clientP.getNom(), clientP.getPrenom(),
+					clientP.getDateNaissance(), clientP.getProfil(), clientP
+							.hasFidelite());
+			System.out.println(p);
+
 			for(Trajet t:trajets) {
-				System.out.println(t);
-				resultatsP.addTrajet(t);
+				Reservation r = new Reservation(p, t, trajetP.getModifiable(), trajetP.getCouchette(),
+						trajetP.getRepas(), serveur.getReservationNewIdentifiant(), clientP.getNbPassagers());
+				r.setActive(false);
+				System.out.println(r);
+				resultatsP.addReservation(r);
 			}
 		}
 	}

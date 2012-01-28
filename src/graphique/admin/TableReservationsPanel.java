@@ -187,9 +187,9 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		}
 	}
 
-	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
+	public void linkTranjet(int parentSelectedRow, Trajet selectedTrajet) {
 		// FIXME
 		//model.setValueAt(selectedTransport, parentSelectedRow, 4);
-		System.out.println("Lié à "+selectedTransport.toString());
+		System.out.println("Lié à "+selectedTrajet.toString());
 	}
 }
