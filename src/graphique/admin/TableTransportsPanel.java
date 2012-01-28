@@ -24,9 +24,7 @@ import objets.Vehicule;
 public class TableTransportsPanel extends AbstractTablePanel {
 	private static final long serialVersionUID = 1L;
 	
-	private TransportsTableModel<Vehicule> transportModel;
-	private JTable transportTable;
-	private JScrollPane scrollPane;
+	private TransportsTableModel<Vehicule> model;
 
 	ArrayList<Vehicule> vehicules;
 
@@ -46,17 +44,17 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	private void buildTrajetsTable() {
 		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
-		transportModel = new TransportsTableModel<Vehicule>(vehicules);
-		transportModel.setColumnNames(columnNames);
-		transportTable = new JTable();
-		transportTable.setModel(transportModel);
-		transportTable.setFillsViewportHeight(true); // Fill all the container
+		model = new TransportsTableModel<Vehicule>(vehicules);
+		model.setColumnNames(columnNames);
+		table = new JTable();
+		table.setModel(model);
+		table.setFillsViewportHeight(true); // Fill all the container
 		
-		transportTable.getModel().addTableModelListener(new CellListener()); 
+		table.getModel().addTableModelListener(new CellListener()); 
 
 		JComboBox combo = buildTypeCombo();
 		addComboToTable(combo, 1);
-		scrollPane = new JScrollPane(transportTable);
+		scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
 
@@ -69,7 +67,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	}
 
 	public void setEditable(boolean isEditable) {
-			transportModel.setEditable(isEditable);
+			model.setEditable(isEditable);
 	}
 	public void setButtonsVisible(boolean visible) {
 			buttonsPanel.setVisible(visible);
@@ -85,7 +83,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
-			transportModel.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
+			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
 		}
 	}
 	
@@ -99,12 +97,12 @@ public class TableTransportsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Supprimé !");
-			int[] selectedIndexes = transportTable.getSelectedRows();
+			int[] selectedIndexes = table.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				try {
 					int row = selectedIndexes[i];
-					serveur.removeVehicule((Vehicule) transportModel.get(row));
-					transportModel.removeRow(row);
+					serveur.removeVehicule((Vehicule) model.get(row));
+					model.removeRow(row);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -125,7 +123,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 			if(e.getType() == TableModelEvent.UPDATE) {
 				System.out.println("Updated");
 				for(Vehicule v:vehicules) {
-					Vehicule tv = (Vehicule) transportModel.get(row);
+					Vehicule tv = (Vehicule) model.get(row);
 					if(tv.getIdentifiant() == v.getIdentifiant()) {
 						try {
 							serveur.modifierVehicule(tv, v);
@@ -147,7 +145,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	}
 	
 	public Vehicule getSelectedTransport() {
-		return (Vehicule) transportModel.get(transportTable.getSelectedRow());
+		return (Vehicule) model.get(table.getSelectedRow());
 	}
 
 }

@@ -25,10 +25,6 @@ import objets.Vehicule;
 import objets.Ville;
 
 public class TableReservationsPanel extends AbstractTablePanel {
-	private ReservationsTableModel<Trajet> trajetsModel;
-	private JTable trajetsTable;
-	private JScrollPane scrollPane;
-
 	private TableSpinnerEditor dateDepartSpinner;
 	private TableSpinnerEditor dateArriveeSpinner;
 
@@ -66,18 +62,16 @@ public class TableReservationsPanel extends AbstractTablePanel {
 				"Date arrivée", "Transport" };
 
 		// Create a SpinnerDateModel with current date as the initial value.
-		SpinnerDateModel model = new SpinnerDateModel();
-		SpinnerDateModel model1 = new SpinnerDateModel();
-		dateDepartSpinner = new TableSpinnerEditor(model);
-		dateArriveeSpinner = new TableSpinnerEditor(model1);
+		dateDepartSpinner = new TableSpinnerEditor(new SpinnerDateModel());
+		dateArriveeSpinner = new TableSpinnerEditor(new SpinnerDateModel());
 
-		trajetsModel = new ReservationsTableModel<Trajet>(trajets);
-		trajetsModel.setColumnNames(columnNames);
-		trajetsTable = new JTable();
-		trajetsTable.setModel(trajetsModel);
-		trajetsTable.setFillsViewportHeight(true); // Fill all the
+		model = new ReservationsTableModel<Trajet>(trajets);
+		model.setColumnNames(columnNames);
+		table = new JTable();
+		table.setModel(model);
+		table.setFillsViewportHeight(true); // Fill all the
 		// container
-		trajetsTable.getModel().addTableModelListener(new CellListener()); 
+		table.getModel().addTableModelListener(new CellListener()); 
 
 		JComboBox combo = buildDepartCombo();
 		addComboToTable(combo, 0);
@@ -85,7 +79,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		addSpinnerToTable(dateDepartSpinner, 2);
 		addSpinnerToTable(dateArriveeSpinner, 3);
 
-		scrollPane = new JScrollPane(trajetsTable);
+		scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
 
@@ -117,7 +111,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Link !");
-			int [] selected = trajetsTable.getSelectedRows();
+			int [] selected = table.getSelectedRows();
 			for(final int i : selected) {
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
@@ -140,7 +134,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
-			trajetsModel.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
+			model.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
 		}
 	}
 
@@ -154,12 +148,12 @@ public class TableReservationsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Supprimé !");
-			int[] selectedIndexes = trajetsTable.getSelectedRows();
+			int[] selectedIndexes = table.getSelectedRows();
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
-				System.out.println(trajetsModel.getValueAt(row, 0));
-				serveur.removeTrajet((Trajet) trajetsModel.get(row));
-				trajetsModel.removeRow(row);
+				System.out.println(model.getValueAt(row, 0));
+				serveur.removeTrajet((Trajet) model.get(row));
+				model.removeRow(row);
 			}	  
 		}
 	}
@@ -178,7 +172,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 			case TableModelEvent.UPDATE:
 				System.out.println("Updated");
 				for(Trajet t:trajets) {
-					Trajet tt = (Trajet) trajetsModel.get(row);
+					Trajet tt = (Trajet) model.get(row);
 					if(t.getIdentifiant() == tt.getIdentifiant()) {
 						try {
 							serveur.modifierTrajet(t, tt);
@@ -194,7 +188,7 @@ public class TableReservationsPanel extends AbstractTablePanel {
 
 	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
 		// FIXME
-		//trajetsModel.setValueAt(selectedTransport, parentSelectedRow, 4);
+		//model.setValueAt(selectedTransport, parentSelectedRow, 4);
 		System.out.println("Lié à "+selectedTransport.toString());
 	}
 }
