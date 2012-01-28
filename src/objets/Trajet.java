@@ -49,7 +49,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
             Ville arrivee, int distance, Vehicule vehicule, int identifiant,boolean premiereClasse) {
     	this(dateDepart, dateArrivee, depart,
-                arrivee, distance,  vehicule, identifiant, 0, premiereClasse);
+                arrivee, distance,  vehicule, identifiant, vehicule.getCapacite(), premiereClasse);
     }
 
     public Trajet(int identifiant) {
