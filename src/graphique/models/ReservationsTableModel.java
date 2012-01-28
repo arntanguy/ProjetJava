@@ -1,4 +1,5 @@
-package graphique.admin;
+package graphique.models;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,43 +9,21 @@ import javax.swing.table.DefaultTableModel;
 import logiqueMetier.Serveur;
 
 import objets.Trajet;
+import objets.Vehicule;
 import objets.Ville;
 import tools.DateTools;
 
-public class TrajetsTableModel extends DefaultTableModel {
+public class ReservationsTableModel<T> extends AbstractTableModel {
 
-	ArrayList<Trajet> trajets;
-	String[] columnNames;
-
-	public TrajetsTableModel(ArrayList<Trajet> trajets) {
-		this.trajets = trajets;
+	public ReservationsTableModel(ArrayList<T> liste) {
+		super(liste);
 	}
-
-	@Override
-	public int getColumnCount() {
-		// Returns the number of columns in the model : départ, arrivée, 
-		// date départ, date arrivée, transport, transport
-		return 5;
-	}
-
-	@Override
-	public int getRowCount() {
-		return (trajets != null) ? trajets.size() : 0;
-	}
-
-	@Override
-	public String getColumnName(int columnIndex) {
-		return columnNames[columnIndex];
-	}
-
-	public void setColumnNames(String[] columnNames) {
-		this.columnNames = columnNames; 
-	} 
+	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Trajet v = null;
 		try {
-			v = trajets.get(rowIndex);
+			v = (Trajet) liste.get(rowIndex);
 		} catch(Exception e) {
 			System.out.println("TransportsTable : Impossible de lire la ligne "+rowIndex);
 		}
@@ -58,12 +37,15 @@ public class TrajetsTableModel extends DefaultTableModel {
 			return Serveur.calendarToDate(v.getDateDepart());
 		case 3: 
 			return Serveur.calendarToDate(v.getDateArrivee());
+		case 4:
+			return (v.getVehicule() != null) ? v.getVehicule().getType().getNom()+" ("+v.getVehicule().getVehicule()+")"
+											: "Aucun";
 		}
 		return null;
 	}
 
 	public void setValueAt(Object o, int rowIndex, int columnIndex) {
-		Trajet t = trajets.get(rowIndex);
+		Trajet t = (Trajet) liste.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
 			Ville v = (Ville) o;
@@ -87,26 +69,9 @@ public class TrajetsTableModel extends DefaultTableModel {
 		case 3: 
 			t.setDateArrivee(DateTools.dateToCalendar((Date)o));
 			break;
+		case 4:
+			t.setVehicule((Vehicule)o);
 		}
 		fireTableDataChanged();
-	}
-
-	public Trajet getTrajet(int rowIndex) {
-		return trajets.get(rowIndex);
-	}
-
-	public void addRow(Trajet v) {
-		trajets.add(v);
-		fireTableDataChanged();
-	} 
-
-	public void removeRow(int row) {
-		trajets.remove(row);
-		fireTableDataChanged();
-	}
-
-	public boolean isCellEditable(int row, int column)
-	{
-		return true;
 	}
 }

@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 
 import logiqueMetier.Serveur;
 
-public class TransportSelectorDialog extends JDialog {
-	private TableTransportsPanel selectorPanel;
+public class TrajetSelectorDialog extends JDialog {
+	private TableTrajetsPanel selectorPanel;
 	private TableTrajetsPanel parent;
 	private int parentSelectedRow;
 	
 	private Serveur serveur;
 	
-	public TransportSelectorDialog(Serveur s, TableTrajetsPanel parent, int row) {
+	public TrajetSelectorDialog(Serveur s, TableTrajetsPanel parent, int row) {
 		serveur = s;
 		this.parent = parent;
 		parentSelectedRow = row;
@@ -34,18 +34,18 @@ public class TransportSelectorDialog extends JDialog {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		panel.add(buildTransportSelector());
+		panel.add(buildTrajetSelector());
 		
 		buildButtons(panel);
 		
 		return panel;
 	}
-	private JPanel buildTransportSelector() {
+	private JPanel buildTrajetSelector() {
 		//setBorder(BorderFactory.createTitledBorder("Gestion des réservations"));
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		selectorPanel = new TableTransportsPanel(serveur);
+		selectorPanel = new TableTrajetsPanel(serveur);
 		selectorPanel.setEditable(false);
 		selectorPanel.setButtonsVisible(false);
 		panel.add(selectorPanel);
@@ -75,7 +75,8 @@ public class TransportSelectorDialog extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Link");			
-			parent.linkTransport(parentSelectedRow, selectorPanel.getSelectedTransport());
+		// TODO
+			//	parent.linkTrajet(parentSelectedRow, selectorPanel.getSelectedTrajet());
 			dispose();
 		}
 	}

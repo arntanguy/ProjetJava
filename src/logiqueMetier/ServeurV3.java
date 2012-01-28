@@ -44,7 +44,6 @@ public class ServeurV3 extends Serveur {
     public ServeurV3() {
         super();
     }
-
     /**
      * Renvoie un Element construit a partir du fichier a l'adresse donné.
      * 
@@ -401,7 +400,7 @@ public class ServeurV3 extends Serveur {
             String prendCouchette = courant.getChild("prendCouchette")
                     .getText();
             Profil profil = null;
-            // System.out.println(courant.getAttributeValue("nomPassager"));
+
             for (Profil value : Profil.values()) {
                 if (profilPassager.equals(value.getProfil())) {
                     profil = value;
@@ -425,7 +424,6 @@ public class ServeurV3 extends Serveur {
                             .valueOf(placesVoulues)));
         }
     }
-
     /**
      * Méthode général qui permet d'enregistrer les fichiers xml dans le bon
      * ficher correspondant

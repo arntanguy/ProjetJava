@@ -4,10 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Map;
 
-import logiqueMetier.Serveur;
 
 public class Reservation implements Serializable {
     private Passager passager;
@@ -16,6 +14,7 @@ public class Reservation implements Serializable {
     private int identifiant;
     private int placesVoulues;
     private boolean prendCouchette;
+    private String nomTicket;
     private Map<String, Boolean> prendRepas;
 
     /**
@@ -35,6 +34,7 @@ public class Reservation implements Serializable {
         this.prendRepas = prendRepas;
         this.identifiant = identifiant;
         this.placesVoulues = placesVoulues;
+        this.nomTicket="";
     }
 
     public Passager getPassager() {
@@ -52,13 +52,32 @@ public class Reservation implements Serializable {
     public int getIdentifiant() {
         return identifiant;
     }
-
+    public void lanceTicketReservation(String ticket){
+    	String cheminReservation = ticket;
+        if(!cheminReservation.equals("")) {
+            System.out.println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
+            String path = new java.io.File(cheminReservation).getAbsolutePath();
+            String[] cmd = {"firefox", "file://"+path};
+            try {
+            final Process process = Runtime.getRuntime().exec(cmd);
+            }
+            catch (Exception e) {
+            e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("Votre réservation n'a pas pu aboutir");
+        }
+        }
     public void genereTicket() {
         // Create file
         FileWriter fstream = null;
         try {
             fstream = new FileWriter("ticketReservation" + passager.getNom()
                     + "$" + passager.getPrenom() + ".html");
+            nomTicket = "ticketReservation" + passager.getNom()+ "$" + passager.getPrenom() + ".html";
+            lanceTicketReservation(nomTicket);
+            System.out.println(nomTicket);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -71,7 +90,7 @@ public class Reservation implements Serializable {
         if (prendRepas != null) {
             for (String key : prendRepas.keySet()) {
                 if (prendRepas.get(key) != null && prendRepas.get(key) == true) {
-                    repas += key + "<br />";
+                    repas += "<th>"+key+"</th>";
                 }
             }
         }
@@ -86,25 +105,22 @@ public class Reservation implements Serializable {
                     + "<meta name=\"DC.description\" content=\"Votre ticket de réservation\" />"
                     + "<meta name=\"DC.language\"    content=\"fr\" />"
                     + "<meta name=\"DC.keywords\"    content=\"ticket; réservation\" />"
-                    + "</head><body><h1>Votre réservation (n° de réservation = "
+                    + "<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" title=\"Ticket Reservation\" href=\"feuille.css\"/>"
+                    + "</head><body><table><tr><th colspan=\"7\"><h1>Votre réservation (n° de réservation = "
                     + identifiant
-                    + ") pour "+placesVoulues+" place(s)</h1>"
-                    + "Passager : "
-                    + passager
-                    + " "
-                    + "Trajet : "
-                    + trajet
-                    + " "
-                    + mod
-                    + "<br />"
-                    + couchette
-                    + "<br />"
-                    + "Repas : "
-                    + repas
-                    + "<br />"
-                    + "Synthèse des prix : "
+                    + ") pour "+placesVoulues+" place(s)</h1></th></tr>"
+                    + "<tr><th colspan=\"7\"><h2>Passager : "
+                    + passager.toHtml()+"</h2></th></tr>"
+                    + "<tr>"
+                    + trajet.toHtml()+"</tr>"
+                    + "<tr><th>Option Repas</th> "
+                    + repas+"</tr>"
+                    + "<tr><th>Option supplémentaire</th><th>"+mod+"</th>"
+                    + "<th>"+couchette+"</th><th colspan=\"4\"> </th></tr>"
+                    + "</table>"
+                    + "<table><tr><th><h2>Synthèse des prix </h2></th></tr><tr>"
                     + getPrix()
-                    + "</body></html>");
+                    + "</table></body></html>");
 
             // Close the output stream
             out.close();
@@ -118,7 +134,9 @@ public class Reservation implements Serializable {
     public int getPlacesVoulues() {
         return placesVoulues;
     }
-
+    public String getNomTicket(){
+    	return nomTicket;
+    }
     public String getPrix() {
         double prix = 0;
         int reductionFidelite = 0;
@@ -173,17 +191,17 @@ public class Reservation implements Serializable {
         
         prix*=placesVoulues;
 
-        String texte = "prix passager=" + passager.getProfil().getPrix()
-                + " euros<br/>";
-        texte += "réduction fidèlité=" + reductionFidelite + " euros<br/>";
-        texte += "prix transport="
-                + (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0 + " euros<br/>";
-        texte += "prix repas=" + repasTotal + " euros<br/>";
-        texte += "prix classe=" + classePaye + " euros<br/>";
-        texte += "supplément changement du billet=" + modifiablePaye
-                + " euros<br/>";
-        texte += "prix couchette=" + couchettePaye + " euros<br/>";
-        texte += "prix total pour "+placesVoulues+" place(s)=" + prix + " euros<br/>";
+        String texte = "<th>prix passager = " + passager.getProfil().getPrix()
+                + " euros</th></tr>";
+        texte += "<tr><th>réduction fidèlité = " + reductionFidelite + " euros</th></tr>";
+        texte += "<tr><th>prix transport="
+                + (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0 + " euros</th></tr>";
+        texte += "<tr><th>prix repas = " + repasTotal + " euros</th></tr>";
+        texte += "<tr><th>prix classe = " + classePaye + " euros</th></tr>";
+        texte += "<tr><th>supplément changement du billet = " + modifiablePaye
+                + " euros</th></tr>";
+        texte += "<tr><th>prix couchette = " + couchettePaye + " euros</th></tr>";
+        texte += "<tr><th><h3>prix total pour "+placesVoulues+" place(s) = " + prix + " euros</h3></th></tr>";
         return texte;
     }
 

@@ -1,10 +1,11 @@
 package graphique.client;
 
-import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.util.Date;
 import java.util.Calendar;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,26 +23,20 @@ public class TrajetPanel extends JPanel {
 	private JComboBox villeArriveeCombo;
 	private JSpinner dateDepartSpinner;
 
-	private Serveur Serveur;
+	private Serveur serveur;
 	
-	public TrajetPanel(Serveur a){
+	public TrajetPanel(Serveur s){
 		super();
-		Serveur = a;
+		serveur = s;
 		build(); 
 	}
 	private void build(){
 		setBorder(BorderFactory.createTitledBorder("Où et quand souhaitez-vous partir ?"));
 		setLayout(new GridLayout(0,2));
-/** To remove later **/
-		try {
-			Serveur.createVille("Paris");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-/** end remove **/
+
+		
 		villeDepartCombo = new JComboBox();
-		for(Ville v:Serveur.getVilles()) {
+		for(Ville v:serveur.getVilles()) {
 			villeDepartCombo.addItem(v);
 		}
 		add(new JLabel("Ville de départ "));
@@ -51,7 +46,10 @@ public class TrajetPanel extends JPanel {
 		villeArriveeCombo = new JComboBox();
 		add(villeArriveeCombo);
 
-	
+		DepartComboAction departComboAction = new DepartComboAction();
+		villeDepartCombo.setAction(departComboAction);
+		departComboAction.actionPerformed(null);
+
 		// Create a SpinnerDateModel with current date as the initial value.
 		SpinnerDateModel model = new SpinnerDateModel();
 
@@ -68,5 +66,18 @@ public class TrajetPanel extends JPanel {
 	}
 	public Calendar getDateDepart() {
 		return DateTools.dateToCalendar((Date)dateDepartSpinner.getModel().getValue());
+	}
+
+	private class DepartComboAction extends AbstractAction {
+		public DepartComboAction() {
+		}
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			villeArriveeCombo.removeAllItems();
+			for(Ville v:serveur.getVillesArrivee((Ville)villeDepartCombo.getSelectedItem())) {
+				villeArriveeCombo.addItem(v);
+			}
+		}
+	
 	}
 }

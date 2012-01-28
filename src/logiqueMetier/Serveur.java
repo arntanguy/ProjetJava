@@ -2,6 +2,7 @@ package logiqueMetier;
 
 import java.io.*;
 import java.util.*;
+
 import objets.Trajet;
 
 import objets.*;
@@ -362,6 +363,24 @@ public abstract class Serveur implements Serializable {
     public ArrayList<Ville> getVilles() {
         return mesVilles;
     }
+    
+    /**
+     * Renvoit la liste des villes accessibles depuis une ville de départ donnée
+     * 
+     * @param depart
+     * 			Ville de départ.
+     * @return arrivee
+     * 			Liste des villes accessibles depuis la ville de départ donnée
+     */
+    public ArrayList<Ville> getVillesArrivee(Ville depart) {
+    	ArrayList<Ville> arrivee = new ArrayList<Ville>();
+    	for(Trajet t:mesTrajets) {
+    		if(t.getDepart().equals(depart)) {
+    			arrivee.add(t.getArrivee());
+    		}
+    	}
+    	return arrivee;
+    }
 
     /**
      * Ajouter un trajet à la liste des trajets
@@ -577,7 +596,7 @@ public abstract class Serveur implements Serializable {
                         && mesTrajets.get(i).getArrivee().equals(arrivee)
                         && (vehicule == null || mesTrajets.get(i).getVehicule()
                                 .equals(vehicule))
-                        && mesTrajets.get(i).restePlaces(placesVoulues)
+                        &&  mesTrajets.get(i).restePlaces(placesVoulues)
                         && (!avecCouchette || mesTrajets.get(i).getVehicule()
                                 .avecCouchette() == avecCouchette)
                         && mesTrajets.get(i).isPremiereClasse() == premiereClasse
@@ -589,28 +608,23 @@ public abstract class Serveur implements Serializable {
         }
         else
         {   
-        Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant(),getVilleNewIdentifiant());
-        List<Trajet> listeTrajetsChemin=d.cout(depart.getIdentifiant(), arrivee.getIdentifiant());
-        
-        //List<Trajet> listeTrajetsChemin = d.getListeTrajetsChemin();
-        
-        for (Trajet trajet : listeTrajetsChemin) {
-            Calendar departRetard = (Calendar) trajet
-                    .getDateDepart().clone();
-            departRetard.add(Calendar.HOUR, intervalleVoulue);
-            Calendar departAvance = (Calendar) trajet
-                    .getDateDepart().clone();
-            departAvance.add(Calendar.HOUR, -intervalleVoulue);
+            Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant(),getVilleNewIdentifiant(),depart.getIdentifiant(), arrivee.getIdentifiant(),intervalleVoulue,dateDepart);
             
-            if (/*(vehicule == null || trajet.getVehicule().equals(vehicule))
-                    && trajet.restePlaces(placesVoulues)
-                    && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
-                    && trajet.isPremiereClasse() == premiereClasse
-                    && dateDepart.before(departRetard)
-                    && dateDepart.after(departAvance)*/true) {
-                trajetsConvenables.add(trajet);
+            List<Trajet> listeTrajetsChemin=d.cout();
+                
+            if(listeTrajetsChemin!=null)
+            {
+                for (Trajet trajet : listeTrajetsChemin) {
+                    
+                    
+                    if ((vehicule == null || trajet.getVehicule().equals(vehicule))
+                           /* && trajet.restePlaces(placesVoulues)*/
+                            && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
+                            && trajet.isPremiereClasse() == premiereClasse) {
+                        trajetsConvenables.add(trajet);
+                    }
+                }
             }
-        }
         
         }
 
@@ -971,5 +985,8 @@ public abstract class Serveur implements Serializable {
 
     public ArrayList<Vehicule> getVehicules() {
         return mesVehicules;
+    }
+    public ArrayList<Reservation> getReservations() {
+        return mesReservations;
     }
 }

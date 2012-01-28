@@ -16,12 +16,12 @@ import java.util.List;
  */
 
 public class Vehicule implements Serializable {
-    protected String vehicule;
+    protected String       vehicule;
     protected TypeVehicule type;
-    protected int capacite;
-    protected int identifiant;
-    protected int prix;
-    protected List<Repas> repas;
+    protected int          capacite;
+    protected int          identifiant;
+    protected int          prix;
+    protected List<Repas>  repas;
 
     /**
      * Créé une instance de véhicule
@@ -40,24 +40,24 @@ public class Vehicule implements Serializable {
         this.capacite = capacite;
         this.identifiant = identifiant;
         repas = new ArrayList<Repas>();
-        this.prix=prix;
+        this.prix = prix;
     }
 
     public Vehicule(int identifiant) {
-    	this(0, "", TypeVehicule.INCONNU, 0, identifiant);
+        this(0, "", TypeVehicule.INCONNU, 0, identifiant);
     }
-    
+
     public Vehicule() {
-    	this(0, "", TypeVehicule.INCONNU, 0, -1);
+        this(0, "", TypeVehicule.INCONNU, 0, -1);
     }
-    
+
     /**
      * @return nom du véhicule
      */
     public String getVehicule() {
         return vehicule;
     }
-    
+
     public int getPrix() {
         return prix;
     }
@@ -114,13 +114,10 @@ public class Vehicule implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuffer()
-                .append(vehicule)
-                .append(" (id=")
-                .append(identifiant)
-                .append(") de type " + type.getNom()
-                        + " et qui a une capacité de ").append(capacite)
-                .toString();
+        return new StringBuffer().append(vehicule).append(" (id=").append(
+                identifiant).append(
+                ") de type " + type.getNom() + " et qui a une capacité de ")
+                .append(capacite).toString();
     }
 
     /**
@@ -132,11 +129,10 @@ public class Vehicule implements Serializable {
     public String print() {
         return new StringBuffer().append(vehicule).append("#").append(type)
                 .append("#").append(capacite).append("#").append(identifiant)
-                .append("#").append(prix)
-                .append("#").append("\n").toString();
+                .append("#").append(prix).append("#").append("\n").toString();
     }
 
-	public void setType(TypeVehicule typeV) {
-		type = typeV;
-	}
+    public void setType(TypeVehicule typeV) {
+        type = typeV;
+    }
 }
