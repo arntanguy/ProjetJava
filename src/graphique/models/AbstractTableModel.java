@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
-import objets.Trajet;
-
 public class AbstractTableModel<T> extends DefaultTableModel {
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +35,7 @@ public class AbstractTableModel<T> extends DefaultTableModel {
 	}
 	
 	public T get(int rowIndex) {
-		return (T)liste.get(rowIndex);
+		return liste.get(rowIndex);
 	}
 	
 	public void setColumnNames(String[] columnNames) {

@@ -1,5 +1,7 @@
 package graphique.admin;
 
+import graphique.models.TransportsTableModel;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import objets.TypeVehicule;
 import objets.Vehicule;
 
 public class TableTransportsPanel extends AbstractTablePanel {
-	private TransportsTableModel transportModel;
+	private TransportsTableModel<Vehicule> transportModel;
 	private JTable transportTable;
 	private JScrollPane scrollPane;
 
@@ -48,7 +50,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	private void buildTrajetsTable() {
 		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
 
-		transportModel = new TransportsTableModel(vehicules);
+		transportModel = new TransportsTableModel<Vehicule>(vehicules);
 		transportModel.setColumnNames(columnNames);
 		transportTable = new JTable();
 		transportTable.setModel(transportModel);
@@ -85,8 +87,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("Ajout !");
-			TransportsTableModel model = (TransportsTableModel) transportTable.getModel();
-			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
+			transportModel.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
 		}
 	}
 	
@@ -102,7 +103,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				try {
 					int row = selectedIndexes[i];
-					serveur.removeVehicule(transportModel.getVehicule(row));
+					serveur.removeVehicule((Vehicule) transportModel.get(row));
 					transportModel.removeRow(row);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -121,16 +122,10 @@ public class TableTransportsPanel extends AbstractTablePanel {
 			System.out.println("Row " + row);
 			System.out.println("Column " + column);
 			
-			switch(e.getType()) {
-			case TableModelEvent.INSERT:
-				System.out.println("Insertion");
-//				transportModel.setValueAt(serveur.getVehiculeNewIdentifiant(), row, 0);
-				
-				break;
-			case TableModelEvent.UPDATE:
+			if(e.getType() == TableModelEvent.UPDATE) {
 				System.out.println("Updated");
 				for(Vehicule v:vehicules) {
-					Vehicule tv = transportModel.getVehicule(row);
+					Vehicule tv = (Vehicule) transportModel.get(row);
 					if(tv.getIdentifiant() == v.getIdentifiant()) {
 						try {
 							serveur.modifierVehicule(tv, v);
@@ -138,18 +133,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 							e1.printStackTrace();
 						}
 					}
-					/*if(v.getIdentifiant() == tv.getIdentifiant()) {
-						v.setVehicule((String) transportModel.getValueAt(row, 0));
-						v.setType((TypeVehicule)transportModel.getValueAt(row, 1));
-						v.setCapacite((Integer) transportModel.getValueAt(row, 2));
-						try {
-							serveur.modifierVehicule(tv, v);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}*/
 				}
-				break;
 			}	
 		}
 	}
@@ -167,7 +151,7 @@ public class TableTransportsPanel extends AbstractTablePanel {
 	}
 
 	public Vehicule getSelectedTransport() {
-		return transportModel.getVehicule(transportTable.getSelectedRow());
+		return (Vehicule) transportModel.get(transportTable.getSelectedRow());
 	}
 
 }

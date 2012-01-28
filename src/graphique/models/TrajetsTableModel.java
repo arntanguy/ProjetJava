@@ -76,6 +76,4 @@ public class TrajetsTableModel<T> extends AbstractTableModel {
 		}
 		fireTableDataChanged();
 	}
-
-	
 }
