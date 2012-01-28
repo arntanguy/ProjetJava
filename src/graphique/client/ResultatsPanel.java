@@ -2,7 +2,7 @@ package graphique.client;
 
 import graphique.admin.ReservationsTableModel;
 import graphique.admin.TableTrajetsPanel;
-import graphique.admin.TrajetsTableModel;
+import graphique.models.TrajetsTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

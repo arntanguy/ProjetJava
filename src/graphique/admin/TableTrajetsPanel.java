@@ -1,5 +1,6 @@
 package graphique.admin;
 
+import graphique.models.TrajetsTableModel;
 import graphique.widgets.TableSpinnerEditor;
 
 import java.awt.BorderLayout;
@@ -62,7 +63,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 		dateDepartSpinner = new TableSpinnerEditor(model);
 		dateArriveeSpinner = new TableSpinnerEditor(model1);
 
-		trajetsModel = new TrajetsTableModel(trajets);
+		trajetsModel = new TrajetsTableModel<Trajet>(trajets);
 		trajetsModel.setColumnNames(columnNames);
 		trajetsTable = new JTable();
 		trajetsTable.setModel(trajetsModel);
@@ -144,7 +145,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 			for (int i=selectedIndexes.length-1;i>=0;i--) {
 				int row = selectedIndexes[i];
 				System.out.println(trajetsModel.getValueAt(row, 0));
-				serveur.removeTrajet(trajetsModel.getTrajet(row));
+				serveur.removeTrajet((Trajet) trajetsModel.get(row));
 				trajetsModel.removeRow(row);
 			}	  
 		}
@@ -164,7 +165,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 			case TableModelEvent.UPDATE:
 				System.out.println("Updated");
 				for(Trajet t:trajets) {
-					Trajet tt = trajetsModel.getTrajet(row);
+					Trajet tt = (Trajet) trajetsModel.get(row);
 					if(t.getIdentifiant() == tt.getIdentifiant()) {
 						try {
 							serveur.modifierTrajet(t, tt);
