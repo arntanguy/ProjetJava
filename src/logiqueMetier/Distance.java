@@ -1,6 +1,7 @@
 package logiqueMetier;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,30 +13,78 @@ public class Distance {
 
     private List<Trajet> list; // c[i][j] = le cout de la connextion directe de i à j
                        // si elle existe, l'infini sinon
-    private List<Trajet> listeTrajetsChemin;
-    private int[][] matrice;
-    private int size;
-
-    private static int INFINI = -1;
-
+    private Trajet[][] matrice;
+    private int sizeTrajets;
+    private int sizeVilles;
+    private int departId;
+    private int arriveeId; 
+    private int intervalleVoulue; 
+    private Calendar dateDepart;
     /**
      * Construit un objet qui représente les connexions directes possibles.
      * Paramètre : le tableau connexion tel que connexion[i][j] = le coût de
      * la connexion directe de i à j. S'il n'y a pas de connexion directe de
      * i à j, connexion[i][j] == INFINI.
      */
-    public Distance(List<Trajet> list,int size) {
+    public Distance(List<Trajet> list,int sizeTrajets,int sizeVilles,int departId,int arriveeId,int intervalleVoulue,Calendar dateDepart) {
         this.list=list;
-        listeTrajetsChemin=new ArrayList<Trajet>();
-        this.size=size;
-        for(int i=0;i<size;i++)
+        this.sizeTrajets=sizeTrajets;
+        this.sizeVilles=sizeVilles;
+        this.departId=departId;
+        this.arriveeId=arriveeId;
+        this.intervalleVoulue=intervalleVoulue;
+        this.dateDepart=dateDepart;
+        
+        matrice=new Trajet[sizeVilles][sizeVilles];
+        
+        for(int i=0;i<sizeVilles;i++)
         {
-            for(int j=0;j<size;j++)
+            for(int j=0;j<sizeVilles;j++)
             {
-                if(i==list.get(i).getDepart().getIdentifiant() && j==list.get(j).getArrivee().getIdentifiant())
-                    matrice[i][j]=list.get(i).getDistance();
+                matrice[i][j]=null;
+            }
+        }
+        
+        for(int i=0;i<sizeTrajets;i++)
+        {
+            if(list.get(i)!=null)
+            {
+                Calendar departRetard = (Calendar) list.get(i)
+                        .getDateDepart().clone();
+                departRetard.add(Calendar.HOUR, intervalleVoulue);
+                Calendar departAvance = (Calendar) list.get(i)
+                        .getDateDepart().clone();
+                departAvance.add(Calendar.HOUR, -intervalleVoulue);
+                
+                if(list.get(i).getDepart().getIdentifiant()!=departId)
+                {
+                    if(matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()]==null)
+                        matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()]=list.get(i);
+                    else
+                    {
+                        if(matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()].getDistance()>list.get(i).getDistance())
+                        {
+                            matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()]=list.get(i);
+                        }       
+                    }
+                }
                 else
-                    matrice[i][j]=INFINI;
+                {
+                    if(dateDepart.before(departRetard) && dateDepart.after(departAvance))
+                    {
+                        if(matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()]==null)
+                            matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()]=list.get(i);
+                        else
+                        {
+                            if(matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()].getDistance()>list.get(i).getDistance())
+                            {
+                                matrice[list.get(i).getDepart().getIdentifiant()][list.get(i).getArrivee().getIdentifiant()]=list.get(i);
+                            }
+                        }
+                    }
+                }
+                
+                
             }
         }
         
@@ -46,8 +95,11 @@ public class Distance {
      * éventuellement par d'autres sites.
      * Complexité : O(3^n) où n = le nombre de sites.
      */
-    public int cout(int i, int j) {
-        return cout(i,j,size-1);
+    public List<Trajet> cout() {
+        if(matrice[list.get(departId).getDepart().getIdentifiant()][list.get(departId).getArrivee().getIdentifiant()]!=null)
+            return cout(departId,arriveeId,sizeVilles);
+        else 
+            return null;
     }
 
     /**
@@ -55,69 +107,69 @@ public class Distance {
      * éventuellement par des sites appartenant à [0..k-1].
      * Complexité : O(3^k).
      */
-    private int cout(int i, int j, int k) {
+    private List<Trajet> cout(int i, int j, int k) {
         if ( k == 0 ) {
-            List<Trajet> listeTrajet=new ArrayList<Trajet>();
-            for(Trajet trajet:list)
-            {
-                if(trajet.getDepart().getIdentifiant()==i && trajet.getArrivee().getIdentifiant()==j)
-                    listeTrajet.add(trajet);
-            }
-            return minTrajet(listeTrajet);
+            List<Trajet> listeMatrice=new ArrayList<Trajet>();
+            if(matrice[i][j]!=null)
+                listeMatrice.add(matrice[i][j]);
+            
+            return listeMatrice;
         }
-        return min( cout(i,j,k-1), plus( cout(i,k-1,k-1), cout(k-1,j,k-1) ));
+        List<Trajet> cout1=cout(i,j,k-1);
+        List<Trajet> cout2=plus(cout(i,k-1,k-1),cout(k-1,j,k-1));
+        List<Trajet> cout=min(cout1,cout2);
+        
+
+        return cout;
     }
 
     /**
      * Calcule le minimum entre a et b où a et b sont des entiers positifs
      * ou nul ou bien égaux à l'infini.
      */
-    private int min(int a, int b) {
-        if ( a == INFINI ) {
+    private List<Trajet> min(List<Trajet> a, List<Trajet> b) {
+        if ( a == null || a.size()==0) {
             return b;
         }
-        if ( b == INFINI ) {
+        if ( b == null || b.size()==0) {
             return a;
         }
-        if ( a < b ) {
+        int aDistance=0;
+        for(Trajet t:a)
+        {
+            aDistance+=t.getDistance();
+        }
+        
+        int bDistance=0;
+        for(Trajet t:b)
+        {
+            bDistance+=t.getDistance();
+        }
+        
+        if ( aDistance < bDistance ) {
             return a;
         }
         return b;
-    }
-    
-    private int minTrajet(List<Trajet> listeTrajet)
-    {
-        if(listeTrajet.size()==0)
-            System.out.println("HELLO");
-        int distanceMin=listeTrajet.get(0).getDistance();
-        int idMin=0;
-        for(int i=0; i<listeTrajet.size();i++)
-        {
-            if(listeTrajet.get(i).getDistance()<distanceMin)
-            {
-                distanceMin=listeTrajet.get(i).getDistance();
-                idMin=i;
-            }
-        }
-        listeTrajetsChemin.add(listeTrajet.get(idMin));
-        return distanceMin;
     }
 
     /**
      * Calcule la somme de a et de b où a et b sont des entiers positifs
      * ou nul ou bien égaux à l'infini.
      */
-    private int plus(int a, int b) {
-        if ( a == INFINI ) {
-            return INFINI;
+    private List<Trajet> plus(List<Trajet> a, List<Trajet> b) {
+        if ( a == null  || a.size()==0) {
+            return null;
         }
-        if ( b == INFINI ) {
-            return INFINI;
+        if ( b == null  || b.size()==0) {
+            return null;
         }
-        return a + b;
-    }
-
-    public List<Trajet> getListeTrajetsChemin() {
-        return listeTrajetsChemin;
+        
+        List<Trajet> trajets = new ArrayList<Trajet>();
+        if(a.get(a.size()-1).getDateArrivee().before(b.get(0).getDateDepart()))
+        {
+            trajets.addAll(a);
+            trajets.addAll(b);
+        }
+        return trajets;
     }
 }

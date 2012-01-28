@@ -2,6 +2,7 @@ package logiqueMetier;
 
 import java.io.*;
 import java.util.*;
+
 import objets.Trajet;
 
 import objets.*;
@@ -606,28 +607,25 @@ public abstract class Serveur implements Serializable {
             }
         }
         else
-        {
-        Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant());
-        d.cout(depart.getIdentifiant(), arrivee.getIdentifiant());
-        List<Trajet> listeTrajetsChemin = d.getListeTrajetsChemin();
-        
-        for (Trajet trajet : listeTrajetsChemin) {
-            Calendar departRetard = (Calendar) trajet
-                    .getDateDepart().clone();
-            departRetard.add(Calendar.HOUR, intervalleVoulue);
-            Calendar departAvance = (Calendar) trajet
-                    .getDateDepart().clone();
-            departAvance.add(Calendar.HOUR, -intervalleVoulue);
+        {   
+            Distance d = new Distance(mesTrajets,getTrajetNewIdentifiant(),getVilleNewIdentifiant(),depart.getIdentifiant(), arrivee.getIdentifiant(),intervalleVoulue,dateDepart);
             
-            if ((vehicule == null || trajet.getVehicule().equals(vehicule))
-                    && trajet.restePlaces(placesVoulues)
-                    && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
-                    && trajet.isPremiereClasse() == premiereClasse
-                    && dateDepart.before(departRetard)
-                    && dateDepart.after(departAvance)) {
-                trajetsConvenables.add(trajet);
+            List<Trajet> listeTrajetsChemin=d.cout();
+                
+            if(listeTrajetsChemin!=null)
+            {
+                for (Trajet trajet : listeTrajetsChemin) {
+                    
+                    
+                    if ((vehicule == null || trajet.getVehicule().equals(vehicule))
+                           /* && trajet.restePlaces(placesVoulues)*/
+                            && (!avecCouchette || trajet.getVehicule().avecCouchette() == avecCouchette)
+                            && trajet.isPremiereClasse() == premiereClasse) {
+                        trajetsConvenables.add(trajet);
+                    }
+                }
             }
-        }
+        
         }
 
         // On trie la liste des trajets convenables pour que les trajets
