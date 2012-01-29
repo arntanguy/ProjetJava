@@ -608,22 +608,47 @@ System.out.println("direct");
                 }
             }
         } else {
-            Distance d = new Distance(mesTrajets, getTrajetNewIdentifiant(),
-                    getVilleNewIdentifiant(), depart.getIdentifiant(),
-                    arrivee.getIdentifiant(), intervalleVoulue, dateDepart);
+            List<Trajet> listeTrajetsFiltree = new ArrayList<Trajet>();
+            for (Trajet trajet : mesTrajets) {
+                if ((vehicule == null || trajet.getVehicule().getType().equals(vehicule))
+                         && trajet.restePlaces(placesVoulues)
+                        && (!avecCouchette || trajet.getVehicule()
+                                .avecCouchette() == avecCouchette)
+                        && trajet.isPremiereClasse() == premiereClasse) {
 
-            List<Trajet> listeTrajetsChemin = d.cout();
+                    if (trajet.getDepart().getIdentifiant() != depart
+                            .getIdentifiant())
+                        listeTrajetsFiltree.add(trajet);
+                    else {
+                        Calendar departRetard = (Calendar) trajet.getDateDepart()
+                                .clone();
+                        departRetard.add(Calendar.HOUR, intervalleVoulue);
+                        Calendar departAvance = (Calendar) trajet.getDateDepart()
+                                .clone();
+                        departAvance.add(Calendar.HOUR, -intervalleVoulue);
+                        
+                        if (dateDepart.before(departRetard)
+                                && dateDepart.after(departAvance))
+                        {
+                            listeTrajetsFiltree.add(trajet);
+                        }
+                        else
+                        {
+                            listeTrajetsFiltree.add(null);
+                        }
+                    }
+                }
+            }
+
+            Distance d = new Distance(listeTrajetsFiltree, getTrajetNewIdentifiant(),
+                    getVilleNewIdentifiant());
+
+            List<Trajet> listeTrajetsChemin = d.cout(depart.getIdentifiant(),
+                    arrivee.getIdentifiant());
 
             if (listeTrajetsChemin != null) {
                 for (Trajet trajet : listeTrajetsChemin) {
-
-                    if ((vehicule == null || trajet.getVehicule().getType() ==  vehicule)
-                            /* && trajet.restePlaces(placesVoulues) */
-                            && (!avecCouchette || trajet.getVehicule()
-                                    .avecCouchette() == avecCouchette)
-                            && trajet.isPremiereClasse() == premiereClasse) {
-                        trajetsConvenables.add(trajet);
-                    }
+                    trajetsConvenables.add(trajet);
                 }
             }
 
