@@ -1,5 +1,6 @@
 package graphique.client;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.Calendar;
@@ -9,15 +10,20 @@ import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
 import logiqueMetier.Serveur;
+import objets.Repas;
 import objets.TypeVehicule;
+import objets.Vehicule;
 import objets.Ville;
 import tools.DateTools;
 
@@ -30,12 +36,12 @@ import tools.DateTools;
 
 public class TrajetPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    
+
     private JComboBox villeDepartCombo;
     private JComboBox villeArriveeCombo;
     private JSpinner dateDepartSpinner;
     private JComboBox transport;
-    private JComboBox repas;
+    private JList repas;
     private JCheckBox modifiable;
     private JCheckBox couchette;
     private JCheckBox direct;
@@ -75,22 +81,23 @@ public class TrajetPanel extends JPanel {
         add(new JLabel("Date de départ "));
         dateDepartSpinner = new JSpinner(model);
         add(dateDepartSpinner);
-        
+
         transport = new JComboBox();
         for(TypeVehicule type:TypeVehicule.values()) {
-        	transport.addItem(type);
+            transport.addItem(type);
         }
         add(new JLabel("Moyen de transport"));
         add(transport);
-        
-        repas = new JComboBox();
+
+        repas = new JList(new DefaultListModel());
         add(new JLabel("Repas"));
-        add(repas);
-       
+        JScrollPane listScroller = new JScrollPane(repas);
+        add(listScroller);
+
         TransportComboAction transportComboAction = new TransportComboAction();
         transport.setAction(transportComboAction);
         transportComboAction.actionPerformed(null);
-        
+
         add(new JLabel("Trajet modifiable"));
         modifiable = new JCheckBox();
         add(modifiable);
@@ -98,12 +105,12 @@ public class TrajetPanel extends JPanel {
         add(new JLabel("Avec couchette"));
         couchette = new JCheckBox();
         add(couchette);
-        
+
         add(new JLabel("Trajet direct"));
         direct = new JCheckBox();
         direct.setSelected(true);
         add(direct);
-        
+
         add(new JLabel("Première classe"));
         premiereClasse = new JCheckBox();
         add(premiereClasse);
@@ -123,9 +130,9 @@ public class TrajetPanel extends JPanel {
     }
 
     private class DepartComboAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public DepartComboAction() {
+        public DepartComboAction() {
         }
 
         @Override
@@ -138,20 +145,29 @@ public class TrajetPanel extends JPanel {
         }
 
     }
-    
-    private class TransportComboAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
 
-		public TransportComboAction() {
+    private class TransportComboAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        public TransportComboAction() {
         }
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            repas.removeAllItems();
-            // FIXME : TypeVehicule does not contain info on repas, Vehicule does
-          /*  for (Repas r : ((Vehicule)transport.getSelectedItem()).getRepas())  {
-            	repas.addItem(r);
-            } */
+            repas.removeAll();
+            TypeVehicule t = (TypeVehicule) transport.getSelectedItem();
+            Vehicule v = null;
+            try {
+                v = serveur.creerVehicule("", t, -1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(v != null) {
+                for(Repas r: v.getRepas()) {
+                    ((DefaultListModel)repas.getModel()).addElement(r.toString());
+                }
+            }
+
         }
 
     }
@@ -164,15 +180,27 @@ public class TrajetPanel extends JPanel {
         return modifiable.isSelected();
     }
 
-	public Map<String, Boolean> getRepas() {
-		return new Hashtable<String, Boolean>();
-	}
+    public Map<String, Boolean> getRepas() {
+        System.out.println("get repas");
+        Hashtable<String, Boolean> tab = new Hashtable<String, Boolean>();
+        DefaultListModel model = (DefaultListModel)repas.getModel();
+        for(int i=0; i<model.getSize(); i++) {
+            System.out.println(model.get(i)+" "+repas.isSelectedIndex(i));
+            tab.put((String)model.get(i), repas.isSelectedIndex(i));
+        }
+        return tab;
+    }
 
-	public boolean getDirect() {
-		return direct.isSelected();
-	}
+    public boolean getDirect() {
+        return direct.isSelected();
+    }
 
-	public boolean getPremiereClasse() {
-		return false;
-	}
+    public boolean getPremiereClasse() {
+        return false;
+    }
+    
+    public TypeVehicule getVehicule() {
+        return (((TypeVehicule) transport.getSelectedItem()) == TypeVehicule.INCONNU) ? null
+                : (TypeVehicule) transport.getSelectedItem();
+    }
 }

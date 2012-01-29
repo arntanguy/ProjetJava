@@ -22,6 +22,8 @@ import objets.*;
  */
 
 public abstract class Serveur implements Serializable {
+    private static final long serialVersionUID = 1L;
+   
     // liste des trajets et des véhicules
     protected ArrayList<Trajet> mesTrajets;
     protected ArrayList<Vehicule> mesVehicules;
@@ -325,7 +327,6 @@ public abstract class Serveur implements Serializable {
             v = new Train(nom, capacite, getVehiculeNewIdentifiant());
             break;
         }
-        // addVehicule(v);
         return v;
     }
 
@@ -579,7 +580,7 @@ public abstract class Serveur implements Serializable {
      * @return la liste de trajets correspondant aux critères
      */
     public List<Trajet> rechercherTrajet(Ville depart, Ville arrivee,
-            Vehicule vehicule, int placesVoulues, Calendar dateDepart,
+            TypeVehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue, boolean avecCouchette,
             boolean premiereClasse, boolean direct) {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
@@ -596,8 +597,7 @@ System.out.println("direct");
 
                 if (mesTrajets.get(i).getDepart().equals(depart)
                         && mesTrajets.get(i).getArrivee().equals(arrivee)
-                        && (vehicule == null || mesTrajets.get(i).getVehicule()
-                                .equals(vehicule))
+                        && (vehicule == null || mesTrajets.get(i).getVehicule().getType() == vehicule)
                         && mesTrajets.get(i).restePlaces(placesVoulues)
                         && (!avecCouchette || mesTrajets.get(i).getVehicule()
                                 .avecCouchette() == avecCouchette)
@@ -617,8 +617,7 @@ System.out.println("direct");
             if (listeTrajetsChemin != null) {
                 for (Trajet trajet : listeTrajetsChemin) {
 
-                    if ((vehicule == null || trajet.getVehicule().equals(
-                            vehicule))
+                    if ((vehicule == null || trajet.getVehicule().getType() ==  vehicule)
                             /* && trajet.restePlaces(placesVoulues) */
                             && (!avecCouchette || trajet.getVehicule()
                                     .avecCouchette() == avecCouchette)
@@ -637,7 +636,7 @@ System.out.println("direct");
     }
 
     public List<Trajet> rechercherTrajetParPrix(Ville depart, Ville arrivee,
-            Vehicule vehicule, int placesVoulues, Calendar dateDepart,
+            TypeVehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue, boolean avecCouchette,
             boolean premiereClasse, boolean direct) {
         List<Trajet> list = rechercherTrajet(depart, arrivee, vehicule,

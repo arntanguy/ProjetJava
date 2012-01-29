@@ -265,7 +265,7 @@ public class Admin {
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue, boolean avecCouchette,
             boolean premiereClasse, boolean direct) {
-        return serveur.rechercherTrajet(depart, arrivee, vehicule,
+        return serveur.rechercherTrajet(depart, arrivee, vehicule.getType(),
                 placesVoulues, dateDepart, intervalleVoulue, avecCouchette,
                 premiereClasse, direct);
     }

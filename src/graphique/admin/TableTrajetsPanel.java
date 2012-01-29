@@ -38,6 +38,8 @@ public class TableTrajetsPanel extends AbstractTablePanel {
 
     private TableSpinnerEditor dateDepartSpinner;
     private TableSpinnerEditor dateArriveeSpinner;
+    
+    JComboBox departCombo;
 
     private ArrayList<Trajet> trajets;
     private ArrayList<Ville> villes;
@@ -46,6 +48,7 @@ public class TableTrajetsPanel extends AbstractTablePanel {
         super(s);
         trajets = serveur.getTrajets();
         villes = serveur.getVilles();
+        departCombo = new JComboBox();
         build();
     }
 
@@ -84,11 +87,10 @@ public class TableTrajetsPanel extends AbstractTablePanel {
     }
 
     private JComboBox buildDepartCombo() {
-        JComboBox combo = new JComboBox();
         for (Ville v : villes) {
-            combo.addItem(v);
+            departCombo.addItem(v);
         }
-        return combo;
+        return departCombo;
     }
 
     private void buildButtons() {
@@ -209,5 +211,11 @@ public class TableTrajetsPanel extends AbstractTablePanel {
     public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
         model.setValueAt(selectedTransport, parentSelectedRow, 4);
         System.out.println("Lié à " + selectedTransport.toString());
+    }
+
+    public void updateVilles() {
+        villes = serveur.getVilles();
+        departCombo.removeAll();
+        buildDepartCombo();
     }
 }

@@ -26,10 +26,13 @@ public class FenetreClientAdmin extends JFrame {
 
     private Serveur serveur;
     JTabbedPane tabbedPane;
+    GestionTrajetsPanel gestionTrajetsPanel;
 
     public FenetreClientAdmin() {
         super();
-        serveur = new ServeurV2();
+        serveur = new ServeurV2();      
+        gestionTrajetsPanel = new GestionTrajetsPanel(serveur);
+
         try {
             serveur.charger();
         } catch (Exception e) {
@@ -63,7 +66,7 @@ public class FenetreClientAdmin extends JFrame {
     private JPanel buildVillePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(new AjoutVillePanel(serveur));
+        panel.add(new AjoutVillePanel(serveur, gestionTrajetsPanel));
         return panel;
     }
 
@@ -77,7 +80,7 @@ public class FenetreClientAdmin extends JFrame {
     private JPanel buildTrajetsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(new GestionTrajetsPanel(serveur));
+        panel.add(gestionTrajetsPanel);
         return panel;
     }
 
