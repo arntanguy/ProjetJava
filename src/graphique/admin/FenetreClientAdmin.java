@@ -1,6 +1,5 @@
 package graphique.admin;
 
-
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
@@ -14,95 +13,99 @@ import javax.swing.JTabbedPane;
 import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class FenetreClientAdmin extends JFrame {
-	private Serveur serveur;
-	JTabbedPane tabbedPane;
-	
-	public FenetreClientAdmin() {
-		super();
-		serveur = new ServeurV2();
-		try {
-			serveur.charger();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		build();
-	}
+    private Serveur serveur;
+    JTabbedPane tabbedPane;
 
-	private void build() {
-		setTitle("Administration"); 
-		setSize(800,400); 
-		setLocationRelativeTo(null); 
-		setResizable(true); 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		setContentPane(buildContentPane());
-	}
+    public FenetreClientAdmin() {
+        super();
+        serveur = new ServeurV2();
+        try {
+            serveur.charger();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        build();
+    }
 
-	private JTabbedPane buildTabbedPane() {
-		tabbedPane = new JTabbedPane();
-		
-		tabbedPane.add("Ville", buildVillePanel());
-		tabbedPane.add("Transports", buildTransportsPanel());
-		tabbedPane.add("Trajets", buildTrajetsPanel());
-		tabbedPane.add("Reservations", buildReservationsPanel());
-		
-		return tabbedPane;
-	}
-	
-	private JPanel buildVillePanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new AjoutVillePanel(serveur));
-		return panel;
-	}
-	
-	private JPanel buildTransportsPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new TableTransportsPanel(serveur));		
-		return panel;
-	}
-	
-	private JPanel buildTrajetsPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new GestionTrajetsPanel(serveur));
-		return panel;
-	}
-	
-	private JPanel buildReservationsPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(new GestionReservationsPanel(serveur));
-		return panel;
-	}
-	
-	private JPanel buildContentPane() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+    private void build() {
+        setTitle("Administration");
+        setSize(800, 400);
+        setLocationRelativeTo(null);
+        setResizable(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setContentPane(buildContentPane());
+    }
 
-		panel.add(buildTabbedPane());
-		
-		JButton quit = new JButton(new QuitAction("Quitter"));
-		panel.add(quit);
-		
-		return panel;
-	}
+    private JTabbedPane buildTabbedPane() {
+        tabbedPane = new JTabbedPane();
 
+        tabbedPane.add("Ville", buildVillePanel());
+        tabbedPane.add("Transports", buildTransportsPanel());
+        tabbedPane.add("Trajets", buildTrajetsPanel());
+        tabbedPane.add("Reservations", buildReservationsPanel());
 
-	private class QuitAction extends AbstractAction {
-		public QuitAction(String texte) {
-			super(texte);
-		}
+        return tabbedPane;
+    }
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			try {
-				serveur.sauvegarder();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			dispose();
-		}
-	}
+    private JPanel buildVillePanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(new AjoutVillePanel(serveur));
+        return panel;
+    }
+
+    private JPanel buildTransportsPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(new TableTransportsPanel(serveur));
+        return panel;
+    }
+
+    private JPanel buildTrajetsPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(new GestionTrajetsPanel(serveur));
+        return panel;
+    }
+
+    private JPanel buildReservationsPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(new GestionReservationsPanel(serveur));
+        return panel;
+    }
+
+    private JPanel buildContentPane() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+        panel.add(buildTabbedPane());
+
+        JButton quit = new JButton(new QuitAction("Quitter"));
+        panel.add(quit);
+
+        return panel;
+    }
+
+    private class QuitAction extends AbstractAction {
+        public QuitAction(String texte) {
+            super(texte);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            try {
+                serveur.sauvegarder();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            dispose();
+        }
+    }
 }

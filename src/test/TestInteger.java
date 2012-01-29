@@ -19,13 +19,17 @@ import objets.Ville;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
 
 public class TestInteger {
     private List<Trajet> trajet;
-    private Trajet       trajet1, trajet2, trajet3, trajet4;
-    private Calendar     date1, date2, date3, date4;
-    private Ville        paris, montreal, tokyo, londres;
-    private Vehicule     v1, v2, v3, v4;
+    private Trajet trajet1, trajet2, trajet3, trajet4;
+    private Calendar date1, date2, date3, date4;
+    private Ville paris, montreal, tokyo, londres;
+    private Vehicule v1, v2, v3, v4;
     Serveur s;
     Admin a;
 
@@ -59,7 +63,7 @@ public class TestInteger {
     }
 
     @Test
-    public void testCompareInteger(){
+    public void testCompareInteger() {
         assertEquals(3, trajet.get(0).getIdentifiant());
         assertEquals(1, trajet.get(1).getIdentifiant());
         assertEquals(2, trajet.get(2).getIdentifiant());

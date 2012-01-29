@@ -19,11 +19,16 @@ import objets.Ville;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class TestServeur {
-    private Trajet       trajet1, trajet2, trajet3, trajet4;
-    private Calendar     date1, date2, date3, date4;
-    private Ville        paris, montreal, tokyo, londres;
-    private Vehicule     v1, v2, v3, v4;
+    private Trajet trajet1, trajet2, trajet3, trajet4;
+    private Calendar date1, date2, date3, date4;
+    private Ville paris, montreal, tokyo, londres;
+    private Vehicule v1, v2, v3, v4;
     Serveur s;
 
     @Before
@@ -45,7 +50,7 @@ public class TestServeur {
         v3 = new Bus("Coco2", 50, 2);
         v4 = new Train("Coco3", 10, 3);
     }
-    
+
     @Test
     public void TestServeurConflit() throws Exception {
         s = new ServeurV1();
@@ -58,9 +63,9 @@ public class TestServeur {
         trajet4 = new Trajet(date2, date3, montreal, tokyo, 140, v1, 3, true);
         assertEquals(false, s.checkConflict(trajet4));
     }
-    
+
     @Test
-    public void TestServeurOrdre(){
+    public void TestServeurOrdre() {
         s = new ServeurV1();
         trajet1 = new Trajet(date2, date1, paris, montreal, 20, v3, 0, false);
         trajet2 = new Trajet(date1, date3, tokyo, londres, 60, v4, 1, true);
@@ -69,7 +74,7 @@ public class TestServeur {
     }
 
     @Test
-    public void TestServeurReserver() throws Exception{
+    public void TestServeurReserver() throws Exception {
         s = new ServeurV1();
         s.addVehicule(v4);
         trajet2 = new Trajet(date1, date3, tokyo, londres, 60, v4, 1, true);
@@ -80,9 +85,9 @@ public class TestServeur {
         assertTrue(s.reserver(trajet2, 1));
         assertFalse(s.reserver(trajet2, 20));
     }
-    
+
     @Test
-    public void TestServeurRecherche() throws Exception{
+    public void TestServeurRecherche() throws Exception {
         s = new ServeurV1();
         trajet3 = new Trajet(date1, date4, paris, londres, 100, v2, 2, false);
         trajet4 = new Trajet(date2, date3, montreal, tokyo, 140, v1, 3, true);
@@ -90,13 +95,14 @@ public class TestServeur {
         s.addVehicule(v2);
         s.addTrajet(trajet3);
         s.addTrajet(trajet4);
-        List<Trajet> trajet = s.rechercherTrajet(paris, londres, v2, 0, date1, 12, false, false, true);
-        assertEquals(2, trajet.get(0).getIdentifiant());       
-        
+        List<Trajet> trajet = s.rechercherTrajet(paris, londres, v2, 0, date1,
+                12, false, false, true);
+        assertEquals(2, trajet.get(0).getIdentifiant());
+
     }
-    
+
     @Test
-    public void TestServeurRemoveV() throws Exception{
+    public void TestServeurRemoveV() throws Exception {
         s = new ServeurV1();
         s.addVehicule(v1);
         s.addVehicule(v2);
@@ -113,9 +119,9 @@ public class TestServeur {
         s.addTrajet(trajet3);
         s.addTrajet(trajet4);
     }
-    
+
     @Test
-    public void TestServeurModifier() throws Exception{
+    public void TestServeurModifier() throws Exception {
         s = new ServeurV1();
         s.addVehicule(v1);
         s.addVehicule(v2);

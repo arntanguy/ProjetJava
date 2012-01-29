@@ -9,8 +9,8 @@ import java.util.HashMap;
  * Cette classe énumère tous les mots de commande connues du client d'admin.
  * Elle est utilisée pour reconnaître les commandes quand elles sont entrées.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class CommandWords {

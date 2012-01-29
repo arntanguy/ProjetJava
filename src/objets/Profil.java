@@ -2,6 +2,11 @@ package objets;
 
 import java.io.Serializable;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public enum Profil implements Serializable {
     ENFANT("Enfant", 1), ENFANTNONACCOMPAGNE("Enfant non accompagné", 1), JEUNE(
             "Jeune", 2), ETUDIANT("Étudiant", 3), ADULTE("Adulte", 5), SENIOR(

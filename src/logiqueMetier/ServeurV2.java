@@ -18,8 +18,8 @@ import objets.*;
  * chaque ligne des fichiers, puis de récupérer chaque information en splitant
  * la ligne. On peut alors reconstituer l'objet.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class ServeurV2 extends Serveur implements Serializable {
@@ -179,13 +179,15 @@ public class ServeurV2 extends Serveur implements Serializable {
             if (tab4.length == 11) {
                 Vehicule v = this.getVehicule(Integer.valueOf(tab4[6]));
                 try {
-                this.addTrajet(new Trajet(textToCalendar(tab4[0], tab4[1]),
-                        textToCalendar(tab4[2], tab4[3]), this.getVille(Integer
-                                .valueOf(tab4[4])), this.getVille(Integer
-                                .valueOf(tab4[5])), Integer.valueOf(tab4[9]),
-                        v, Integer.valueOf(tab4[8]), Integer.valueOf(tab4[7]),Boolean.valueOf(tab4[10])));
-                } catch(Exception e) {
-                	System.out.println("Impossible de charger le trajet !");
+                    this.addTrajet(new Trajet(textToCalendar(tab4[0], tab4[1]),
+                            textToCalendar(tab4[2], tab4[3]), this
+                                    .getVille(Integer.valueOf(tab4[4])), this
+                                    .getVille(Integer.valueOf(tab4[5])),
+                            Integer.valueOf(tab4[9]), v, Integer
+                                    .valueOf(tab4[8]),
+                            Integer.valueOf(tab4[7]), Boolean.valueOf(tab4[10])));
+                } catch (Exception e) {
+                    System.out.println("Impossible de charger le trajet !");
                 }
             }
         }
@@ -219,7 +221,8 @@ public class ServeurV2 extends Serveur implements Serializable {
 
                 Map<String, Boolean> prendRepas = new HashMap<String, Boolean>();
 
-                for (int k = 10; k < 10 + trajet.getVehicule().getRepas().size(); k++) {
+                for (int k = 10; k < 10 + trajet.getVehicule().getRepas()
+                        .size(); k++) {
                     String[] tab10 = tab8[k].split("=");
                     prendRepas.put(tab10[0], Boolean.valueOf(tab10[1]));
                 }

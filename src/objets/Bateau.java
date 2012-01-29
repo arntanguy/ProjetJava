@@ -1,9 +1,8 @@
 package objets;
 
 /**
- * 
- * @author
- * @version 1.0
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 public class Bateau extends Vehicule {
     /**
@@ -25,7 +24,7 @@ public class Bateau extends Vehicule {
     public Bateau(int prix, String vehicule, int identifiant) {
         this(prix, vehicule, 1000, identifiant);
     }
-    
+
     public Bateau(String vehicule, int identifiant) {
         this(10, vehicule, 1000, identifiant);
     }
@@ -33,7 +32,7 @@ public class Bateau extends Vehicule {
     public Bateau(String vehicule, int capacite, int identifiant) {
         this(10, vehicule, capacite, identifiant);
     }
-    
+
     public boolean avecCouchette() {
         return true;
     }

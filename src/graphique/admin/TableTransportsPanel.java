@@ -22,131 +22,141 @@ import logiqueMetier.Serveur;
 import objets.TypeVehicule;
 import objets.Vehicule;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class TableTransportsPanel extends AbstractTablePanel {
-	private static final long serialVersionUID = 1L;
-	
-	private TransportsTableModel<Vehicule> model;
+    private static final long serialVersionUID = 1L;
 
-	ArrayList<Vehicule> vehicules;
+    private TransportsTableModel<Vehicule> model;
 
-	public TableTransportsPanel(Serveur s) {
-		super(s);
-		vehicules = serveur.getVehicules();
-		build();
-	}
+    ArrayList<Vehicule> vehicules;
 
-	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des transports"));
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		buildTable();
-		buildButtons();
-	}
+    public TableTransportsPanel(Serveur s) {
+        super(s);
+        vehicules = serveur.getVehicules();
+        build();
+    }
 
-	private void buildTable() {
-		String[] columnNames = { "Nom du véhicule", "Type de véhicule", "Capacité d'accueil"};
+    private void build() {
+        setBorder(BorderFactory.createTitledBorder("Gestion des transports"));
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        buildTable();
+        buildButtons();
+    }
 
-		model = new TransportsTableModel<Vehicule>(vehicules);
-		model.setColumnNames(columnNames);
-		table = new JTable();
-		table.setModel(model);
-		table.setFillsViewportHeight(true); // Fill all the container
-		
-		table.getModel().addTableModelListener(new CellListener()); 
+    private void buildTable() {
+        String[] columnNames = { "Nom du véhicule", "Type de véhicule",
+                "Capacité d'accueil" };
 
-		JComboBox combo = buildTypeCombo();
-		addComboToTable(combo, 1);
-		scrollPane = new JScrollPane(table);
-		add(scrollPane);
-	}
+        model = new TransportsTableModel<Vehicule>(vehicules);
+        model.setColumnNames(columnNames);
+        table = new JTable();
+        table.setModel(model);
+        table.setFillsViewportHeight(true); // Fill all the container
 
-	private void buildButtons() {
-		buttonsPanel = new JPanel();
-		buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
-		buttonsPanel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
-		buttonsPanel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		add(buttonsPanel);
-	}
+        table.getModel().addTableModelListener(new CellListener());
 
-	public void setEditable(boolean isEditable) {
-			model.setEditable(isEditable);
-	}
-	public void setButtonsVisible(boolean visible) {
-			buttonsPanel.setVisible(visible);
-	}
+        JComboBox combo = buildTypeCombo();
+        addComboToTable(combo, 1);
+        scrollPane = new JScrollPane(table);
+        add(scrollPane);
+    }
 
-	public class AddAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+    private void buildButtons() {
+        buttonsPanel = new JPanel();
+        buttonsPanel
+                .setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
+        buttonsPanel.add(new JButton(new AddAction("Ajouter")),
+                BorderLayout.CENTER);
+        buttonsPanel.add(new JButton(new DeleteAction("Supprimer")),
+                BorderLayout.CENTER);
+        add(buttonsPanel);
+    }
 
-		public AddAction(String texte) {
-			super(texte);
-		}
+    public void setEditable(boolean isEditable) {
+        model.setEditable(isEditable);
+    }
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Ajout !");
-			model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));	
-		}
-	}
-	
-	public class DeleteAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+    public void setButtonsVisible(boolean visible) {
+        buttonsPanel.setVisible(visible);
+    }
 
-		public DeleteAction(String texte) {
-			super(texte);
-		}
+    public class AddAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Supprimé !");
-			int[] selectedIndexes = table.getSelectedRows();
-			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				try {
-					int row = selectedIndexes[i];
-					serveur.removeVehicule((Vehicule) model.get(row));
-					model.removeRow(row);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}	  
-		}
-	}
+        public AddAction(String texte) {
+            super(texte);
+        }
 
-	private class CellListener implements TableModelListener {
-		public CellListener() {
-		}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Ajout !");
+            model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));
+        }
+    }
 
-		public void tableChanged(TableModelEvent e) {
-			int row    = e.getFirstRow();
-			int column = e.getColumn();
-			System.out.println("Row " + row);
-			System.out.println("Column " + column);
-			
-			if(e.getType() == TableModelEvent.UPDATE) {
-				System.out.println("Updated");
-				for(Vehicule v:vehicules) {
-					Vehicule tv = (Vehicule) model.get(row);
-					if(tv.getIdentifiant() == v.getIdentifiant()) {
-						try {
-							serveur.modifierVehicule(tv, v);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			}	
-		}
-	}
+    public class DeleteAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
 
-	private JComboBox buildTypeCombo() {
-		JComboBox combo = new JComboBox();
-		for(TypeVehicule v : TypeVehicule.values()) {
-			combo.addItem(v);
-		}
-		return combo;
-	}
-	
-	public Vehicule getSelectedTransport() {
-		return (Vehicule) model.get(table.getSelectedRow());
-	}
+        public DeleteAction(String texte) {
+            super(texte);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Supprimé !");
+            int[] selectedIndexes = table.getSelectedRows();
+            for (int i = selectedIndexes.length - 1; i >= 0; i--) {
+                try {
+                    int row = selectedIndexes[i];
+                    serveur.removeVehicule((Vehicule) model.get(row));
+                    model.removeRow(row);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class CellListener implements TableModelListener {
+        public CellListener() {
+        }
+
+        public void tableChanged(TableModelEvent e) {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            System.out.println("Row " + row);
+            System.out.println("Column " + column);
+
+            if (e.getType() == TableModelEvent.UPDATE) {
+                System.out.println("Updated");
+                for (Vehicule v : vehicules) {
+                    Vehicule tv = (Vehicule) model.get(row);
+                    if (tv.getIdentifiant() == v.getIdentifiant()) {
+                        try {
+                            serveur.modifierVehicule(tv, v);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private JComboBox buildTypeCombo() {
+        JComboBox combo = new JComboBox();
+        for (TypeVehicule v : TypeVehicule.values()) {
+            combo.addItem(v);
+        }
+        return combo;
+    }
+
+    public Vehicule getSelectedTransport() {
+        return (Vehicule) model.get(table.getSelectedRow());
+    }
 
 }

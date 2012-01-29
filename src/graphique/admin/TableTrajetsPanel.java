@@ -25,161 +25,171 @@ import objets.Trajet;
 import objets.Vehicule;
 import objets.Ville;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class TableTrajetsPanel extends AbstractTablePanel {
-	private static final long serialVersionUID = 1L;
-	
-	private TableSpinnerEditor dateDepartSpinner;
-	private TableSpinnerEditor dateArriveeSpinner;
+    private static final long serialVersionUID = 1L;
 
-	private ArrayList<Trajet> trajets;
-	private ArrayList<Ville> villes;
-	
-	public TableTrajetsPanel(Serveur s) {
-		super(s);
-		trajets = serveur.getTrajets();
-		villes = serveur.getVilles();
-		build();
-	}
-	
-	private void build() {
-		setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    private TableSpinnerEditor dateDepartSpinner;
+    private TableSpinnerEditor dateArriveeSpinner;
 
-		buildReservationsTable();
-		buildButtons();
-	}
+    private ArrayList<Trajet> trajets;
+    private ArrayList<Ville> villes;
 
-	private void buildReservationsTable() {
-		String[] columnNames = { "Départ", "Arrivée", "Date départ",
-				"Date arrivée", "Transport" };
+    public TableTrajetsPanel(Serveur s) {
+        super(s);
+        trajets = serveur.getTrajets();
+        villes = serveur.getVilles();
+        build();
+    }
 
-		// Create a Spinner for the date, using a date model with current date as the initial value.
-		dateDepartSpinner = new TableSpinnerEditor( new SpinnerDateModel());
-		dateArriveeSpinner = new TableSpinnerEditor(new SpinnerDateModel());
+    private void build() {
+        setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		model = new TrajetsTableModel<Trajet>(trajets);
-		model.setColumnNames(columnNames);
-		table = new JTable();
-		table.setModel(model);
-		table.setFillsViewportHeight(true); // Fill all the container
-		table.getModel().addTableModelListener(new CellListener()); 
+        buildReservationsTable();
+        buildButtons();
+    }
 
-		JComboBox combo = buildDepartCombo();
-		addComboToTable(combo, 0);
-		addComboToTable(combo, 1);
-		addSpinnerToTable(dateDepartSpinner, 2);
-		addSpinnerToTable(dateArriveeSpinner, 3);
+    private void buildReservationsTable() {
+        String[] columnNames = { "Départ", "Arrivée", "Date départ",
+                "Date arrivée", "Transport" };
 
-		scrollPane = new JScrollPane(table);
-		add(scrollPane);
-	}
+        // Create a Spinner for the date, using a date model with current date
+        // as the initial value.
+        dateDepartSpinner = new TableSpinnerEditor(new SpinnerDateModel());
+        dateArriveeSpinner = new TableSpinnerEditor(new SpinnerDateModel());
 
+        model = new TrajetsTableModel<Trajet>(trajets);
+        model.setColumnNames(columnNames);
+        table = new JTable();
+        table.setModel(model);
+        table.setFillsViewportHeight(true); // Fill all the container
+        table.getModel().addTableModelListener(new CellListener());
 
-	private JComboBox buildDepartCombo() {
-		JComboBox combo = new JComboBox();
-		for(Ville v : villes) {
-			combo.addItem(v);
-		}
-		return combo;
-	}
+        JComboBox combo = buildDepartCombo();
+        addComboToTable(combo, 0);
+        addComboToTable(combo, 1);
+        addSpinnerToTable(dateDepartSpinner, 2);
+        addSpinnerToTable(dateArriveeSpinner, 3);
 
-	private void buildButtons() {
-		buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
-		buttonsPanel.add(new JButton(new AddAction("Ajouter")), BorderLayout.CENTER);
-		buttonsPanel.add(new JButton(new DeleteAction("Supprimer")), BorderLayout.CENTER);
-		buttonsPanel.add(new JButton(new LinkAction("Lier à un tranport", this)));
-		add(buttonsPanel);
-	}
+        scrollPane = new JScrollPane(table);
+        add(scrollPane);
+    }
 
-	public class LinkAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-		private TableTrajetsPanel parent;
+    private JComboBox buildDepartCombo() {
+        JComboBox combo = new JComboBox();
+        for (Ville v : villes) {
+            combo.addItem(v);
+        }
+        return combo;
+    }
 
-		public LinkAction(String texte, TableTrajetsPanel parent) {
-			super(texte);
-			this.parent = parent;
-		}
+    private void buildButtons() {
+        buttonsPanel
+                .setLayout(new BoxLayout(buttonsPanel, BoxLayout.LINE_AXIS));
+        buttonsPanel.add(new JButton(new AddAction("Ajouter")),
+                BorderLayout.CENTER);
+        buttonsPanel.add(new JButton(new DeleteAction("Supprimer")),
+                BorderLayout.CENTER);
+        buttonsPanel
+                .add(new JButton(new LinkAction("Lier à un tranport", this)));
+        add(buttonsPanel);
+    }
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Link !");
-			int [] selected = table.getSelectedRows();
-			for(final int i : selected) {
-				SwingUtilities.invokeLater(new Runnable(){
-					public void run(){
-						TransportSelectorDialog d = new TransportSelectorDialog(serveur, parent, i);
-						d.setVisible(true);
-					}
-				});
+    public class LinkAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+        private TableTrajetsPanel parent;
 
-			}
-		}
-	}
-	public class AddAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+        public LinkAction(String texte, TableTrajetsPanel parent) {
+            super(texte);
+            this.parent = parent;
+        }
 
-		public AddAction(String texte) {
-			super(texte);
-		}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Link !");
+            int[] selected = table.getSelectedRows();
+            for (final int i : selected) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        TransportSelectorDialog d = new TransportSelectorDialog(
+                                serveur, parent, i);
+                        d.setVisible(true);
+                    }
+                });
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Ajout !");
-			model.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
-		}
-	}
+            }
+        }
+    }
 
-	public class DeleteAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+    public class AddAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
 
-		public DeleteAction(String texte) {
-			super(texte);
-		}
+        public AddAction(String texte) {
+            super(texte);
+        }
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Supprimé !");
-			int[] selectedIndexes = table.getSelectedRows();
-			for (int i=selectedIndexes.length-1;i>=0;i--) {
-				int row = selectedIndexes[i];
-				System.out.println(model.getValueAt(row, 0));
-				serveur.removeTrajet((Trajet) model.get(row));
-				model.removeRow(row);
-			}	  
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Ajout !");
+            model.addRow(new Trajet(serveur.getTrajetNewIdentifiant()));
+        }
+    }
 
-	private class CellListener implements TableModelListener {
-		public CellListener() {
-		}
+    public class DeleteAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
 
-		public void tableChanged(TableModelEvent e) {
-			int row    = e.getFirstRow();
-			int column = e.getColumn();
-			System.out.println("Row " + row);
-			System.out.println("Column " + column);
+        public DeleteAction(String texte) {
+            super(texte);
+        }
 
-			switch(e.getType()) {				
-			case TableModelEvent.UPDATE:
-				System.out.println("Updated");
-				for(Trajet t:trajets) {
-					Trajet tt = (Trajet) model.get(row);
-					if(t.getIdentifiant() == tt.getIdentifiant()) {
-						try {
-							serveur.modifierTrajet(t, tt);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-				break;
-			}	
-		}
-	}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("Supprimé !");
+            int[] selectedIndexes = table.getSelectedRows();
+            for (int i = selectedIndexes.length - 1; i >= 0; i--) {
+                int row = selectedIndexes[i];
+                System.out.println(model.getValueAt(row, 0));
+                serveur.removeTrajet((Trajet) model.get(row));
+                model.removeRow(row);
+            }
+        }
+    }
 
+    private class CellListener implements TableModelListener {
+        public CellListener() {
+        }
 
-	public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
-		model.setValueAt(selectedTransport, parentSelectedRow, 4);
-		System.out.println("Lié à "+selectedTransport.toString());
-	}
+        public void tableChanged(TableModelEvent e) {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            System.out.println("Row " + row);
+            System.out.println("Column " + column);
+
+            switch (e.getType()) {
+            case TableModelEvent.UPDATE:
+                System.out.println("Updated");
+                for (Trajet t : trajets) {
+                    Trajet tt = (Trajet) model.get(row);
+                    if (t.getIdentifiant() == tt.getIdentifiant()) {
+                        try {
+                            serveur.modifierTrajet(t, tt);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
+        model.setValueAt(selectedTransport, parentSelectedRow, 4);
+        System.out.println("Lié à " + selectedTransport.toString());
+    }
 }

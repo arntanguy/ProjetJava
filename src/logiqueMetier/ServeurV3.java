@@ -37,13 +37,14 @@ import objets.*;
  * listes ce qui permet de modifier les données puis de les re-écrire dans le
  * fichiers xml correspondant.
  * 
- * @author Tanguy Arnaud / Ceschel Marvin / Kruck Nathan / Fauvel-Jaeger Olivier
- * @Version 3
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 public class ServeurV3 extends Serveur {
     public ServeurV3() {
         super();
     }
+
     /**
      * Renvoie un Element construit a partir du fichier a l'adresse donné.
      * 
@@ -424,6 +425,7 @@ public class ServeurV3 extends Serveur {
                             .valueOf(placesVoulues)));
         }
     }
+
     /**
      * Méthode général qui permet d'enregistrer les fichiers xml dans le bon
      * ficher correspondant
@@ -455,7 +457,7 @@ public class ServeurV3 extends Serveur {
         org.jdom.Document documentTrajet = new Document(racineTrajet);
         Element racineReservation = new Element("reservation");
         org.jdom.Document documentReservation = new Document(racineReservation);
-        
+
         enregistreVehicules(documentVehicule);
         enregistreVilles(documentVille);
         enregistreTrajets(documentTrajet);
@@ -479,12 +481,12 @@ public class ServeurV3 extends Serveur {
         File fileVehicule = new File("MesVehicules.xml");
         File fileTrajet = new File("MesTrajets.xml");
         File fileReservation = new File("MesReservations.xml");
-        
-        if(!fileVille.exists() || !fileVehicule.exists() || !fileTrajet.exists() || !fileReservation.exists())
-        {
+
+        if (!fileVille.exists() || !fileVehicule.exists()
+                || !fileTrajet.exists() || !fileReservation.exists()) {
             return false;
         }
-        
+
         org.jdom.Document documentVilles = getDoc(fileVille);
         Element racineVilles = getElem(documentVilles);
         org.jdom.Document documentVehicules = getDoc(fileVehicule);
@@ -494,11 +496,11 @@ public class ServeurV3 extends Serveur {
         org.jdom.Document documentReservations = getDoc(fileReservation);
         Element racineReservations = getElem(documentReservations);
 
-        if(racineVilles==null || racineVehicules==null || racineTrajets==null || racineReservations==null)
-        {
+        if (racineVilles == null || racineVehicules == null
+                || racineTrajets == null || racineReservations == null) {
             return false;
         }
-        
+
         chargerVilles(racineVilles);
         chargerVehicules(racineVehicules);
         chargerTrajets(racineTrajets);

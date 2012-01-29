@@ -11,8 +11,8 @@ package logiqueMetier;
  * 
  * Si la commande ne contient qu'un mot, le second mot est <null>.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class Command {

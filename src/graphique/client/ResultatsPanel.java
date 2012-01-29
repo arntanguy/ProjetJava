@@ -19,6 +19,11 @@ import objets.Repas;
 import objets.Reservation;
 import objets.Trajet;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
+
 public class ResultatsPanel extends AbstractTablePanel {
 	private static final long serialVersionUID = 1L;
 
@@ -88,5 +93,4 @@ public class ResultatsPanel extends AbstractTablePanel {
 	public void addReservation(Reservation r) {
 		model.addRow(r);
 	}
-
 }

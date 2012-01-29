@@ -14,8 +14,8 @@ import logiqueMetier.Serveur;
  * de départ et d'arrivée, d'un lieu de départ et d'arrivée, d'un véhicule, de
  * places restantes, d'un identifiant.
  * 
- * @author Ceschel Marvin and Bourdin Théo
- * @version 2011.12.04
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
  */
 
 public class Trajet implements Serializable, Comparable<Trajet> {
@@ -29,7 +29,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
     int identifiant;
     int distance;
     boolean premiereClasse;
-    
+
     /**
      * Crée une instance de trajet
      * 
@@ -47,15 +47,17 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      *            l'identifiant
      */
     public Trajet(Calendar dateDepart, Calendar dateArrivee, Ville depart,
-            Ville arrivee, int distance, Vehicule vehicule, int identifiant,boolean premiereClasse) {
-    	this(dateDepart, dateArrivee, depart,
-                arrivee, distance,  vehicule, identifiant, vehicule.getCapacite(), premiereClasse);
+            Ville arrivee, int distance, Vehicule vehicule, int identifiant,
+            boolean premiereClasse) {
+        this(dateDepart, dateArrivee, depart, arrivee, distance, vehicule,
+                identifiant, vehicule.getCapacite(), premiereClasse);
     }
 
     public Trajet(int identifiant) {
-    	this(Calendar.getInstance(), Calendar.getInstance(), new Ville(), new Ville(), -1, new Vehicule(), identifiant,false);
+        this(Calendar.getInstance(), Calendar.getInstance(), new Ville(),
+                new Ville(), -1, new Vehicule(), identifiant, false);
     }
-    
+
     /**
      * Crée une instance de trajet
      * 
@@ -82,7 +84,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
         this.depart = depart;
         this.arrivee = arrivee;
         this.vehicule = vehicule;
-        this.nbPassagers = vehicule.getCapacite()-placesRestantes;
+        this.nbPassagers = vehicule.getCapacite() - placesRestantes;
         this.identifiant = identifiant;
         this.distance = distance;
         this.premiereClasse = premiereClasse;
@@ -131,7 +133,7 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      * @return nombre de places restantes
      */
     public int getPlacesRestantes() {
-        return vehicule.getCapacite()-nbPassagers;
+        return vehicule.getCapacite() - nbPassagers;
     }
 
     /**
@@ -211,49 +213,58 @@ public class Trajet implements Serializable, Comparable<Trajet> {
      * @return true s'il reste des places, false sinon
      */
     public boolean restePlaces(int placesVoulues) {
-        return vehicule.getCapacite()-nbPassagers >= placesVoulues;
+        return vehicule.getCapacite() - nbPassagers >= placesVoulues;
     }
+
     public String toHtml() {
         int departMois = dateDepart.get(Calendar.MONTH) + 1;
         int arriveeMois = dateArrivee.get(Calendar.MONTH) + 1;
-        String texteClasse=(premiereClasse) ? "première classe" : "standard";
+        String texteClasse = (premiereClasse) ? "première classe" : "standard";
 
-        return new StringBuffer().append("<th>").append("Voyage (id=").append(identifiant)
-                .append(")").append("</th><th>").append("de ").append(depart.getVille()).append("</th><th> à ")
-                .append(arrivee.getVille()).append("</th><th> En ").append(vehicule.getType().getNom()).append(" (")
+        return new StringBuffer().append("<th>").append("Voyage (id=")
+                .append(identifiant).append(")").append("</th><th>")
+                .append("de ").append(depart.getVille()).append("</th><th> à ")
+                .append(arrivee.getVille()).append("</th><th> En ")
+                .append(vehicule.getType().getNom()).append(" (")
                 .append(vehicule.getVehicule()).append(") (id=")
-                .append(vehicule.getIdentifiant()).append((")")).append("</th><th colspan=\"3\">")
-                .append("Distance=").append(distance).append("km").append("</th></tr><tr><th>")
+                .append(vehicule.getIdentifiant()).append((")"))
+                .append("</th><th colspan=\"3\">").append("Distance=")
+                .append(distance).append("km").append("</th></tr><tr><th>")
                 .append("Classe </th><th>").append(texteClasse)
                 .append("</th><th colspan=\"5\"></th></tr><tr>").append("<th>")
                 .append("Départ le ").append("</th>").append("<th>")
-                .append(dateDepart.get(Calendar.DATE))
-                .append("/").append(departMois).append("/")
-                .append(dateDepart.get(Calendar.YEAR))
-                .append("</th><th>").append(" à ")
-                .append(dateDepart.get(Calendar.HOUR_OF_DAY)).append(":")
-                .append(dateDepart.get(Calendar.MINUTE)).append("</th><th colspan=\"4\"></th></tr><tr>").append("<th>")
+                .append(dateDepart.get(Calendar.DATE)).append("/")
+                .append(departMois).append("/")
+                .append(dateDepart.get(Calendar.YEAR)).append("</th><th>")
+                .append(" à ").append(dateDepart.get(Calendar.HOUR_OF_DAY))
+                .append(":").append(dateDepart.get(Calendar.MINUTE))
+                .append("</th><th colspan=\"4\"></th></tr><tr>").append("<th>")
                 .append("Arrivée le ").append("</th>").append("<th>")
-                .append(dateArrivee.get(Calendar.DATE))
-                .append("/").append(arriveeMois).append("/")
-                .append(dateArrivee.get(Calendar.YEAR)).append("</th>").append("<th>")
-                .append(" à ")
+                .append(dateArrivee.get(Calendar.DATE)).append("/")
+                .append(arriveeMois).append("/")
+                .append(dateArrivee.get(Calendar.YEAR)).append("</th>")
+                .append("<th>").append(" à ")
                 .append(dateArrivee.get(Calendar.HOUR_OF_DAY)).append(":")
-                .append(dateArrivee.get(Calendar.MINUTE)).append("</th><th colspan=\"4\"></th></tr><tr>").toString();
+                .append(dateArrivee.get(Calendar.MINUTE))
+                .append("</th><th colspan=\"4\"></th></tr><tr>").toString();
     }
+
     @Override
     public String toString() {
         int departMois = dateDepart.get(Calendar.MONTH) + 1;
         int arriveeMois = dateArrivee.get(Calendar.MONTH) + 1;
-        String texteClasse=(premiereClasse) ? "première classe" : "standard";
+        String texteClasse = (premiereClasse) ? "première classe" : "standard";
 
         return new StringBuffer().append("Voyage (id=").append(identifiant)
                 .append(") de ").append(depart.getVille()).append(" à ")
-                .append(arrivee.getVille()).append(" en ").append(vehicule.getType().getNom()).append(" (")
+                .append(arrivee.getVille()).append(" en ")
+                .append(vehicule.getType().getNom()).append(" (")
                 .append(vehicule.getVehicule()).append(") (id=")
-                .append(vehicule.getIdentifiant()).append(", distance=").append(distance).append("km, trajet ").append(texteClasse).append(") : \n\t")
-                .append("Départ le ").append(dateDepart.get(Calendar.DATE))
-                .append("/").append(departMois).append("/")
+                .append(vehicule.getIdentifiant()).append(", distance=")
+                .append(distance).append("km, trajet ").append(texteClasse)
+                .append(") : \n\t").append("Départ le ")
+                .append(dateDepart.get(Calendar.DATE)).append("/")
+                .append(departMois).append("/")
                 .append(dateDepart.get(Calendar.YEAR)).append(" à ")
                 .append(dateDepart.get(Calendar.HOUR_OF_DAY)).append(":")
                 .append(dateDepart.get(Calendar.MINUTE)).append("\n\t")
@@ -262,17 +273,20 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append(dateArrivee.get(Calendar.YEAR)).append(" à ")
                 .append(dateArrivee.get(Calendar.HOUR_OF_DAY)).append(":")
                 .append(dateArrivee.get(Calendar.MINUTE)).append("\n\t")
-                .append("Il reste ").append(vehicule.getCapacite()-nbPassagers)
+                .append("Il reste ")
+                .append(vehicule.getCapacite() - nbPassagers)
                 .append(" places restantes").toString();
     }
-    
+
     /**
      * Retourne une chaine à afficher pour l'interface graphique
+     * 
      * @return la ligne de description à afficher
      */
     public String toGString() {
-		return vehicule.getType().getNom()+" ("+vehicule.getVehicule()+")";
-	}
+        return vehicule.getType().getNom() + " (" + vehicule.getVehicule()
+                + ")";
+    }
 
     /**
      * retourner une ligne de texte contenant les informations utiles pour
@@ -288,9 +302,9 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append("#").append(depart.getIdentifiant()).append("#")
                 .append(arrivee.getIdentifiant()).append("#")
                 .append(vehicule.getIdentifiant()).append("#")
-                .append(vehicule.getCapacite() - nbPassagers).append("#").append(identifiant)
-                .append("#").append(distance).append("#").append(premiereClasse).append("#").append("\n")
-                .toString();
+                .append(vehicule.getCapacite() - nbPassagers).append("#")
+                .append(identifiant).append("#").append(distance).append("#")
+                .append(premiereClasse).append("#").append("\n").toString();
     }
 
     public String print2() {
@@ -301,8 +315,9 @@ public class Trajet implements Serializable, Comparable<Trajet> {
                 .append("#").append(depart.getIdentifiant()).append("#")
                 .append(arrivee.getIdentifiant()).append("#")
                 .append(vehicule.getIdentifiant()).append("#")
-                .append(vehicule.getCapacite() - nbPassagers).append("#").append(identifiant)
-                .append("#").append(distance).append("#").append(premiereClasse).toString();
+                .append(vehicule.getCapacite() - nbPassagers).append("#")
+                .append(identifiant).append("#").append(distance).append("#")
+                .append(premiereClasse).toString();
     }
 
     // compare deux trajets suivant leur date de départ
@@ -315,11 +330,9 @@ public class Trajet implements Serializable, Comparable<Trajet> {
         else
             return 0;
     }
-    
-    public int getPrix()
-    {
-        return vehicule.getPrix()*distance;
+
+    public int getPrix() {
+        return vehicule.getPrix() * distance;
     }
 
-	
 }

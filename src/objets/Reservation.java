@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
+ * @version 2012.01.29
+ */
 
 public class Reservation implements Serializable {
     private Passager passager;
@@ -16,8 +20,8 @@ public class Reservation implements Serializable {
     private boolean prendCouchette;
     private String nomTicket;
     private Map<String, Boolean> prendRepas;
-   
-	boolean active = true;
+
+    boolean active = true;
 
     /**
      * @param passager
@@ -28,7 +32,8 @@ public class Reservation implements Serializable {
      * @param prendClasses
      */
     public Reservation(Passager passager, Trajet trajet, boolean modifiable,
-            boolean prendCouchette, Map<String, Boolean> prendRepas, int identifiant,int placesVoulues) {
+            boolean prendCouchette, Map<String, Boolean> prendRepas,
+            int identifiant, int placesVoulues) {
         this.passager = passager;
         this.trajet = trajet;
         this.modifiable = modifiable;
@@ -36,7 +41,7 @@ public class Reservation implements Serializable {
         this.prendRepas = prendRepas;
         this.identifiant = identifiant;
         this.placesVoulues = placesVoulues;
-        this.nomTicket="";
+        this.nomTicket = "";
     }
 
     public Passager getPassager() {
@@ -54,30 +59,32 @@ public class Reservation implements Serializable {
     public int getIdentifiant() {
         return identifiant;
     }
-    public void lanceTicketReservation(String ticket){
-    	String cheminReservation = ticket;
-        if(!cheminReservation.equals("")) {
-            System.out.println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
+
+    public void lanceTicketReservation(String ticket) {
+        String cheminReservation = ticket;
+        if (!cheminReservation.equals("")) {
+            System.out
+                    .println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
             String path = new java.io.File(cheminReservation).getAbsolutePath();
-            String[] cmd = {"firefox", "file://"+path};
+            String[] cmd = { "firefox", "file://" + path };
             try {
-            final Process process = Runtime.getRuntime().exec(cmd);
+                final Process process = Runtime.getRuntime().exec(cmd);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch (Exception e) {
-            e.printStackTrace();
-            }
-        }
-        else {
+        } else {
             System.out.println("Votre réservation n'a pas pu aboutir");
         }
-        }
+    }
+
     public void genereTicket() {
         // Create file
         FileWriter fstream = null;
         try {
             fstream = new FileWriter("ticketReservation" + passager.getNom()
                     + "$" + passager.getPrenom() + ".html");
-            nomTicket = "ticketReservation" + passager.getNom()+ "$" + passager.getPrenom() + ".html";
+            nomTicket = "ticketReservation" + passager.getNom() + "$"
+                    + passager.getPrenom() + ".html";
             lanceTicketReservation(nomTicket);
             System.out.println(nomTicket);
         } catch (IOException e) {
@@ -92,7 +99,7 @@ public class Reservation implements Serializable {
         if (prendRepas != null) {
             for (String key : prendRepas.keySet()) {
                 if (prendRepas.get(key) != null && prendRepas.get(key) == true) {
-                    repas += "<th>"+key+"</th>";
+                    repas += "<th>" + key + "</th>";
                 }
             }
         }
@@ -110,19 +117,27 @@ public class Reservation implements Serializable {
                     + "<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" title=\"Ticket Reservation\" href=\"feuille.css\"/>"
                     + "</head><body><table><tr><th colspan=\"7\"><h1>Votre réservation (n° de réservation = "
                     + identifiant
-                    + ") pour "+placesVoulues+" place(s)</h1></th></tr>"
+                    + ") pour "
+                    + placesVoulues
+                    + " place(s)</h1></th></tr>"
                     + "<tr><th colspan=\"7\"><h2>Passager : "
-                    + passager.toHtml()+"</h2></th></tr>"
+                    + passager.toHtml()
+                    + "</h2></th></tr>"
                     + "<tr>"
-                    + trajet.toHtml()+"</tr>"
+                    + trajet.toHtml()
+                    + "</tr>"
                     + "<tr><th>Option Repas</th> "
-                    + repas+"</tr>"
-                    + "<tr><th>Option supplémentaire</th><th>"+mod+"</th>"
-                    + "<th>"+couchette+"</th><th colspan=\"4\"> </th></tr>"
+                    + repas
+                    + "</tr>"
+                    + "<tr><th>Option supplémentaire</th><th>"
+                    + mod
+                    + "</th>"
+                    + "<th>"
+                    + couchette
+                    + "</th><th colspan=\"4\"> </th></tr>"
                     + "</table>"
                     + "<table><tr><th><h2>Synthèse des prix </h2></th></tr><tr>"
-                    + getPrix()
-                    + "</table></body></html>");
+                    + getPrix() + "</table></body></html>");
 
             // Close the output stream
             out.close();
@@ -136,9 +151,11 @@ public class Reservation implements Serializable {
     public int getPlacesVoulues() {
         return placesVoulues;
     }
-    public String getNomTicket(){
-    	return nomTicket;
+
+    public String getNomTicket() {
+        return nomTicket;
     }
+
     public String getPrix() {
         double prix = 0;
         int reductionFidelite = 0;
@@ -147,8 +164,8 @@ public class Reservation implements Serializable {
         int prixCouchette = 5;
         int repasTotal = 0;
         int classePaye = 0;
-        int couchettePaye=0;
-        int modifiablePaye=0;
+        int couchettePaye = 0;
+        int modifiablePaye = 0;
 
         prix += passager.getProfil().getPrix(); // prix en fonction du type de
                                                 // passager
@@ -157,53 +174,53 @@ public class Reservation implements Serializable {
             reductionFidelite = 10;
             prix -= reductionFidelite;
         }
-        prix += (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0; // prix en fonction du
-                                                          // type de transport
+        prix += (double) trajet.getVehicule().getPrix()
+                * (double) trajet.getDistance() / 80.0; // prix en fonction du
+        // type de transport
 
         for (String key : prendRepas.keySet()) {
             if (prendRepas.get(key) == true) {
-                
-                for(Repas repas : trajet.getVehicule().getRepas())
-                {
-                    if(repas.getNom().equals(key))
-                    {
+
+                for (Repas repas : trajet.getVehicule().getRepas()) {
+                    if (repas.getNom().equals(key)) {
                         repasTotal += repas.getPrix();
                         prix += repas.getPrix();
                     }
                 }
             }
         }
-        
-        
-        if(trajet.isPremiereClasse())
-        {
-            classePaye=prixPremiereClasse;
+
+        if (trajet.isPremiereClasse()) {
+            classePaye = prixPremiereClasse;
             prix += prixPremiereClasse;
         }
-        
-        
+
         if (modifiable) {
-            modifiablePaye=prixModifiable;
+            modifiablePaye = prixModifiable;
             prix += prixModifiable;
         }
         if (prendCouchette) {
-            couchettePaye=prixCouchette;
+            couchettePaye = prixCouchette;
             prix += prixCouchette;
         }
-        
-        prix*=placesVoulues;
+
+        prix *= placesVoulues;
 
         String texte = "<th>prix passager = " + passager.getProfil().getPrix()
                 + " euros</th></tr>";
-        texte += "<tr><th>réduction fidèlité = " + reductionFidelite + " euros</th></tr>";
+        texte += "<tr><th>réduction fidèlité = " + reductionFidelite
+                + " euros</th></tr>";
         texte += "<tr><th>prix transport="
-                + (double) trajet.getVehicule().getPrix()*(double) trajet.getDistance()/80.0 + " euros</th></tr>";
+                + (double) trajet.getVehicule().getPrix()
+                * (double) trajet.getDistance() / 80.0 + " euros</th></tr>";
         texte += "<tr><th>prix repas = " + repasTotal + " euros</th></tr>";
         texte += "<tr><th>prix classe = " + classePaye + " euros</th></tr>";
         texte += "<tr><th>supplément changement du billet = " + modifiablePaye
                 + " euros</th></tr>";
-        texte += "<tr><th>prix couchette = " + couchettePaye + " euros</th></tr>";
-        texte += "<tr><th><h3>prix total pour "+placesVoulues+" place(s) = " + prix + " euros</h3></th></tr>";
+        texte += "<tr><th>prix couchette = " + couchettePaye
+                + " euros</th></tr>";
+        texte += "<tr><th><h3>prix total pour " + placesVoulues
+                + " place(s) = " + prix + " euros</h3></th></tr>";
         return texte;
     }
 
@@ -216,24 +233,23 @@ public class Reservation implements Serializable {
         return new StringBuffer().append(passager.print()).append("#")
                 .append(trajet.getIdentifiant()).append("#").append(modifiable)
                 .append("#").append(prendCouchette).append("#")
-                .append(identifiant).append("#").append(placesVoulues).append("#")
-                .append(textRepas).append("\n").toString();
+                .append(identifiant).append("#").append(placesVoulues)
+                .append("#").append(textRepas).append("\n").toString();
     }
 
     public boolean isModifiable() {
         return modifiable;
     }
-   
+
     public boolean isActive() {
-		return active;
-	}
+        return active;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-    public boolean getRepas(String repas)
-    {
+    public boolean getRepas(String repas) {
         return prendRepas.get(repas);
     }
 
@@ -245,7 +261,7 @@ public class Reservation implements Serializable {
         return texte;
     }
 
-	public void setPassager(Passager p) {
-		passager = p;
-	}
+    public void setPassager(Passager p) {
+        passager = p;
+    }
 }
