@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import logiqueMetier.Serveur;
+import objets.Repas;
 import objets.Reservation;
 import objets.Trajet;
 
@@ -71,6 +72,7 @@ public class ResultatsPanel extends AbstractTablePanel {
 				r.setActive(true);
 				model.fireTableDataChanged();
 				try {
+					//TODO : manage repas for(Repas repas : trajetAReserver.getVehicule().getRepas()) repas
 					serveur.addReservation(r);
 				} catch (Exception e) {
 					e.printStackTrace();
