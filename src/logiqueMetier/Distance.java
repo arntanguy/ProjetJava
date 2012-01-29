@@ -20,21 +20,11 @@ public class Distance {
     private Trajet[][] matrice;
     private int sizeTrajets;
     private int sizeVilles;
-    private int departId;
-    private int arriveeId;
-    private int intervalleVoulue;
-    private Calendar dateDepart;
 
-    public Distance(List<Trajet> list, int sizeTrajets, int sizeVilles,
-            int departId, int arriveeId, int intervalleVoulue,
-            Calendar dateDepart) {
+    public Distance(List<Trajet> list, int sizeTrajets, int sizeVilles) {
         this.list = list;
         this.sizeTrajets = sizeTrajets;
         this.sizeVilles = sizeVilles;
-        this.departId = departId;
-        this.arriveeId = arriveeId;
-        this.intervalleVoulue = intervalleVoulue;
-        this.dateDepart = dateDepart;
 
         matrice = new Trajet[sizeVilles][sizeVilles];
 
@@ -46,61 +36,28 @@ public class Distance {
 
         for (int i = 0; i < sizeTrajets; i++) {
             if (list.get(i) != null) {
-                Calendar departRetard = (Calendar) list.get(i).getDateDepart()
-                        .clone();
-                departRetard.add(Calendar.HOUR, intervalleVoulue);
-                Calendar departAvance = (Calendar) list.get(i).getDateDepart()
-                        .clone();
-                departAvance.add(Calendar.HOUR, -intervalleVoulue);
 
-                if (list.get(i).getDepart().getIdentifiant() != departId) {
+                if (matrice[list.get(i).getDepart().getIdentifiant()][list
+                        .get(i).getArrivee().getIdentifiant()] == null)
+                    matrice[list.get(i).getDepart().getIdentifiant()][list
+                            .get(i).getArrivee().getIdentifiant()] = list
+                            .get(i);
+                else {
                     if (matrice[list.get(i).getDepart().getIdentifiant()][list
-                            .get(i).getArrivee().getIdentifiant()] == null)
+                            .get(i).getArrivee().getIdentifiant()]
+                            .getDistance() > list.get(i).getDistance()) {
                         matrice[list.get(i).getDepart().getIdentifiant()][list
                                 .get(i).getArrivee().getIdentifiant()] = list
                                 .get(i);
-                    else {
-                        if (matrice[list.get(i).getDepart().getIdentifiant()][list
-                                .get(i).getArrivee().getIdentifiant()]
-                                .getDistance() > list.get(i).getDistance()) {
-                            matrice[list.get(i).getDepart().getIdentifiant()][list
-                                    .get(i).getArrivee().getIdentifiant()] = list
-                                    .get(i);
-                        }
-                    }
-                } else {
-                    if (dateDepart.before(departRetard)
-                            && dateDepart.after(departAvance)) {
-                        if (matrice[list.get(i).getDepart().getIdentifiant()][list
-                                .get(i).getArrivee().getIdentifiant()] == null)
-                            matrice[list.get(i).getDepart().getIdentifiant()][list
-                                    .get(i).getArrivee().getIdentifiant()] = list
-                                    .get(i);
-                        else {
-                            if (matrice[list.get(i).getDepart()
-                                    .getIdentifiant()][list.get(i).getArrivee()
-                                    .getIdentifiant()].getDistance() > list
-                                    .get(i).getDistance()) {
-                                matrice[list.get(i).getDepart()
-                                        .getIdentifiant()][list.get(i)
-                                        .getArrivee().getIdentifiant()] = list
-                                        .get(i);
-                            }
-                        }
                     }
                 }
-
             }
         }
 
     }
 
-    public List<Trajet> cout() {
-        if (matrice[list.get(departId).getDepart().getIdentifiant()][list
-                .get(departId).getArrivee().getIdentifiant()] != null)
-            return cout(departId, arriveeId, sizeVilles);
-        else
-            return null;
+    public List<Trajet> cout(int i, int j) {
+        return cout(i, j, sizeVilles);
     }
 
     private List<Trajet> cout(int i, int j, int k) {
