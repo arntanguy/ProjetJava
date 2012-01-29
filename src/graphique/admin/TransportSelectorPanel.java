@@ -7,11 +7,15 @@ import javax.swing.JPanel;
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit un moyen de sélectionner des transports
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class TransportSelectorPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+
     private TableTransportsPanel tableTransportsPanel;
 
     private Serveur serveur;

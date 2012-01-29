@@ -2,8 +2,6 @@ package graphique.client;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -15,15 +13,17 @@ import logiqueMetier.Serveur;
 import objets.Passager;
 import objets.Reservation;
 import objets.Trajet;
-import objets.Vehicule;
-import objets.Ville;
 
 /**
+ * Panel de réservation d'un trajet
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class ReservationPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+  
     private Serveur serveur;
     private TrajetPanel trajetP;
     private ClientPanel clientP;

@@ -10,11 +10,10 @@ import objets.Vehicule;
  * @version 2012.01.29
  */
 
-public class TransportsTableModel<T> extends AbstractTableModel {
-
+public class TransportsTableModel<T> extends AbstractTableModel<T> {
     private static final long serialVersionUID = 1L;
 
-    public TransportsTableModel(ArrayList<Vehicule> vehicules) {
+    public TransportsTableModel(ArrayList<T> vehicules) {
         super(vehicules);
     }
 

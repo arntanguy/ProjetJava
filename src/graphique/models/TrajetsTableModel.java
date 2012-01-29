@@ -11,11 +11,14 @@ import objets.Ville;
 import tools.DateTools;
 
 /**
+ * Fournit un modèle gérant les trajets
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
-public class TrajetsTableModel<T> extends AbstractTableModel {
+public class TrajetsTableModel<T> extends AbstractTableModel<T> {
+    private static final long serialVersionUID = 1L;
 
     public TrajetsTableModel(ArrayList<T> liste) {
         super(liste);

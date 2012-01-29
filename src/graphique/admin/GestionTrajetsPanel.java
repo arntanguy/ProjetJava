@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit un composant permettant de gérér les trajets
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

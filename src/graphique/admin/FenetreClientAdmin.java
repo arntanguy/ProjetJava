@@ -14,11 +14,16 @@ import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 /**
+ * Cette classe organise l'ensemble des composants de la partie administrative 
+ * de l'interface graphique.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class FenetreClientAdmin extends JFrame {
+    private static final long serialVersionUID = 1L;
+   
     private Serveur serveur;
     JTabbedPane tabbedPane;
 
@@ -70,13 +75,6 @@ public class FenetreClientAdmin extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         panel.add(new GestionTrajetsPanel(serveur));
-        return panel;
-    }
-
-    private JPanel buildReservationsPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(new GestionReservationsPanel(serveur));
         return panel;
     }
 
