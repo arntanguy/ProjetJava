@@ -22,6 +22,8 @@ import objets.*;
  */
 
 public abstract class Serveur implements Serializable {
+    private static final long serialVersionUID = 1L;
+   
     // liste des trajets et des véhicules
     protected ArrayList<Trajet> mesTrajets;
     protected ArrayList<Vehicule> mesVehicules;
@@ -325,7 +327,6 @@ public abstract class Serveur implements Serializable {
             v = new Train(nom, capacite, getVehiculeNewIdentifiant());
             break;
         }
-        // addVehicule(v);
         return v;
     }
 
