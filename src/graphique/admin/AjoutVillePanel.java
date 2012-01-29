@@ -25,10 +25,12 @@ public class AjoutVillePanel extends JPanel {
     private JTextField nomText;
 
     private Serveur serveur;
-
-    public AjoutVillePanel(Serveur s) {
+    private GestionTrajetsPanel gestionTrajetsPanel;
+    
+    public AjoutVillePanel(Serveur s, GestionTrajetsPanel p) {
         super();
         serveur = s;
+        gestionTrajetsPanel = p;
         build();
     }
 
@@ -58,6 +60,7 @@ public class AjoutVillePanel extends JPanel {
             try {
                 serveur.createVille(nomText.getText());
                 nomText.setText("");
+                gestionTrajetsPanel.updateVilles();
             } catch (Exception e) {
                 e.printStackTrace();
             }

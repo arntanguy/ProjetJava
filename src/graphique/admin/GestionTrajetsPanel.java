@@ -30,7 +30,10 @@ public class GestionTrajetsPanel extends JPanel {
 
         tableTrajetsPanel = new TableTrajetsPanel(serveur);
         add(tableTrajetsPanel);
-
+    }
+    
+    public void updateVilles() {
+        tableTrajetsPanel.updateVilles();
     }
 
 }
