@@ -71,7 +71,7 @@ public class ReservationPanel extends JPanel {
             // Cherche les trajets directs
             trajets = (ArrayList<Trajet>) serveur
             .rechercherTrajet(trajetP.getVilleDepart(),
-                    trajetP.getVilleArrivee(), null,
+                    trajetP.getVilleArrivee(), trajetP.getVehicule(),
                     clientP.getNbPassagers(), trajetP.getDateDepart(),
                     12, trajetP.getCouchette(), trajetP.getPremiereClasse(), true);
             // Si il y a des trajets indirects, on les ajoute aussi

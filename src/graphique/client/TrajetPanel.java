@@ -198,4 +198,9 @@ public class TrajetPanel extends JPanel {
     public boolean getPremiereClasse() {
         return false;
     }
+    
+    public TypeVehicule getVehicule() {
+        return (((TypeVehicule) transport.getSelectedItem()) == TypeVehicule.INCONNU) ? null
+                : (TypeVehicule) transport.getSelectedItem();
+    }
 }

@@ -320,12 +320,12 @@ public class ClientAdmin {
             List<Trajet> trajetRecherche = null;
             if (!trierParPrix) {
                 // on recherche les trajets correspondant aux paramètres rentrés
-                trajetRecherche = s.rechercherTrajet(depart, arrivee, vehicule,
+                trajetRecherche = s.rechercherTrajet(depart, arrivee, vehicule.getType(),
                         placesVoulues, dateCompleteDepart, intervalleVoulue,
                         avecCouchette, premiereClasse, trajetDirect);
             } else {
                 trajetRecherche = s.rechercherTrajetParPrix(depart, arrivee,
-                        vehicule, placesVoulues, dateCompleteDepart,
+                        vehicule.getType(), placesVoulues, dateCompleteDepart,
                         intervalleVoulue, avecCouchette, premiereClasse,
                         trajetDirect);
             }
