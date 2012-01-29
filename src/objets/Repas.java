@@ -27,4 +27,8 @@ public class Repas implements Serializable {
     public int getPrix() {
         return prix;
     }
+    
+    public String toString() {
+    	return nom + " ("+prix+")";
+    }
 }
