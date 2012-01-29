@@ -44,14 +44,14 @@ public class ReservationPanel extends JPanel {
         resultatsP = new ResultatsPanel(serveur);
         add(trajetP);
         add(clientP);
-        add(new JButton(new ValidateAction("Rechercher")));
+        add(new JButton(new RechercherAction("Rechercher")));
         add(resultatsP);
     }
 
-    private class ValidateAction extends AbstractAction {
+    private class RechercherAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
-        public ValidateAction(String texte) {
+        public RechercherAction(String texte) {
             super(texte);
         }
 
@@ -71,7 +71,7 @@ public class ReservationPanel extends JPanel {
             // Cherche les trajets directs
             trajets = (ArrayList<Trajet>) serveur
             .rechercherTrajet(trajetP.getVilleDepart(),
-                    trajetP.getVilleArrivee(), null,
+                    trajetP.getVilleArrivee(), trajetP.getVehicule(),
                     clientP.getNbPassagers(), trajetP.getDateDepart(),
                     12, trajetP.getCouchette(), trajetP.getPremiereClasse(), true);
             // Si il y a des trajets indirects, on les ajoute aussi
