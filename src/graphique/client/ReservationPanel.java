@@ -2,8 +2,6 @@ package graphique.client;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -15,15 +13,17 @@ import logiqueMetier.Serveur;
 import objets.Passager;
 import objets.Reservation;
 import objets.Trajet;
-import objets.Vehicule;
-import objets.Ville;
 
 /**
+ * Panel de réservation d'un trajet
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class ReservationPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+  
     private Serveur serveur;
     private TrajetPanel trajetP;
     private ClientPanel clientP;
@@ -49,6 +49,8 @@ public class ReservationPanel extends JPanel {
     }
 
     private class ValidateAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public ValidateAction(String texte) {
             super(texte);
         }
@@ -64,7 +66,7 @@ public class ReservationPanel extends JPanel {
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue, boolean avecCouchette,
             boolean premiereClasse, boolean direct)*/
-            ArrayList<Trajet> trajets = new ArrayList();
+            ArrayList<Trajet> trajets = new ArrayList<Trajet>();
             
             // Cherche les trajets directs
             trajets = (ArrayList<Trajet>) serveur
@@ -74,11 +76,11 @@ public class ReservationPanel extends JPanel {
                             12, trajetP.getCouchette(), trajetP.getPremiereClasse(), true);
             // Si il y a des trajets indirects, on les ajoute aussi
             if(!trajetP.getDirect()) {
-                trajets = (ArrayList<Trajet>) serveur
+                trajets.addAll((ArrayList<Trajet>) serveur
                 .rechercherTrajet(trajetP.getVilleDepart(),
                         trajetP.getVilleArrivee(), null,
                         clientP.getNbPassagers(), trajetP.getDateDepart(),
-                        12, trajetP.getCouchette(), trajetP.getPremiereClasse(), false);
+                        12, trajetP.getCouchette(), trajetP.getPremiereClasse(), false));
             }
             
 

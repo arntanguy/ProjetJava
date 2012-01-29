@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit un élément d'interface permettant de créer de nouvelles villes
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

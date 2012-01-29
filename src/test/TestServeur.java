@@ -49,6 +49,10 @@ public class TestServeur {
         v2 = new Bateau("Coco1", 50, 1);
         v3 = new Bus("Coco2", 50, 2);
         v4 = new Train("Coco3", 10, 3);
+         trajet1 = new Trajet(date1, date2, paris, montreal, 20, v3, 0, false);
+        trajet2 = new Trajet(date1, date2, tokyo, londres, 60, v2, 1, true);
+        trajet3 = new Trajet(date3, date4, paris, londres, 100, v2, 2, false);
+        trajet4 = new Trajet(date2, date3, montreal, tokyo, 140, v1, 3, true);
     }
 
     @Test
@@ -108,16 +112,10 @@ public class TestServeur {
         s.addVehicule(v2);
         s.addVehicule(v3);
         s.addVehicule(v4);
-        s.removeVehicule(1);
-        assertEquals(null, s.getVehicule(v1.getIdentifiant()));
-        trajet1 = new Trajet(date1, date2, paris, montreal, 20, v3, 0, false);
-        trajet2 = new Trajet(date1, date2, tokyo, londres, 60, v2, 1, true);
-        trajet3 = new Trajet(date3, date4, paris, londres, 100, v2, 2, false);
-        trajet4 = new Trajet(date2, date3, montreal, tokyo, 140, v1, 3, true);
-        s.addTrajet(trajet1);
-        s.addTrajet(trajet2);
-        s.addTrajet(trajet3);
-        s.addTrajet(trajet4);
+        int id = v1.getIdentifiant();
+        s.removeVehicule(id);
+        assertEquals(null, s.getVehicule(id));
+       
     }
 
     @Test
@@ -126,10 +124,6 @@ public class TestServeur {
         s.addVehicule(v1);
         s.addVehicule(v2);
         s.addVehicule(v3);
-        trajet1 = new Trajet(date1, date2, paris, montreal, 20, v3, 0, false);
-        trajet2 = new Trajet(date1, date2, tokyo, londres, 60, v2, 1, true);
-        trajet3 = new Trajet(date3, date4, paris, londres, 100, v2, 2, false);
-        trajet4 = new Trajet(date2, date3, montreal, tokyo, 140, v1, 3, true);
         s.addTrajet(trajet1);
         s.addTrajet(trajet2);
         s.addTrajet(trajet3);

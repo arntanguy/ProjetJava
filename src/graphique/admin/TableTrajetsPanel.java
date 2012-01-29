@@ -26,6 +26,9 @@ import objets.Vehicule;
 import objets.Ville;
 
 /**
+ * Cette classe fournit un tableau et des boutons associés permettant de modifier
+ * créer et supprimer des trajets.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
@@ -99,7 +102,9 @@ public class TableTrajetsPanel extends AbstractTablePanel {
                 .add(new JButton(new LinkAction("Lier à un tranport", this)));
         add(buttonsPanel);
     }
-
+    /**
+     * Lie un trajet avec un transport
+     */
     public class LinkAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
         private TableTrajetsPanel parent;
@@ -126,6 +131,9 @@ public class TableTrajetsPanel extends AbstractTablePanel {
         }
     }
 
+    /** 
+     * Ajoute un nouveau trajet
+     */
     public class AddAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
@@ -159,7 +167,10 @@ public class TableTrajetsPanel extends AbstractTablePanel {
             }
         }
     }
-
+    /**
+     * Ecoute les modifications effectuées dans le tableau, et met à jour les données 
+     * du serveur si nécessaire.
+     */
     private class CellListener implements TableModelListener {
         public CellListener() {
         }
@@ -188,6 +199,13 @@ public class TableTrajetsPanel extends AbstractTablePanel {
         }
     }
 
+    /** 
+     * Fonction permettant de lier le transport sélectionné à un véhicule donné
+     * @param parentSelectedRow 
+     *          ligne sélectionnée dans le tableau des trajets
+     * @param selectedTransport
+     *          vehicule choisi
+     */
     public void linkTransport(int parentSelectedRow, Vehicule selectedTransport) {
         model.setValueAt(selectedTransport, parentSelectedRow, 4);
         System.out.println("Lié à " + selectedTransport.toString());

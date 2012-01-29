@@ -16,15 +16,16 @@ import javax.swing.SpinnerDateModel;
 import objets.Profil;
 import tools.DateTools;
 
-import logiqueMetier.Admin;
-import logiqueMetier.Serveur;
-
 /**
+ * Fournit un composant permettant d'entrer des informations sur un client
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class ClientPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+  
     private JTextField nomText;
     private JTextField prenomText;
     private JSpinner naissanceSpinner;

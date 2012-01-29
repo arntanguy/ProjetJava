@@ -18,6 +18,8 @@ import logiqueMetier.Serveur;
 import objets.Reservation;
 
 /**
+ * Panel permettant d'afficher les résultats d'une recherche de trajets
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
@@ -59,6 +61,9 @@ public class ResultatsPanel extends AbstractTablePanel {
 		add(new JButton(new ReserverAction("Réserver")), BorderLayout.CENTER);
 	}
 
+	/**
+	 * Réserve le trajet sélectionné, en utilisant les infos rentrées par l'utilisateur
+	 */
 	public class ReserverAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 

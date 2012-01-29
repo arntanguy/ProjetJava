@@ -12,11 +12,16 @@ import javax.swing.JPanel;
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit une boite de dialogue permettant de sélectionner un transport.
+ * Elle est notemment utilisée pour lier un transport à un trajet.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class TransportSelectorDialog extends JDialog {
+    private static final long serialVersionUID = 1L;
+
     private TableTransportsPanel selectorPanel;
     private TableTrajetsPanel parent;
     private int parentSelectedRow;
@@ -65,6 +70,8 @@ public class TransportSelectorDialog extends JDialog {
     }
 
     private class QuitAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public QuitAction(String s) {
             super(s);
         }

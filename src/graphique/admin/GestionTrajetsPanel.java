@@ -1,22 +1,20 @@
 package graphique.admin;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-
-import objets.Trajet;
 
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit un composant permettant de gérér les trajets
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class GestionTrajetsPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+
     private TableTrajetsPanel tableTrajetsPanel;
 
     private Serveur serveur;
@@ -28,7 +26,6 @@ public class GestionTrajetsPanel extends JPanel {
     }
 
     private void build() {
-        // setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         tableTrajetsPanel = new TableTrajetsPanel(serveur);

@@ -22,11 +22,15 @@ import objets.Ville;
 import tools.DateTools;
 
 /**
+ * Panel permettant d'entrer les informations de recherche sur un trajet
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class TrajetPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+    
     private JComboBox villeDepartCombo;
     private JComboBox villeArriveeCombo;
     private JSpinner dateDepartSpinner;

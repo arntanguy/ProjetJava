@@ -12,21 +12,21 @@ import javax.swing.JPanel;
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit une boite de dialogue permettant de sélectionner un trajet.
+ * Elle est notemment utilisée pour lier un trajet à une réservation.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class TrajetSelectorDialog extends JDialog {
+    private static final long serialVersionUID = 1L;
+  
     private TableTrajetsPanel selectorPanel;
-    private TableTrajetsPanel parent;
-    private int parentSelectedRow;
-
     private Serveur serveur;
 
     public TrajetSelectorDialog(Serveur s, TableTrajetsPanel parent, int row) {
         serveur = s;
-        this.parent = parent;
-        parentSelectedRow = row;
         setTitle("Choix du transport à lier.");
         setSize(800, 400);
         setLocationRelativeTo(null);
@@ -47,7 +47,6 @@ public class TrajetSelectorDialog extends JDialog {
     }
 
     private JPanel buildTrajetSelector() {
-        // setBorder(BorderFactory.createTitledBorder("Gestion des réservations"));
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
@@ -64,7 +63,12 @@ public class TrajetSelectorDialog extends JDialog {
         panel.add(new JButton(new QuitAction("Quitter")));
     }
 
+    /**
+     * Quitte sans rien faire
+     */
     private class QuitAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public QuitAction(String s) {
             super(s);
         }
@@ -77,6 +81,8 @@ public class TrajetSelectorDialog extends JDialog {
     }
 
     private class LinkAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public LinkAction(String s) {
             super(s);
         }

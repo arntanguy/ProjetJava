@@ -14,6 +14,9 @@ import javax.swing.table.TableColumn;
 import logiqueMetier.Serveur;
 
 /**
+ * Fournit un panel abstrait ayant pour but d'uniformiser et de simplifier la création
+ * des autres panels de l'application
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

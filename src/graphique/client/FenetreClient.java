@@ -13,11 +13,15 @@ import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 /**
+ * Fenêtre principale du client.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class FenetreClient extends JFrame {
+    private static final long serialVersionUID = 1L;
+  
     private Serveur serveur;
 
     public FenetreClient() {
@@ -53,6 +57,8 @@ public class FenetreClient extends JFrame {
     }
 
     private class QuitAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public QuitAction(String texte) {
             super(texte);
         }

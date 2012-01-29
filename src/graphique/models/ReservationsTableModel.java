@@ -9,6 +9,8 @@ import objets.Reservation;
 import objets.Trajet;
 
 /**
+ * Fournit un modèle gérant les réservations
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

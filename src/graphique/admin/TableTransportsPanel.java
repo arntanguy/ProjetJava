@@ -23,6 +23,9 @@ import objets.TypeVehicule;
 import objets.Vehicule;
 
 /**
+ * Cette classe fournit un tableau et des boutons associés permettant de modifier
+ * créer et supprimer des transports.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
@@ -97,7 +100,9 @@ public class TableTransportsPanel extends AbstractTablePanel {
             model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));
         }
     }
-
+    /**
+     * Supprime un transport à la fois dans le tableau, et sur le serveur.
+     */
     public class DeleteAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
