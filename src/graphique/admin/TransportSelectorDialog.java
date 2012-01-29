@@ -70,6 +70,8 @@ public class TransportSelectorDialog extends JDialog {
     }
 
     private class QuitAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public QuitAction(String s) {
             super(s);
         }
