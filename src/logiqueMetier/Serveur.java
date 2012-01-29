@@ -610,7 +610,7 @@ System.out.println("direct");
         } else {
             List<Trajet> listeTrajetsFiltree = new ArrayList<Trajet>();
             for (Trajet trajet : mesTrajets) {
-                if ((vehicule == null || trajet.getVehicule().equals(vehicule))
+                if ((vehicule == null || trajet.getVehicule().getType().equals(vehicule))
                          && trajet.restePlaces(placesVoulues)
                         && (!avecCouchette || trajet.getVehicule()
                                 .avecCouchette() == avecCouchette)
