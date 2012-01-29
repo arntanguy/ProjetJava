@@ -48,7 +48,6 @@ public class FenetreClientAdmin extends JFrame {
         tabbedPane.add("Ville", buildVillePanel());
         tabbedPane.add("Transports", buildTransportsPanel());
         tabbedPane.add("Trajets", buildTrajetsPanel());
-        //   tabbedPane.add("Reservations", buildReservationsPanel());
 
         return tabbedPane;
     }
