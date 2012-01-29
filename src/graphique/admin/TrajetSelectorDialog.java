@@ -47,7 +47,6 @@ public class TrajetSelectorDialog extends JDialog {
     }
 
     private JPanel buildTrajetSelector() {
-        // setBorder(BorderFactory.createTitledBorder("Gestion des réservations"));
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
@@ -64,6 +63,9 @@ public class TrajetSelectorDialog extends JDialog {
         panel.add(new JButton(new QuitAction("Quitter")));
     }
 
+    /**
+     * Quitte sans rien faire
+     */
     private class QuitAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
@@ -79,6 +81,8 @@ public class TrajetSelectorDialog extends JDialog {
     }
 
     private class LinkAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public LinkAction(String s) {
             super(s);
         }

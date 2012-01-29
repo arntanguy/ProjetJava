@@ -13,6 +13,8 @@ import logiqueMetier.Serveur;
  */
 
 public class GestionTrajetsPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+
     private TableTrajetsPanel tableTrajetsPanel;
 
     private Serveur serveur;
@@ -24,7 +26,6 @@ public class GestionTrajetsPanel extends JPanel {
     }
 
     private void build() {
-        // setBorder(BorderFactory.createTitledBorder("Gestion des trajets"));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         tableTrajetsPanel = new TableTrajetsPanel(serveur);

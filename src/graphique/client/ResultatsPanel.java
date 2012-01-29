@@ -61,6 +61,9 @@ public class ResultatsPanel extends AbstractTablePanel {
 		add(new JButton(new ReserverAction("Réserver")), BorderLayout.CENTER);
 	}
 
+	/**
+	 * Réserve le trajet sélectionné, en utilisant les infos rentrées par l'utilisateur
+	 */
 	public class ReserverAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 

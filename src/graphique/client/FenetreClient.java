@@ -57,6 +57,8 @@ public class FenetreClient extends JFrame {
     }
 
     private class QuitAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public QuitAction(String texte) {
             super(texte);
         }

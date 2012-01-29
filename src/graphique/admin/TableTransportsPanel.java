@@ -100,7 +100,9 @@ public class TableTransportsPanel extends AbstractTablePanel {
             model.addRow(new Vehicule(serveur.getVehiculeNewIdentifiant()));
         }
     }
-
+    /**
+     * Supprime un transport à la fois dans le tableau, et sur le serveur.
+     */
     public class DeleteAction extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
