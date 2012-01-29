@@ -21,6 +21,16 @@ public class Reservation implements Serializable {
     private String nomTicket;
     private Map<String, Boolean> prendRepas;
 
+    int reductionFidelite = 0;
+    int prixModifiable = 5;
+    int prixPremiereClasse = 10;
+    int prixCouchette = 5;
+    int repasTotal = 0;
+    int classePaye = 0;
+    int couchettePaye = 0;
+    int modifiablePaye = 0;
+
+
     boolean active = true;
 
     /**
@@ -64,7 +74,7 @@ public class Reservation implements Serializable {
         String cheminReservation = ticket;
         if (!cheminReservation.equals("")) {
             System.out
-                    .println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
+            .println("Votre demande à bien été prise en compte.\nVotre réservation va être affichée automatiquement.");
             String path = new java.io.File(cheminReservation).getAbsolutePath();
             String[] cmd = { "firefox", "file://" + path };
             try {
@@ -84,7 +94,7 @@ public class Reservation implements Serializable {
             fstream = new FileWriter("ticketReservation" + passager.getNom()
                     + "$" + passager.getPrenom() + ".html");
             nomTicket = "ticketReservation" + passager.getNom() + "$"
-                    + passager.getPrenom() + ".html";
+            + passager.getPrenom() + ".html";
             lanceTicketReservation(nomTicket);
             System.out.println(nomTicket);
         } catch (IOException e) {
@@ -155,27 +165,18 @@ public class Reservation implements Serializable {
     public String getNomTicket() {
         return nomTicket;
     }
-
-    public String getPrix() {
+    public double getPrixValue() {
         double prix = 0;
-        int reductionFidelite = 0;
-        int prixModifiable = 5;
-        int prixPremiereClasse = 10;
-        int prixCouchette = 5;
-        int repasTotal = 0;
-        int classePaye = 0;
-        int couchettePaye = 0;
-        int modifiablePaye = 0;
 
         prix += passager.getProfil().getPrix(); // prix en fonction du type de
-                                                // passager
+        // passager
         if (passager.getFidelite() == true) // on baisse si il est fidèle
         {
             reductionFidelite = 10;
             prix -= reductionFidelite;
         }
         prix += (double) trajet.getVehicule().getPrix()
-                * (double) trajet.getDistance() / 80.0; // prix en fonction du
+        * (double) trajet.getDistance() / 80.0; // prix en fonction du
         // type de transport
 
         for (String key : prendRepas.keySet()) {
@@ -204,23 +205,26 @@ public class Reservation implements Serializable {
             prix += prixCouchette;
         }
 
-        prix *= placesVoulues;
+        return (prix>=0) ? prix*placesVoulues : 0;
+    }
+    public String getPrix() {
+        double prix = getPrixValue();
 
         String texte = "<th>prix passager = " + passager.getProfil().getPrix()
-                + " euros</th></tr>";
+        + " euros</th></tr>";
         texte += "<tr><th>réduction fidèlité = " + reductionFidelite
-                + " euros</th></tr>";
+        + " euros</th></tr>";
         texte += "<tr><th>prix transport="
-                + (double) trajet.getVehicule().getPrix()
-                * (double) trajet.getDistance() / 80.0 + " euros</th></tr>";
+            + (double) trajet.getVehicule().getPrix()
+            * (double) trajet.getDistance() / 80.0 + " euros</th></tr>";
         texte += "<tr><th>prix repas = " + repasTotal + " euros</th></tr>";
         texte += "<tr><th>prix classe = " + classePaye + " euros</th></tr>";
         texte += "<tr><th>supplément changement du billet = " + modifiablePaye
-                + " euros</th></tr>";
+        + " euros</th></tr>";
         texte += "<tr><th>prix couchette = " + couchettePaye
-                + " euros</th></tr>";
+        + " euros</th></tr>";
         texte += "<tr><th><h3>prix total pour " + placesVoulues
-                + " place(s) = " + prix + " euros</h3></th></tr>";
+        + " place(s) = " + prix + " euros</h3></th></tr>";
         return texte;
     }
 
@@ -231,10 +235,10 @@ public class Reservation implements Serializable {
         }
 
         return new StringBuffer().append(passager.print()).append("#")
-                .append(trajet.getIdentifiant()).append("#").append(modifiable)
-                .append("#").append(prendCouchette).append("#")
-                .append(identifiant).append("#").append(placesVoulues)
-                .append("#").append(textRepas).append("\n").toString();
+        .append(trajet.getIdentifiant()).append("#").append(modifiable)
+        .append("#").append(prendCouchette).append("#")
+        .append(identifiant).append("#").append(placesVoulues)
+        .append("#").append(textRepas).append("\n").toString();
     }
 
     public boolean isModifiable() {
@@ -257,7 +261,7 @@ public class Reservation implements Serializable {
         String texte = "";
         String mod = (modifiable) ? "modifiable" : "non modifiable";
         texte += "Réservation (n°" + identifiant + ") du trajet n°"
-                + trajet.getIdentifiant() + " (" + mod + ") par " + passager;
+        + trajet.getIdentifiant() + " (" + mod + ") par " + passager;
         return texte;
     }
 

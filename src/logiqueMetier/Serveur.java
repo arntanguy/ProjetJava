@@ -489,12 +489,13 @@ public abstract class Serveur implements Serializable {
      *            Identifiant du véhicule à supprimer
      */
     public void removeVehicule(int id) {
-        for (Vehicule v : mesVehicules) {
+        for(int i=0; i<mesVehicules.size(); i++) {
+            Vehicule v = mesVehicules.get(i);
             if (v.getIdentifiant() == id) {
-                for (int i = 0; i < mesTrajets.size(); i++) {
-                    if (mesTrajets.get(i).getVehicule() == v) {
-                        mesTrajets.remove(i);
-                        i--;
+                for (int j = 0; j < mesTrajets.size(); j++) {
+                    if (mesTrajets.get(j).getVehicule() == v) {
+                        mesTrajets.remove(j);
+                        j--;
                     }
                 }
                 mesVehicules.remove(v);
@@ -584,7 +585,8 @@ public abstract class Serveur implements Serializable {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
 
         if (direct) {
-            for (int i = 0; i < mesTrajets.size(); i++) {
+System.out.println("direct");
+        	for (int i = 0; i < mesTrajets.size(); i++) {
                 Calendar departRetard = (Calendar) mesTrajets.get(i)
                         .getDateDepart().clone();
                 departRetard.add(Calendar.HOUR, intervalleVoulue);

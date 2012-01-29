@@ -2,8 +2,9 @@ package graphique.client;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -15,22 +16,30 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
+import logiqueMetier.Serveur;
+import objets.TypeVehicule;
 import objets.Ville;
 import tools.DateTools;
 
-import logiqueMetier.Serveur;
-
 /**
+ * Panel permettant d'entrer les informations de recherche sur un trajet
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class TrajetPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+    
     private JComboBox villeDepartCombo;
     private JComboBox villeArriveeCombo;
     private JSpinner dateDepartSpinner;
+    private JComboBox transport;
+    private JComboBox repas;
     private JCheckBox modifiable;
     private JCheckBox couchette;
+    private JCheckBox direct;
+    private JCheckBox premiereClasse;
 
     private Serveur serveur;
 
@@ -66,7 +75,22 @@ public class TrajetPanel extends JPanel {
         add(new JLabel("Date de départ "));
         dateDepartSpinner = new JSpinner(model);
         add(dateDepartSpinner);
-
+        
+        transport = new JComboBox();
+        for(TypeVehicule type:TypeVehicule.values()) {
+        	transport.addItem(type);
+        }
+        add(new JLabel("Moyen de transport"));
+        add(transport);
+        
+        repas = new JComboBox();
+        add(new JLabel("Repas"));
+        add(repas);
+       
+        TransportComboAction transportComboAction = new TransportComboAction();
+        transport.setAction(transportComboAction);
+        transportComboAction.actionPerformed(null);
+        
         add(new JLabel("Trajet modifiable"));
         modifiable = new JCheckBox();
         add(modifiable);
@@ -74,6 +98,15 @@ public class TrajetPanel extends JPanel {
         add(new JLabel("Avec couchette"));
         couchette = new JCheckBox();
         add(couchette);
+        
+        add(new JLabel("Trajet direct"));
+        direct = new JCheckBox();
+        direct.setSelected(true);
+        add(direct);
+        
+        add(new JLabel("Première classe"));
+        premiereClasse = new JCheckBox();
+        add(premiereClasse);
     }
 
     public Ville getVilleDepart() {
@@ -90,7 +123,9 @@ public class TrajetPanel extends JPanel {
     }
 
     private class DepartComboAction extends AbstractAction {
-        public DepartComboAction() {
+		private static final long serialVersionUID = 1L;
+
+		public DepartComboAction() {
         }
 
         @Override
@@ -103,6 +138,23 @@ public class TrajetPanel extends JPanel {
         }
 
     }
+    
+    private class TransportComboAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public TransportComboAction() {
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            repas.removeAllItems();
+            // FIXME : TypeVehicule does not contain info on repas, Vehicule does
+          /*  for (Repas r : ((Vehicule)transport.getSelectedItem()).getRepas())  {
+            	repas.addItem(r);
+            } */
+        }
+
+    }
 
     public boolean getCouchette() {
         return couchette.isSelected();
@@ -112,8 +164,15 @@ public class TrajetPanel extends JPanel {
         return modifiable.isSelected();
     }
 
-    public Map<String, Boolean> getRepas() {
-        // TODO
-        return null;
-    }
+	public Map<String, Boolean> getRepas() {
+		return new Hashtable<String, Boolean>();
+	}
+
+	public boolean getDirect() {
+		return direct.isSelected();
+	}
+
+	public boolean getPremiereClasse() {
+		return false;
+	}
 }

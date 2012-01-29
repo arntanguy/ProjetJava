@@ -2,7 +2,6 @@ package graphique.client;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -16,11 +15,15 @@ import objets.Reservation;
 import objets.Trajet;
 
 /**
+ * Panel de réservation d'un trajet
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class ReservationPanel extends JPanel {
+    private static final long serialVersionUID = 1L;
+  
     private Serveur serveur;
     private TrajetPanel trajetP;
     private ClientPanel clientP;
@@ -52,12 +55,32 @@ public class ReservationPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println("Validé !");
-            ArrayList<Trajet> trajets = (ArrayList<Trajet>) serveur
+            System.out.println("Recherche !");
+            for (Trajet t : serveur.getTrajets()) {
+            	System.out.println(t);
+            }
+            
+            /*rechercherTrajet(Ville depart, Ville arrivee,
+            Vehicule vehicule, int placesVoulues, Calendar dateDepart,
+            int intervalleVoulue, boolean avecCouchette,
+            boolean premiereClasse, boolean direct)*/
+            ArrayList<Trajet> trajets = new ArrayList();
+            
+            // Cherche les trajets directs
+            trajets = (ArrayList<Trajet>) serveur
                     .rechercherTrajet(trajetP.getVilleDepart(),
                             trajetP.getVilleArrivee(), null,
                             clientP.getNbPassagers(), trajetP.getDateDepart(),
-                            12, true, false, true);
+                            12, trajetP.getCouchette(), trajetP.getPremiereClasse(), true);
+            // Si il y a des trajets indirects, on les ajoute aussi
+            if(!trajetP.getDirect()) {
+                trajets = (ArrayList<Trajet>) serveur
+                .rechercherTrajet(trajetP.getVilleDepart(),
+                        trajetP.getVilleArrivee(), null,
+                        clientP.getNbPassagers(), trajetP.getDateDepart(),
+                        12, trajetP.getCouchette(), trajetP.getPremiereClasse(), false);
+            }
+            
 
             resultatsP.removeAllRows();
             /*
@@ -69,14 +92,14 @@ public class ReservationPanel extends JPanel {
                     clientP.getDateNaissance(), clientP.getProfil(),
                     clientP.hasFidelite());
             System.out.println(p);
-
+            
             for (Trajet t : trajets) {
                 Reservation r = new Reservation(p, t, trajetP.getModifiable(),
                         trajetP.getCouchette(), trajetP.getRepas(),
                         serveur.getReservationNewIdentifiant(),
                         clientP.getNbPassagers());
                 r.setActive(false);
-                System.out.println(r);
+                System.out.println(t);
                 resultatsP.addReservation(r);
             }
         }

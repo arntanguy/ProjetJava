@@ -26,6 +26,9 @@ import objets.Vehicule;
 import objets.Ville;
 
 /**
+ * Cette classe fournit un tableau et des boutons associés permettant de modifier
+ * créer et supprimer des trajets.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

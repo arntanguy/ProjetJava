@@ -14,11 +14,16 @@ import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
 
 /**
+ * Cette classe organise l'ensemble des composants de la partie administrative 
+ * de l'interface graphique.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
 
 public class FenetreClientAdmin extends JFrame {
+    private static final long serialVersionUID = 1L;
+   
     private Serveur serveur;
     JTabbedPane tabbedPane;
 
@@ -48,7 +53,6 @@ public class FenetreClientAdmin extends JFrame {
         tabbedPane.add("Ville", buildVillePanel());
         tabbedPane.add("Transports", buildTransportsPanel());
         tabbedPane.add("Trajets", buildTrajetsPanel());
-        tabbedPane.add("Reservations", buildReservationsPanel());
 
         return tabbedPane;
     }
@@ -74,27 +78,27 @@ public class FenetreClientAdmin extends JFrame {
         return panel;
     }
 
-    private JPanel buildReservationsPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(new GestionReservationsPanel(serveur));
-        return panel;
-    }
-
     private JPanel buildContentPane() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
         panel.add(buildTabbedPane());
 
-        JButton quit = new JButton(new QuitAction("Quitter"));
-        panel.add(quit);
+        JPanel bp = new JPanel();      
+        bp.setLayout(new BoxLayout(bp, BoxLayout.LINE_AXIS));
+        bp.add(new JButton(new SaveAction("Sauvegarder")));
+        bp.add(new JButton(new QuitAndSaveAction("Sauvegarder et quitter")));
+        bp.add(new JButton(new QuitAction("Quitter")));
+
+        panel.add(bp);
 
         return panel;
     }
 
-    private class QuitAction extends AbstractAction {
-        public QuitAction(String texte) {
+    private class SaveAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        public SaveAction(String texte) {
             super(texte);
         }
 
@@ -105,6 +109,33 @@ public class FenetreClientAdmin extends JFrame {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    private class QuitAndSaveAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        public QuitAndSaveAction(String texte) {
+            super(texte);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            try {
+                serveur.sauvegarder();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            dispose();
+        }
+    }
+
+    private class QuitAction extends AbstractAction {
+        public QuitAction(String texte) {
+            super(texte);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
             dispose();
         }
     }

@@ -1,11 +1,13 @@
 package graphique.models;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Fournit un modèle abstrait ayant pour but de simplifier la création de modèles plus
+ * spécifiques de gestion des entrées dans les différents tableaux du programmes.
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

@@ -1,17 +1,13 @@
 package graphique.admin;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-
-import objets.Trajet;
 
 import logiqueMetier.Serveur;
 
 /**
+ * Cette classe fournit un composant permettant de gérér les trajets
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */

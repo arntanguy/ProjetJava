@@ -9,6 +9,8 @@ import objets.Reservation;
 import objets.Trajet;
 
 /**
+ * Fournit un modèle gérant les réservations
+ * 
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
  * @version 2012.01.29
  */
@@ -58,6 +60,8 @@ public class ReservationsTableModel<T> extends AbstractTableModel<T> {
                 return (p != null) ? p.getNom() + " " + p.getPrenom() : "null";
             }
         case 6:
+        	return r.getPrixValue();
+        case 7:
             return (r.isActive()) ? "Réservé" : "Non réservé";
         }
         return null;
