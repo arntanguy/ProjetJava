@@ -584,7 +584,8 @@ public abstract class Serveur implements Serializable {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
 
         if (direct) {
-            for (int i = 0; i < mesTrajets.size(); i++) {
+System.out.println("direct");
+        	for (int i = 0; i < mesTrajets.size(); i++) {
                 Calendar departRetard = (Calendar) mesTrajets.get(i)
                         .getDateDepart().clone();
                 departRetard.add(Calendar.HOUR, intervalleVoulue);

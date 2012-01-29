@@ -58,6 +58,8 @@ public class ReservationsTableModel<T> extends AbstractTableModel<T> {
                 return (p != null) ? p.getNom() + " " + p.getPrenom() : "null";
             }
         case 6:
+        	return r.getPrixValue();
+        case 7:
             return (r.isActive()) ? "Réservé" : "Non réservé";
         }
         return null;

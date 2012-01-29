@@ -1,10 +1,10 @@
 package graphique.client;
 
 import graphique.models.ReservationsTableModel;
-import graphique.models.TrajetsTableModel;
 import graphique.widgets.AbstractTablePanel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -15,9 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import logiqueMetier.Serveur;
-import objets.Repas;
 import objets.Reservation;
-import objets.Trajet;
 
 /**
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
@@ -29,6 +27,7 @@ public class ResultatsPanel extends AbstractTablePanel {
 
 	public ResultatsPanel(Serveur s) {
 		super(s);
+		setPreferredSize(new Dimension(800, 100));
 		build();
 	}
 
@@ -41,7 +40,7 @@ public class ResultatsPanel extends AbstractTablePanel {
 
 	private void buildReservationsTable() {
 		String[] columnNames = { "Départ", "Arrivée", "Date départ",
-				"Date arrivée", "Transport", "Passager", "Réservé" };
+				"Date arrivée", "Transport", "Passager", "Prix", "Réservé" };
 
 		model = new ReservationsTableModel<Reservation>();
 		model.setColumnNames(columnNames);

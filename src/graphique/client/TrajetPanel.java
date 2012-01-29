@@ -2,8 +2,9 @@ package graphique.client;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -15,13 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
-import objets.Repas;
+import logiqueMetier.Serveur;
 import objets.TypeVehicule;
-import objets.Vehicule;
 import objets.Ville;
 import tools.DateTools;
-
-import logiqueMetier.Serveur;
 
 /**
  * @author Fauvel-jaeger Olivier, Tanguy Arnaud, Ceschel Marvin, Kruck Nathan
@@ -36,6 +34,8 @@ public class TrajetPanel extends JPanel {
     private JComboBox repas;
     private JCheckBox modifiable;
     private JCheckBox couchette;
+    private JCheckBox direct;
+    private JCheckBox premiereClasse;
 
     private Serveur serveur;
 
@@ -84,8 +84,8 @@ public class TrajetPanel extends JPanel {
         add(repas);
        
         TransportComboAction transportComboAction = new TransportComboAction();
-        villeDepartCombo.setAction(departComboAction);
-        departComboAction.actionPerformed(null);
+        transport.setAction(transportComboAction);
+        transportComboAction.actionPerformed(null);
         
         add(new JLabel("Trajet modifiable"));
         modifiable = new JCheckBox();
@@ -94,6 +94,15 @@ public class TrajetPanel extends JPanel {
         add(new JLabel("Avec couchette"));
         couchette = new JCheckBox();
         add(couchette);
+        
+        add(new JLabel("Trajet direct"));
+        direct = new JCheckBox();
+        direct.setSelected(true);
+        add(direct);
+        
+        add(new JLabel("Première classe"));
+        premiereClasse = new JCheckBox();
+        add(premiereClasse);
     }
 
     public Ville getVilleDepart() {
@@ -110,7 +119,9 @@ public class TrajetPanel extends JPanel {
     }
 
     private class DepartComboAction extends AbstractAction {
-        public DepartComboAction() {
+		private static final long serialVersionUID = 1L;
+
+		public DepartComboAction() {
         }
 
         @Override
@@ -134,13 +145,9 @@ public class TrajetPanel extends JPanel {
         public void actionPerformed(ActionEvent arg0) {
             repas.removeAllItems();
             // FIXME : TypeVehicule does not contain info on repas, Vehicule does
-            for (Repas r : ((Vehicule)transport.getSelectedItem()).getRepas())  {
+          /*  for (Repas r : ((Vehicule)transport.getSelectedItem()).getRepas())  {
             	repas.addItem(r);
-            }
-            for (Ville v : serveur.getVillesArrivee((Ville) villeDepartCombo
-                    .getSelectedItem())) {
-                villeArriveeCombo.addItem(v);
-            }
+            } */
         }
 
     }
@@ -152,4 +159,16 @@ public class TrajetPanel extends JPanel {
     public boolean getModifiable() {
         return modifiable.isSelected();
     }
+
+	public Map<String, Boolean> getRepas() {
+		return new Hashtable<String, Boolean>();
+	}
+
+	public boolean getDirect() {
+		return direct.isSelected();
+	}
+
+	public boolean getPremiereClasse() {
+		return false;
+	}
 }
