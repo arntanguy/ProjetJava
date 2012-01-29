@@ -48,7 +48,7 @@ public class FenetreClientAdmin extends JFrame {
         tabbedPane.add("Ville", buildVillePanel());
         tabbedPane.add("Transports", buildTransportsPanel());
         tabbedPane.add("Trajets", buildTrajetsPanel());
-        tabbedPane.add("Reservations", buildReservationsPanel());
+        //   tabbedPane.add("Reservations", buildReservationsPanel());
 
         return tabbedPane;
     }
@@ -87,14 +87,21 @@ public class FenetreClientAdmin extends JFrame {
 
         panel.add(buildTabbedPane());
 
-        JButton quit = new JButton(new QuitAction("Quitter"));
-        panel.add(quit);
+        JPanel bp = new JPanel();      
+        bp.setLayout(new BoxLayout(bp, BoxLayout.LINE_AXIS));
+        bp.add(new JButton(new SaveAction("Sauvegarder")));
+        bp.add(new JButton(new QuitAndSaveAction("Sauvegarder et quitter")));
+        bp.add(new JButton(new QuitAction("Quitter")));
+
+        panel.add(bp);
 
         return panel;
     }
 
-    private class QuitAction extends AbstractAction {
-        public QuitAction(String texte) {
+    private class SaveAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        public SaveAction(String texte) {
             super(texte);
         }
 
@@ -105,6 +112,33 @@ public class FenetreClientAdmin extends JFrame {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    private class QuitAndSaveAction extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
+        public QuitAndSaveAction(String texte) {
+            super(texte);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            try {
+                serveur.sauvegarder();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            dispose();
+        }
+    }
+
+    private class QuitAction extends AbstractAction {
+        public QuitAction(String texte) {
+            super(texte);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
             dispose();
         }
     }

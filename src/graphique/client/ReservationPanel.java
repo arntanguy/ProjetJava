@@ -64,11 +64,23 @@ public class ReservationPanel extends JPanel {
             Vehicule vehicule, int placesVoulues, Calendar dateDepart,
             int intervalleVoulue, boolean avecCouchette,
             boolean premiereClasse, boolean direct)*/
-            ArrayList<Trajet> trajets = (ArrayList<Trajet>) serveur
+            ArrayList<Trajet> trajets = new ArrayList();
+            
+            // Cherche les trajets directs
+            trajets = (ArrayList<Trajet>) serveur
                     .rechercherTrajet(trajetP.getVilleDepart(),
                             trajetP.getVilleArrivee(), null,
                             clientP.getNbPassagers(), trajetP.getDateDepart(),
-                            12, trajetP.getCouchette(), trajetP.getPremiereClasse(), trajetP.getDirect());
+                            12, trajetP.getCouchette(), trajetP.getPremiereClasse(), true);
+            // Si il y a des trajets indirects, on les ajoute aussi
+            if(!trajetP.getDirect()) {
+                trajets = (ArrayList<Trajet>) serveur
+                .rechercherTrajet(trajetP.getVilleDepart(),
+                        trajetP.getVilleArrivee(), null,
+                        clientP.getNbPassagers(), trajetP.getDateDepart(),
+                        12, trajetP.getCouchette(), trajetP.getPremiereClasse(), false);
+            }
+            
 
             resultatsP.removeAllRows();
             /*

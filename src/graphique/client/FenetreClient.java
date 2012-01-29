@@ -33,7 +33,7 @@ public class FenetreClient extends JFrame {
 
     private void build() {
         setTitle("Client de réservation");
-        setSize(800, 600);
+        setSize(800, 800);
         setLocationRelativeTo(null);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
