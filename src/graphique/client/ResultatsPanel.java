@@ -78,6 +78,7 @@ public class ResultatsPanel extends AbstractTablePanel {
 				try {
 					//TODO : manage repas for(Repas repas : trajetAReserver.getVehicule().getRepas()) repas
 					serveur.addReservation(r);
+					r.genereTicket();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
