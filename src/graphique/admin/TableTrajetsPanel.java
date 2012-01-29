@@ -76,9 +76,9 @@ public class TableTrajetsPanel extends AbstractTablePanel {
         table.setFillsViewportHeight(true); // Fill all the container
         table.getModel().addTableModelListener(new CellListener());
 
-        JComboBox combo = buildDepartCombo();
-        addComboToTable(combo, 0);
-        addComboToTable(combo, 1);
+        buildDepartCombo();
+        addComboToTable(departCombo, 0);
+        addComboToTable(departCombo, 1);
         addSpinnerToTable(dateDepartSpinner, 2);
         addSpinnerToTable(dateArriveeSpinner, 3);
 
@@ -86,11 +86,10 @@ public class TableTrajetsPanel extends AbstractTablePanel {
         add(scrollPane);
     }
 
-    private JComboBox buildDepartCombo() {
+    private void buildDepartCombo() {
         for (Ville v : villes) {
             departCombo.addItem(v);
         }
-        return departCombo;
     }
 
     private void buildButtons() {
@@ -216,6 +215,6 @@ public class TableTrajetsPanel extends AbstractTablePanel {
     public void updateVilles() {
         villes = serveur.getVilles();
         departCombo.removeAll();
-        buildDepartCombo();
+        buildDepartCombo(); 
     }
 }

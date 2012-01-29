@@ -12,6 +12,7 @@ import javax.swing.JTabbedPane;
 
 import logiqueMetier.Serveur;
 import logiqueMetier.ServeurV2;
+import logiqueMetier.ServeurV3;
 
 /**
  * Cette classe organise l'ensemble des composants de la partie administrative 
@@ -30,14 +31,14 @@ public class FenetreClientAdmin extends JFrame {
 
     public FenetreClientAdmin() {
         super();
-        serveur = new ServeurV2();      
-        gestionTrajetsPanel = new GestionTrajetsPanel(serveur);
+        serveur = new ServeurV3();      
 
         try {
             serveur.charger();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }       
+        gestionTrajetsPanel = new GestionTrajetsPanel(serveur);
         build();
     }
 
