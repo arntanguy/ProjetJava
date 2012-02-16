@@ -318,14 +318,18 @@ public class ClientAdmin {
                 throw new Exception("date de départ mal écrite");
 
             List<Trajet> trajetRecherche = null;
+            TypeVehicule type=null;
+            if(vehicule!=null)
+                type=vehicule.getType();
+                
             if (!trierParPrix) {
                 // on recherche les trajets correspondant aux paramètres rentrés
-                trajetRecherche = s.rechercherTrajet(depart, arrivee, vehicule.getType(),
+                trajetRecherche = s.rechercherTrajet(depart, arrivee, type,
                         placesVoulues, dateCompleteDepart, intervalleVoulue,
                         avecCouchette, premiereClasse, trajetDirect);
             } else {
                 trajetRecherche = s.rechercherTrajetParPrix(depart, arrivee,
-                        vehicule.getType(), placesVoulues, dateCompleteDepart,
+                        type, placesVoulues, dateCompleteDepart,
                         intervalleVoulue, avecCouchette, premiereClasse,
                         trajetDirect);
             }

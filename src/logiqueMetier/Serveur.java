@@ -586,7 +586,6 @@ public abstract class Serveur implements Serializable {
         List<Trajet> trajetsConvenables = new ArrayList<Trajet>();
 
         if (direct) {
-System.out.println("direct");
         	for (int i = 0; i < mesTrajets.size(); i++) {
                 Calendar departRetard = (Calendar) mesTrajets.get(i)
                         .getDateDepart().clone();
@@ -597,7 +596,7 @@ System.out.println("direct");
 
                 if (mesTrajets.get(i).getDepart().equals(depart)
                         && mesTrajets.get(i).getArrivee().equals(arrivee)
-                        && (vehicule == null || mesTrajets.get(i).getVehicule().getType() == vehicule)
+                        && (vehicule == null || mesTrajets.get(i).getVehicule().getType().equals(vehicule))
                         && mesTrajets.get(i).restePlaces(placesVoulues)
                         && (!avecCouchette || mesTrajets.get(i).getVehicule()
                                 .avecCouchette() == avecCouchette)
